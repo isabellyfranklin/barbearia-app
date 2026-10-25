@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 💈 Sistema de Agendamento para Barbearias
 
 > Plataforma web responsiva para agendamento de serviços em barbearias, conectando clientes, barbeiros e proprietários em um fluxo simples e rápido.
@@ -287,4 +286,3 @@ A divisão de responsabilidades técnicas ainda será formalizada pelo grupo.
 ---
 
 **Finalidade:** projeto acadêmico desenvolvido para o Senac EAD. A publicação do código não implica autorização para redistribuição de materiais didáticos de terceiros; eventuais licenças e condições de reutilização do software devem ser definidas pelos integrantes.
->>>>>>> 39e0032ef1b6566f29e8fa3702d2478ef1555386

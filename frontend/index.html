@@ -7,44 +7,54 @@
     <link rel="stylesheet" href="css/login.css" />
   </head>
   <body>
-    <main class="login">
-      <h1>Seu estilo começa aqui.</h1>
-      <p>Entre para agendar e acompanhar seus horários.</p>
-
-      <form id="form-login">
-        <p class="rotulo">Como você quer entrar?</p>
-
-        <div class="seletor">
-          <button type="button" class="opcao ativo" data-perfil="cliente">
-            Cliente
-          </button>
-          <button type="button" class="opcao" data-perfil="barbeiro">
-            Barbeiro
-          </button>
-          <button type="button" class="opcao" data-perfil="admin">
-            Administrador
-          </button>
+    <div class="tela-login">
+      <aside class="destaque">
+        <div class="destaque-texto">
+          <span class="destaque-etiqueta">BEM-CUIDADO, SEM COMPLICAÇÃO</span>
+          <h2>O próximo horário é seu.</h2>
+          <p>
+            Encontre sua barbearia, escolha seu horário e chegue com tudo
+            resolvido.
+          </p>
+          <small>Agende em poucos toques. Sem ligar.</small>
         </div>
+      </aside>
 
-        <label for="email">E-mail</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="voce@exemplo.com.br"
-          required
-        />
+      <main class="login">
+        <h1>Seu estilo começa aqui.</h1>
+        <p>Entre para agendar e acompanhar seus horários.</p>
+        <form id="form-login">
+          <p class="rotulo">Como você quer entrar?</p>
+          <div class="seletor">
+            <button type="button" class="opcao ativo" data-perfil="cliente">
+              Cliente
+            </button>
+            <button type="button" class="opcao" data-perfil="barbeiro">
+              Barbeiro
+            </button>
+            <button type="button" class="opcao" data-perfil="admin">
+              Administrador
+            </button>
+          </div>
+          <label for="email">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="voce@exemplo.com.br"
+            required
+          />
+          <label for="senha">Senha</label>
+          <input
+            type="password"
+            id="senha"
+            placeholder="Digite sua senha"
+            required
+          />
+          <button type="submit" class="btn-entrar">Entrar</button>
+        </form>
+      </main>
+    </div>
 
-        <label for="senha">Senha</label>
-        <input
-          type="password"
-          id="senha"
-          placeholder="Digite sua senha"
-          required
-        />
-
-        <button type="submit" class="btn-entrar">Entrar</button>
-      </form>
-    </main>
     <section class="cadastro" id="cadastro">
       <p class="etiqueta">PRIMEIRO ACESSO · CADASTRO</p>
       <h2>Crie sua conta de cliente</h2>

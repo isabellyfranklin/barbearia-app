@@ -84,7 +84,19 @@ body {
 
 h1 {
   font-family: "Playfair Display", serif;
+  font-weight: 500;
   margin-bottom: 8px;
+}
+
+.cadastro h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.cadastro .subtitulo {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
 }
 
 .login > p {
@@ -209,6 +221,14 @@ input[type="checkbox"] {
   gap: 8px;
   font-size: 0.75rem;
   color: var(--texto-suave);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--texto);
+  -webkit-box-shadow: 0 0 0 1000px var(--superficie) inset;
+  caret-color: var(--texto);
 }
 
 /* Celular: tudo em uma coluna */

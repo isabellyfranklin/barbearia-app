@@ -1,11 +1,97 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbearia</title>
-</head>
-<body>
-    
-</body>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prumo | Entrar</title>
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <main class="login">
+      <h1>Seu estilo começa aqui.</h1>
+      <p>Entre para agendar e acompanhar seus horários.</p>
+
+      <form id="form-login">
+        <p class="rotulo">Como você quer entrar?</p>
+
+        <div class="seletor">
+          <button type="button" class="opcao ativo" data-perfil="cliente">
+            Cliente
+          </button>
+          <button type="button" class="opcao" data-perfil="barbeiro">
+            Barbeiro
+          </button>
+          <button type="button" class="opcao" data-perfil="admin">
+            Administrador
+          </button>
+        </div>
+
+        <label for="email">E-mail</label>
+        <input
+          type="email"
+          id="email"
+          placeholder="voce@exemplo.com.br"
+          required
+        />
+
+        <label for="senha">Senha</label>
+        <input
+          type="password"
+          id="senha"
+          placeholder="Digite sua senha"
+          required
+        />
+
+        <button type="submit" class="btn-entrar">Entrar</button>
+      </form>
+    </main>
+    <section class="cadastro" id="cadastro">
+      <p class="etiqueta">PRIMEIRO ACESSO · CADASTRO</p>
+      <h2>Crie sua conta de cliente</h2>
+      <p class="subtitulo">Seus próximos horários, em um só lugar.</p>
+
+      <form id="form-cadastro" class="grade">
+        <div class="campo">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" required />
+        </div>
+
+        <div class="campo">
+          <label for="email-cad">E-mail</label>
+          <input type="email" id="email-cad" required />
+        </div>
+
+        <div class="campo">
+          <label for="celular">Celular</label>
+          <input
+            type="tel"
+            id="celular"
+            placeholder="(11) 99999-9999"
+            required
+          />
+        </div>
+
+        <div class="campo">
+          <label for="senha-cad">Crie uma senha</label>
+          <input type="password" id="senha-cad" minlength="8" required />
+          <small>Use pelo menos 8 caracteres.</small>
+        </div>
+
+        <div class="campo">
+          <label for="confirmar">Confirme a senha</label>
+          <input type="password" id="confirmar" required />
+        </div>
+
+        <div class="campo">
+          <label class="termos">
+            <input type="checkbox" required />
+            Li e aceito os Termos de uso e a Política de privacidade.
+          </label>
+          <button type="submit" class="btn-entrar">Criar minha conta</button>
+        </div>
+      </form>
+    </section>
+
+    <script src="js/login.js"></script>
+  </body>
 </html>

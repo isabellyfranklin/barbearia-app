@@ -1,0 +1,160 @@
+:root {
+  --fundo: #121212;
+  --superficie: #1e1e1e;
+  --borda: #333333;   
+  --dourado: #c9a24d;
+  --texto: #ffffff;
+  --texto-suave: #b5b5b5;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+}
+
+h1 {
+  font-family: "Playfair Display", serif;
+  margin-bottom: 8px;
+}
+
+.login > p {
+  color: var(--texto-suave);
+  margin-bottom: 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Seletor de perfil */
+.seletor {
+  display: flex;
+  background: var(--superficie);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.opcao {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  color: var(--texto-suave);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.opcao.ativo {
+  background: #2a2a2a;
+  color: var(--dourado);
+}
+
+/* Campos */
+input {
+  padding: 12px;
+  background: var(--superficie);
+  color: var(--texto);
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+}
+
+input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  accent-color: var(--dourado);
+}
+
+.btn-entrar {
+  padding: 14px;
+  background: var(--dourado);
+  color: #121212;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-criar {
+  padding: 14px;
+  text-align: center;
+  color: var(--texto);
+  text-decoration: none;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  cursor: pointer;
+}
+/*CSS DA PARTE CRIAR SUA CONTA CLIENTE*/
+.cadastro {
+  width: 100%;
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 24px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+}
+
+.cadastro .etiqueta {
+  color: var(--dourado);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.cadastro h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo small {
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+}
+
+.termos {
+  display: flex;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--texto-suave);
+}
+
+/* Celular: uma coluna só */
+@media (max-width: 768px) {
+  .grade {
+    grid-template-columns: 1fr;
+  }
+}

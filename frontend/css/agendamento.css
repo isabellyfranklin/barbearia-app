@@ -1,0 +1,164 @@
+.agendamento {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+.agendamento h1 {
+  margin-bottom: 8px;
+}
+
+.conteudo-ag {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.passo {
+  margin-bottom: 28px;
+}
+.passo h2 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--dourado);
+  color: #121212;
+  font-size: 0.85rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+}
+
+/* Cards de serviço e barbeiro */
+.opcoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 10px;
+}
+
+.opcao-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 14px;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  cursor: pointer;
+}
+.opcao-card small {
+  color: var(--texto-suave);
+}
+.opcao-card span {
+  color: var(--dourado);
+  font-weight: 600;
+}
+.opcao-card.selecionado {
+  border-color: var(--dourado);
+  background: #2a2a2a;
+}
+
+/* Chips de dia e horário */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  padding: 10px 14px;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.chip.selecionado {
+  background: var(--dourado);
+  color: #121212;
+  border-color: var(--dourado);
+  font-weight: 600;
+}
+.chip:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+.chip-dia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 64px;
+  text-transform: capitalize;
+}
+.chip-dia small {
+  font-size: 0.75rem;
+}
+
+.aviso {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+/* Resumo */
+.resumo-ag {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+}
+.resumo-ag h2 {
+  font-size: 1.1rem;
+}
+.linha-resumo {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+.linha-resumo span {
+  color: var(--texto-suave);
+}
+.linha-resumo strong {
+  text-align: right;
+  font-weight: 500;
+}
+.total-ag {
+  padding-top: 12px;
+  border-top: 1px solid var(--borda);
+}
+.total-ag strong {
+  color: var(--dourado);
+  font-weight: 600;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+@media (max-width: 800px) {
+  .conteudo-ag {
+    grid-template-columns: 1fr;
+  }
+  .resumo-ag {
+    position: static;
+  }
+}

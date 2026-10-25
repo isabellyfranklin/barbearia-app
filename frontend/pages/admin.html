@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prumo | Painel do administrador</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/admin.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="menu">
+        <span class="marca">PRUMO</span>
+        <nav>
+          <button class="item-menu ativo" data-secao="dashboard">
+            Dashboard
+          </button>
+          <button class="item-menu" data-secao="servicos">Serviços</button>
+          <button class="item-menu" data-secao="equipe">Equipe</button>
+          <button class="item-menu" data-secao="relatorios">Relatórios</button>
+        </nav>
+        <a href="../index.html" class="sair">Sair</a>
+      </aside>
+
+      <main class="conteudo">
+        <section id="dashboard" class="secao ativa">
+          <h1>Dashboard</h1>
+          <p class="subtitulo">Resumo da semana.</p>
+          <div class="cards">
+            <div class="card">
+              <span>Agendamentos</span><strong id="c-agend">0</strong>
+            </div>
+            <div class="card">
+              <span>Faturamento</span><strong id="c-fat">R$ 0</strong>
+            </div>
+            <div class="card">
+              <span>Cancelamentos</span><strong id="c-canc">0</strong>
+            </div>
+          </div>
+          <h2>Atendimentos por dia</h2>
+          <div class="grafico" id="grafico"></div>
+        </section>
+
+        <section id="servicos" class="secao">
+          <h1>Serviços</h1>
+          <p class="subtitulo">Gerencie o que a barbearia oferece.</p>
+          <form id="form-servico" class="linha-form">
+            <input
+              type="text"
+              id="s-nome"
+              placeholder="Nome do serviço"
+              required
+            />
+            <input
+              type="number"
+              id="s-preco"
+              placeholder="Preço (R$)"
+              min="0"
+              required
+            />
+            <input
+              type="number"
+              id="s-duracao"
+              placeholder="Duração (min)"
+              min="5"
+              required
+            />
+            <button type="submit" class="btn primario">Novo serviço</button>
+          </form>
+          <div class="tabela-rolagem">
+            <table>
+              <thead>
+                <tr>
+                  <th>Serviço</th>
+                  <th>Preço</th>
+                  <th>Duração</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="tabela-servicos"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="equipe" class="secao">
+          <h1>Equipe</h1>
+          <p class="subtitulo">Barbeiros e horários de funcionamento.</p>
+          <div class="cards" id="lista-equipe"></div>
+        </section>
+
+        <section id="relatorios" class="secao">
+          <h1>Relatórios</h1>
+          <p class="subtitulo">Atendimentos por profissional.</p>
+          <select id="filtro-barbeiro"></select>
+          <div class="tabela-rolagem">
+            <table>
+              <thead>
+                <tr>
+                  <th>Dia</th>
+                  <th>Cliente</th>
+                  <th>Serviço</th>
+                  <th>Barbeiro</th>
+                  <th>Valor</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="tabela-relatorio"></tbody>
+            </table>
+          </div>
+          <p class="total" id="total-relatorio"></p>
+        </section>
+      </main>
+    </div>
+
+    <script src="../js/admin.js"></script>
+  </body>
+</html>

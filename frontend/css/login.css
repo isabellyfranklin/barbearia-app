@@ -27,7 +27,63 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  padding: 20px 24px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icone {
+  display: flex;
+  align-items: center;
   justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--dourado);
+  border: 1px solid var(--dourado);
+  border-radius: 8px;
+}
+
+.logo-texto {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-texto strong {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.logo-texto small {
+  color: var(--dourado);
+  font-size: 0.55rem;
+  letter-spacing: 1px;
+}
+
+.navbar-frase {
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+}
+
+/* Celular: esconde a frase para não apertar */
+@media (max-width: 768px) {
+  .navbar-frase {
+    display: none;
+  }
 }
 
 /* Layout em duas colunas */
@@ -39,6 +95,7 @@ body {
   width: 100%;
   max-width: 1100px;
   padding: 24px;
+  margin-top: 16px;
 }
 
 .destaque {

@@ -1,0 +1,10 @@
+[project]
+name = "barbearia-api"
+version = "1.0.0"
+description = "Backend da plataforma de agendamento para barbearias"
+requires-python = ">=3.10"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"

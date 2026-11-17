@@ -1,37 +1,34 @@
-// ---------- Só cliente logado pode agendar ----------
 const usuario = Sessao.usuario();
 if (!usuario) {
   alert("Faça login para agendar.");
   window.location.href = "../index.html";
 }
 
-// Dados que vêm da API
 let servicos = [];
 let barbeiros = [];
-let horarios = []; // horários livres, ex: "2026-12-01T10:00:00-03:00"
+let horarios = [];
 
 // O que a pessoa já escolheu
 const estado = { servico: null, barbeiro: null, data: null, hora: null };
 
 const moeda = (v) => Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const doisDigitos = (n) => String(n).padStart(2, "0");
-const horaDoSlot = (slot) => slot.slice(11, 16); // "2026-12-01T10:00:00-03:00" -> "10:00"
+const horaDoSlot = (slot) => slot.slice(11, 16);
 
-// Evita que um texto vindo da API vire HTML
 const esc = (t) =>
   String(t ?? "").replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
   );
 
-// ---------- Próximos 7 dias ----------
+// ---------- Dias e horários ----------
 const hoje = new Date();
 const dias = [];
 for (let i = 0; i < 7; i++) {
   dias.push(new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + i));
 }
+
 const iso = (d) => `${d.getFullYear()}-${doisDigitos(d.getMonth() + 1)}-${doisDigitos(d.getDate())}`;
 
-// ---------- Buscar dados na API ----------
 async function carregarDados() {
   try {
     const [barbearia, respServicos, respBarbeiros] = await Promise.all([
@@ -52,7 +49,7 @@ async function carregarDados() {
   atualizarTudo();
 }
 
-let ultimaBusca = 0; // ignora respostas antigas se a pessoa clicar rápido
+let ultimaBusca = 0;
 async function carregarHorarios() {
   horarios = [];
   if (!estado.servico || !estado.barbeiro || !estado.data) return;
@@ -71,7 +68,7 @@ async function carregarHorarios() {
     console.error(erro);
   }
 
-  if (minhaBusca !== ultimaBusca) return; // chegou uma busca mais nova
+  if (minhaBusca !== ultimaBusca) return;
   horarios = resultado;
   mostrarHorarios();
 }
@@ -191,7 +188,6 @@ document.addEventListener("click", (e) => {
   if (tipo === "data") estado.data = valor;
   if (tipo === "hora") estado.hora = valor;
 
-  // Mudou serviço, barbeiro ou dia: o horário escolhido pode não valer mais
   if (tipo !== "hora") {
     estado.hora = null;
     atualizarTudo();
@@ -201,7 +197,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// ---------- Confirmar agendamento ----------
 document.getElementById("btn-continuar").addEventListener("click", async () => {
   const botao = document.getElementById("btn-continuar");
   botao.disabled = true;
@@ -213,7 +208,7 @@ document.getElementById("btn-continuar").addEventListener("click", async () => {
       body: {
         profissional: estado.barbeiro.id,
         servico: estado.servico.id,
-        data_hora: estado.hora, // manda exatamente o horário que a API ofereceu
+        data_hora: estado.hora,
       },
     });
 
@@ -228,7 +223,6 @@ document.getElementById("btn-continuar").addEventListener("click", async () => {
       return;
     }
     if (!ok) {
-      // ex: alguém pegou o horário antes
       alert(mensagemDeErro(dados));
       estado.hora = null;
       await carregarHorarios();
@@ -246,5 +240,4 @@ document.getElementById("btn-continuar").addEventListener("click", async () => {
   }
 });
 
-// ---------- Início ----------
 if (usuario) carregarDados();

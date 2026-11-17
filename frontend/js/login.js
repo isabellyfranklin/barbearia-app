@@ -1,6 +1,6 @@
-// ---------- LOGIN ----------
 const form = document.getElementById("form-login");
 
+// Ao enviar o formulário
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -12,7 +12,7 @@ form.addEventListener("submit", async (e) => {
   botao.textContent = "Entrando...";
 
   try {
-    Sessao.limpar(); // remove qualquer login antigo
+    Sessao.limpar();
 
     const { ok, status, dados } = await api("/auth/login", {
       method: "POST",
@@ -36,7 +36,7 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-// ---------- CADASTRO ----------
+// PARTE - Crie sua conta de cliente
 const formCadastro = document.getElementById("form-cadastro");
 
 formCadastro.addEventListener("submit", async (e) => {
@@ -50,13 +50,12 @@ formCadastro.addEventListener("submit", async (e) => {
     return;
   }
 
-  // "Maria da Silva" -> first_name "Maria", last_name "da Silva"
   const [primeiro, ...resto] = document.getElementById("nome").value.trim().split(/\s+/);
 
   const corpo = {
     username: document.getElementById("username-cad").value.trim(),
     email: document.getElementById("email-cad").value.trim(),
-    telefone: document.getElementById("celular").value.replace(/\D/g, ""), // só números
+    telefone: document.getElementById("celular").value.replace(/\D/g, ""),
     first_name: primeiro || "",
     last_name: resto.join(" "),
     password: senha,
@@ -80,7 +79,6 @@ formCadastro.addEventListener("submit", async (e) => {
       return;
     }
 
-    // O cadastro já devolve o token, então a pessoa entra direto
     Sessao.salvar(dados);
     window.location.href = ROTAS_POR_PERFIL.cliente;
   } catch (erro) {

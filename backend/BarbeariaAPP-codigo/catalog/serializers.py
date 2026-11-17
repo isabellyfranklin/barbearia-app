@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
-
-from accounts.serializers import UsuarioResumoSerializer
 
 from .models import Barbearia, Profissional, Servico
 
@@ -27,12 +27,11 @@ class BarbeariaSerializer(serializers.ModelSerializer):
 
 
 class ProfissionalSerializer(serializers.ModelSerializer):
-    usuario = UsuarioResumoSerializer(read_only=True)
-    nome = serializers.ReadOnlyField()
+    nome = serializers.CharField(read_only=True)
 
     class Meta:
         model = Profissional
-        fields = ("id", "usuario", "nome", "especialidades", "bio", "ativo")
+        fields = ("id", "nome", "especialidades", "bio", "ativo")
         read_only_fields = fields
 
 
@@ -45,6 +44,7 @@ class ServicoSerializer(serializers.ModelSerializer):
 
 class AdminProfissionalCreateSerializer(serializers.Serializer):
     username = serializers.CharField(
+        max_length=150,
         validators=[
             UniqueValidator(
                 queryset=Usuario.objects.all(),
@@ -52,10 +52,11 @@ class AdminProfissionalCreateSerializer(serializers.Serializer):
             )
         ]
     )
-    email = serializers.EmailField(required=False, allow_blank=True)
-    first_name = serializers.CharField(required=False, allow_blank=True)
-    last_name = serializers.CharField(required=False, allow_blank=True)
+    email = serializers.EmailField(required=False, allow_blank=True, max_length=254)
+    first_name = serializers.CharField(required=False, allow_blank=True, max_length=150)
+    last_name = serializers.CharField(required=False, allow_blank=True, max_length=150)
     telefone = serializers.CharField(
+        max_length=20,
         validators=[
             UniqueValidator(
                 queryset=Usuario.objects.all(),
@@ -64,7 +65,7 @@ class AdminProfissionalCreateSerializer(serializers.Serializer):
         ]
     )
     password = serializers.CharField(write_only=True, min_length=8)
-    especialidades = serializers.CharField(required=False, allow_blank=True)
+    especialidades = serializers.CharField(required=False, allow_blank=True, max_length=255)
     bio = serializers.CharField(required=False, allow_blank=True)
     ativo = serializers.BooleanField(required=False, default=True)
 
@@ -72,6 +73,16 @@ class AdminProfissionalCreateSerializer(serializers.Serializer):
         if value and Usuario.objects.filter(email__iexact=value).exists():
             raise serializers.ValidationError("Já existe um usuário com este e-mail.")
         return value
+
+    def validate(self, attrs):
+        try:
+            validate_password(attrs["password"], Usuario(
+                username=attrs.get("username", ""), email=attrs.get("email", ""),
+                first_name=attrs.get("first_name", ""), last_name=attrs.get("last_name", ""),
+            ))
+        except DjangoValidationError as exc:
+            raise serializers.ValidationError({"password": exc.messages}) from exc
+        return attrs
 
     @transaction.atomic
     def create(self, validated_data):
@@ -85,6 +96,7 @@ class AdminProfissionalCreateSerializer(serializers.Serializer):
         password = validated_data.pop("password")
         usuario = Usuario.objects.create_user(
             perfil=Usuario.Perfil.BARBEIRO,
+            is_active=validated_data.get("ativo", True),
             password=password,
             **usuario_data,
         )
@@ -93,17 +105,17 @@ class AdminProfissionalCreateSerializer(serializers.Serializer):
 
 class AdminProfissionalSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source="usuario.username", read_only=True)
-    nome = serializers.ReadOnlyField()
+    nome = serializers.CharField(read_only=True)
     email = serializers.EmailField(
-        source="usuario.email", required=False, allow_blank=True
+        source="usuario.email", required=False, allow_blank=True, max_length=254
     )
     first_name = serializers.CharField(
-        source="usuario.first_name", required=False, allow_blank=True
+        source="usuario.first_name", required=False, allow_blank=True, max_length=150
     )
     last_name = serializers.CharField(
-        source="usuario.last_name", required=False, allow_blank=True
+        source="usuario.last_name", required=False, allow_blank=True, max_length=150
     )
-    telefone = serializers.CharField(source="usuario.telefone", required=False)
+    telefone = serializers.CharField(source="usuario.telefone", required=False, max_length=20)
 
     class Meta:
         model = Profissional
@@ -139,9 +151,12 @@ class AdminProfissionalSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Já existe um usuário com este telefone.")
         return value
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         usuario_data = validated_data.pop("usuario", {})
         for attr, value in usuario_data.items():
             setattr(instance.usuario, attr, value)
+        if "ativo" in validated_data:
+            instance.usuario.is_active = validated_data["ativo"]
         instance.usuario.save()
         return super().update(instance, validated_data)

@@ -8,7 +8,7 @@ from .services import criar_agendamento
 
 
 class DisponibilidadeSerializer(serializers.ModelSerializer):
-    profissional_nome = serializers.ReadOnlyField(source="profissional.nome")
+    profissional_nome = serializers.CharField(source="profissional.nome", read_only=True)
     dia_semana_display = serializers.CharField(
         source="get_dia_semana_display",
         read_only=True,
@@ -43,8 +43,8 @@ class DisponibilidadeSerializer(serializers.ModelSerializer):
 
 class AgendamentoSerializer(serializers.ModelSerializer):
     cliente = UsuarioResumoSerializer(read_only=True)
-    profissional_nome = serializers.ReadOnlyField(source="profissional.nome")
-    servico_nome = serializers.ReadOnlyField(source="servico.nome")
+    profissional_nome = serializers.CharField(source="profissional.nome", read_only=True)
+    servico_nome = serializers.CharField(source="servico.nome", read_only=True)
     status_display = serializers.CharField(
         source="get_status_display",
         read_only=True,

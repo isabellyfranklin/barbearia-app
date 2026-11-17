@@ -1,0 +1,1938 @@
+openapi: 3.0.3
+info:
+  title: Prumo — API REST da barbearia
+  version: 1.0.0
+  description: MVP de uma única barbearia. JSON, JWT e horários America/Sao_Paulo.
+paths:
+  /api/v1/admin/appointments:
+    get:
+      operationId: admin_appointments_list
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+        description: Data local YYYY-MM-DD.
+      - in: query
+        name: from
+        schema:
+          type: string
+        description: Data inicial inclusiva YYYY-MM-DD.
+      - in: query
+        name: professional
+        schema:
+          type: integer
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - cancelado
+          - concluido
+          - confirmado
+          - pendente
+      - in: query
+        name: to
+        schema:
+          type: string
+        description: Data final inclusiva YYYY-MM-DD.
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agendamento'
+          description: ''
+  /api/v1/admin/availability:
+    get:
+      operationId: admin_availability_list
+      parameters:
+      - in: query
+        name: professional
+        schema:
+          type: integer
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disponibilidade'
+          description: ''
+    post:
+      operationId: admin_availability_create
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisponibilidadeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DisponibilidadeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DisponibilidadeRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disponibilidade'
+          description: ''
+  /api/v1/admin/availability/{id}:
+    get:
+      operationId: admin_availability_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disponibilidade'
+          description: ''
+    put:
+      operationId: admin_availability_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisponibilidadeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DisponibilidadeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DisponibilidadeRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disponibilidade'
+          description: ''
+    patch:
+      operationId: admin_availability_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedDisponibilidadeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedDisponibilidadeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedDisponibilidadeRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disponibilidade'
+          description: ''
+    delete:
+      operationId: admin_availability_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/barbershop:
+    patch:
+      operationId: admin_barbershop_partial_update
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedBarbeariaRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedBarbeariaRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedBarbeariaRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Barbearia'
+          description: ''
+  /api/v1/admin/history:
+    get:
+      operationId: admin_history_list
+      parameters:
+      - in: query
+        name: from
+        schema:
+          type: string
+        description: Data inicial inclusiva YYYY-MM-DD.
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - cancelado
+          - concluido
+          - confirmado
+          - pendente
+      - in: query
+        name: to
+        schema:
+          type: string
+        description: Data final inclusiva YYYY-MM-DD.
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agendamento'
+          description: ''
+  /api/v1/admin/professionals:
+    get:
+      operationId: admin_professionals_list
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdminProfissional'
+          description: ''
+    post:
+      operationId: admin_professionals_create
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminProfissionalCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminProfissionalCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminProfissionalCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProfissional'
+          description: ''
+  /api/v1/admin/professionals/{id}:
+    get:
+      operationId: admin_professionals_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProfissional'
+          description: ''
+    put:
+      operationId: admin_professionals_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdminProfissionalRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AdminProfissionalRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AdminProfissionalRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProfissional'
+          description: ''
+    patch:
+      operationId: admin_professionals_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminProfissionalRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminProfissionalRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAdminProfissionalRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdminProfissional'
+          description: ''
+    delete:
+      operationId: admin_professionals_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/admin/services:
+    get:
+      operationId: admin_services_list
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Servico'
+          description: ''
+    post:
+      operationId: admin_services_create
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServicoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServicoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServicoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+          description: ''
+  /api/v1/admin/services/{id}:
+    get:
+      operationId: admin_services_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+          description: ''
+    put:
+      operationId: admin_services_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServicoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServicoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServicoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+          description: ''
+    patch:
+      operationId: admin_services_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedServicoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedServicoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedServicoRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+          description: ''
+    delete:
+      operationId: admin_services_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/appointments:
+    get:
+      operationId: appointments_list
+      parameters:
+      - in: query
+        name: from
+        schema:
+          type: string
+        description: Data inicial inclusiva YYYY-MM-DD.
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - cancelado
+          - concluido
+          - confirmado
+          - pendente
+      - in: query
+        name: to
+        schema:
+          type: string
+        description: Data final inclusiva YYYY-MM-DD.
+      tags:
+      - appointments
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agendamento'
+          description: ''
+    post:
+      operationId: appointments_create
+      tags:
+      - appointments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgendamentoCreateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AgendamentoCreateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AgendamentoCreateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agendamento'
+          description: ''
+  /api/v1/appointments/{id}:
+    get:
+      operationId: appointments_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - appointments
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agendamento'
+          description: ''
+  /api/v1/appointments/{id}/cancel:
+    patch:
+      operationId: appointments_cancel_partial_update
+      description: Cliente cancela a própria reserva somente antes do início; administrador
+        também pode cancelar.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - appointments
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agendamento'
+          description: ''
+  /api/v1/auth/login:
+    post:
+      operationId: auth_login_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+          description: ''
+  /api/v1/auth/logout:
+    post:
+      operationId: auth_logout_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LogoutRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/refresh:
+    post:
+      operationId: auth_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/auth/register:
+    post:
+      operationId: auth_register_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistroRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegistroRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegistroRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+          description: ''
+  /api/v1/barbershop:
+    get:
+      operationId: barbershop_retrieve
+      tags:
+      - barbershop
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Barbearia'
+          description: ''
+  /api/v1/health:
+    get:
+      operationId: health_retrieve
+      description: Prontidão da API e da conexão com o banco. Não retorna credenciais.
+      tags:
+      - health
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+          description: ''
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthUnavailable'
+          description: ''
+  /api/v1/me:
+    get:
+      operationId: me_retrieve
+      tags:
+      - me
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+    patch:
+      operationId: me_partial_update
+      tags:
+      - me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUsuarioRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+          description: ''
+  /api/v1/me/agenda:
+    get:
+      operationId: me_agenda_list
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+        description: Data local YYYY-MM-DD.
+      tags:
+      - me
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agendamento'
+          description: ''
+  /api/v1/me/agenda/{id}/status:
+    patch:
+      operationId: me_agenda_status_partial_update
+      description: Somente o barbeiro responsável ou administrador. Estados finais
+        não são reabertos.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAgendamentoStatusRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAgendamentoStatusRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAgendamentoStatusRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agendamento'
+          description: ''
+  /api/v1/me/agenda/week:
+    get:
+      operationId: me_agenda_week_retrieve
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+        description: Data local YYYY-MM-DD.
+      tags:
+      - me
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgendaWeek'
+          description: ''
+  /api/v1/me/history:
+    get:
+      operationId: me_history_list
+      parameters:
+      - in: query
+        name: from
+        schema:
+          type: string
+        description: Data inicial inclusiva YYYY-MM-DD.
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - cancelado
+          - concluido
+          - confirmado
+          - pendente
+      - in: query
+        name: to
+        schema:
+          type: string
+        description: Data final inclusiva YYYY-MM-DD.
+      tags:
+      - me
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agendamento'
+          description: ''
+  /api/v1/me/history/professional:
+    get:
+      operationId: me_history_professional_list
+      parameters:
+      - in: query
+        name: from
+        schema:
+          type: string
+        description: Data inicial inclusiva YYYY-MM-DD.
+      - in: query
+        name: status
+        schema:
+          type: string
+          enum:
+          - cancelado
+          - concluido
+          - confirmado
+          - pendente
+      - in: query
+        name: to
+        schema:
+          type: string
+        description: Data final inclusiva YYYY-MM-DD.
+      tags:
+      - me
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Agendamento'
+          description: ''
+  /api/v1/me/password:
+    post:
+      operationId: me_password_create
+      tags:
+      - me
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordChangeRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PasswordChangeRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PasswordChangeRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/professionals:
+    get:
+      operationId: professionals_list
+      tags:
+      - professionals
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profissional'
+          description: ''
+  /api/v1/professionals/{id}:
+    get:
+      operationId: professionals_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - professionals
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profissional'
+          description: ''
+  /api/v1/professionals/{id}/availability:
+    get:
+      operationId: professionals_availability_retrieve
+      description: 'Use service e date OU service, from e to. Período máximo: 60 dias.'
+      parameters:
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+        description: Data local YYYY-MM-DD.
+      - in: query
+        name: from
+        schema:
+          type: string
+        description: Data inicial inclusiva YYYY-MM-DD.
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      - in: query
+        name: service
+        schema:
+          type: integer
+        description: ID do serviço ativo.
+        required: true
+      - in: query
+        name: to
+        schema:
+          type: string
+        description: Data final inclusiva YYYY-MM-DD.
+      tags:
+      - professionals
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Availability'
+          description: ''
+  /api/v1/services:
+    get:
+      operationId: services_list
+      tags:
+      - services
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Servico'
+          description: ''
+  /api/v1/services/{id}:
+    get:
+      operationId: services_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - services
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Servico'
+          description: ''
+components:
+  schemas:
+    AdminProfissional:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+        nome:
+          type: string
+          readOnly: true
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        telefone:
+          type: string
+          maxLength: 20
+        especialidades:
+          type: string
+          maxLength: 255
+        bio:
+          type: string
+        ativo:
+          type: boolean
+      required:
+      - id
+      - nome
+      - username
+    AdminProfissionalCreateRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 150
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        telefone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        especialidades:
+          type: string
+          maxLength: 255
+        bio:
+          type: string
+        ativo:
+          type: boolean
+          default: true
+      required:
+      - password
+      - telefone
+      - username
+    AdminProfissionalRequest:
+      type: object
+      properties:
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        telefone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        especialidades:
+          type: string
+          maxLength: 255
+        bio:
+          type: string
+        ativo:
+          type: boolean
+    AgendaWeek:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+        appointments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Agendamento'
+      required:
+      - appointments
+      - from
+      - to
+    Agendamento:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        cliente:
+          allOf:
+          - $ref: '#/components/schemas/UsuarioResumo'
+          readOnly: true
+        profissional:
+          type: integer
+          readOnly: true
+        profissional_nome:
+          type: string
+          readOnly: true
+        servico:
+          type: integer
+          readOnly: true
+          title: Serviço
+        servico_nome:
+          type: string
+          readOnly: true
+        data_hora:
+          type: string
+          format: date-time
+          readOnly: true
+          title: Data e hora
+        fim:
+          type: string
+          format: date-time
+          readOnly: true
+        duracao_minutos:
+          type: integer
+          readOnly: true
+          title: Duração (minutos)
+        preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          readOnly: true
+          title: Preço
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          readOnly: true
+        status_display:
+          type: string
+          readOnly: true
+        observacoes:
+          type: string
+          readOnly: true
+          title: Observações
+        criado_em:
+          type: string
+          format: date-time
+          readOnly: true
+        atualizado_em:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - atualizado_em
+      - cliente
+      - criado_em
+      - data_hora
+      - duracao_minutos
+      - fim
+      - id
+      - observacoes
+      - preco
+      - profissional
+      - profissional_nome
+      - servico
+      - servico_nome
+      - status
+      - status_display
+    AgendamentoCreateRequest:
+      type: object
+      properties:
+        profissional:
+          type: integer
+        servico:
+          type: integer
+        data_hora:
+          type: string
+          format: date-time
+        observacoes:
+          type: string
+          default: ''
+      required:
+      - data_hora
+      - profissional
+      - servico
+    Availability:
+      oneOf:
+      - $ref: '#/components/schemas/AvailabilityDay'
+      - $ref: '#/components/schemas/AvailabilityRange'
+    AvailabilityDay:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        duration_minutes:
+          type: integer
+        slots:
+          type: array
+          items:
+            type: string
+            format: date-time
+      required:
+      - date
+      - duration_minutes
+      - slots
+    AvailabilityRange:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+        duration_minutes:
+          type: integer
+        days:
+          type: array
+          items:
+            $ref: '#/components/schemas/DaySlots'
+      required:
+      - days
+      - duration_minutes
+      - from
+      - to
+    Barbearia:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nome:
+          type: string
+          maxLength: 120
+        descricao:
+          type: string
+          title: Descrição
+        endereco:
+          type: string
+          title: Endereço
+          maxLength: 255
+        cidade:
+          type: string
+          maxLength: 100
+        telefone:
+          type: string
+          maxLength: 20
+        email:
+          title: E-mail
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        atualizado_em:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - atualizado_em
+      - id
+    DaySlots:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        slots:
+          type: array
+          items:
+            type: string
+            format: date-time
+      required:
+      - date
+      - slots
+    DiaSemanaEnum:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      type: integer
+      description: |-
+        * `0` - Segunda-feira
+        * `1` - Terça-feira
+        * `2` - Quarta-feira
+        * `3` - Quinta-feira
+        * `4` - Sexta-feira
+        * `5` - Sábado
+        * `6` - Domingo
+    Disponibilidade:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        profissional:
+          type: integer
+        profissional_nome:
+          type: string
+          readOnly: true
+        dia_semana:
+          allOf:
+          - $ref: '#/components/schemas/DiaSemanaEnum'
+          title: Dia da semana
+          minimum: 0
+          maximum: 65535
+        dia_semana_display:
+          type: string
+          readOnly: true
+        hora_inicio:
+          type: string
+          format: time
+          title: Hora de início
+        hora_fim:
+          type: string
+          format: time
+          title: Hora de término
+        ativo:
+          type: boolean
+      required:
+      - dia_semana
+      - dia_semana_display
+      - hora_fim
+      - hora_inicio
+      - id
+      - profissional
+      - profissional_nome
+    DisponibilidadeRequest:
+      type: object
+      properties:
+        profissional:
+          type: integer
+        dia_semana:
+          allOf:
+          - $ref: '#/components/schemas/DiaSemanaEnum'
+          title: Dia da semana
+          minimum: 0
+          maximum: 65535
+        hora_inicio:
+          type: string
+          format: time
+          title: Hora de início
+        hora_fim:
+          type: string
+          format: time
+          title: Hora de término
+        ativo:
+          type: boolean
+      required:
+      - dia_semana
+      - hora_fim
+      - hora_inicio
+      - profissional
+    Health:
+      type: object
+      properties:
+        status:
+          type: string
+        database:
+          type: string
+      required:
+      - database
+      - status
+    HealthUnavailable:
+      type: object
+      properties:
+        status:
+          type: string
+        database:
+          type: string
+      required:
+      - database
+      - status
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
+      - username
+    LogoutRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    PasswordChangeRequest:
+      type: object
+      properties:
+        current_password:
+          type: string
+          writeOnly: true
+          minLength: 1
+        new_password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        new_password_confirm:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - current_password
+      - new_password
+      - new_password_confirm
+    PatchedAdminProfissionalRequest:
+      type: object
+      properties:
+        email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        telefone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        especialidades:
+          type: string
+          maxLength: 255
+        bio:
+          type: string
+        ativo:
+          type: boolean
+    PatchedAgendamentoStatusRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/StatusEnum'
+    PatchedBarbeariaRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+          minLength: 1
+          maxLength: 120
+        descricao:
+          type: string
+          title: Descrição
+        endereco:
+          type: string
+          title: Endereço
+          maxLength: 255
+        cidade:
+          type: string
+          maxLength: 100
+        telefone:
+          type: string
+          maxLength: 20
+        email:
+          title: E-mail
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+    PatchedDisponibilidadeRequest:
+      type: object
+      properties:
+        profissional:
+          type: integer
+        dia_semana:
+          allOf:
+          - $ref: '#/components/schemas/DiaSemanaEnum'
+          title: Dia da semana
+          minimum: 0
+          maximum: 65535
+        hora_inicio:
+          type: string
+          format: time
+          title: Hora de início
+        hora_fim:
+          type: string
+          format: time
+          title: Hora de término
+        ativo:
+          type: boolean
+    PatchedServicoRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+          minLength: 1
+          maxLength: 120
+        descricao:
+          type: string
+          title: Descrição
+        duracao_minutos:
+          type: integer
+          maximum: 4294967295
+          minimum: 5
+          format: int64
+          title: Duração (minutos)
+        preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          title: Preço
+        ativo:
+          type: boolean
+    PatchedUsuarioRequest:
+      type: object
+      properties:
+        email:
+          title: Endereço de email
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          title: Primeiro nome
+          maxLength: 150
+        last_name:
+          type: string
+          title: Último nome
+          maxLength: 150
+        telefone:
+          type: string
+          nullable: true
+          maxLength: 20
+    PerfilEnum:
+      enum:
+      - cliente
+      - barbeiro
+      - administrador
+      type: string
+      description: |-
+        * `cliente` - Cliente
+        * `barbeiro` - Barbeiro
+        * `administrador` - Administrador/proprietário
+    Profissional:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nome:
+          type: string
+          readOnly: true
+        especialidades:
+          type: string
+          readOnly: true
+        bio:
+          type: string
+          readOnly: true
+        ativo:
+          type: boolean
+          readOnly: true
+      required:
+      - ativo
+      - bio
+      - especialidades
+      - id
+      - nome
+    RegistroRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Endereço de email
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          title: Primeiro nome
+          maxLength: 150
+        last_name:
+          type: string
+          title: Último nome
+          maxLength: 150
+        telefone:
+          type: string
+          minLength: 1
+          maxLength: 20
+        password:
+          type: string
+          writeOnly: true
+          minLength: 8
+        password_confirm:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
+      - password_confirm
+      - telefone
+      - username
+    Servico:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        nome:
+          type: string
+          maxLength: 120
+        descricao:
+          type: string
+          title: Descrição
+        duracao_minutos:
+          type: integer
+          maximum: 4294967295
+          minimum: 5
+          format: int64
+          title: Duração (minutos)
+        preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          title: Preço
+        ativo:
+          type: boolean
+      required:
+      - duracao_minutos
+      - id
+      - nome
+      - preco
+    ServicoRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+          minLength: 1
+          maxLength: 120
+        descricao:
+          type: string
+          title: Descrição
+        duracao_minutos:
+          type: integer
+          maximum: 4294967295
+          minimum: 5
+          format: int64
+          title: Duração (minutos)
+        preco:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,6}(?:\.\d{0,2})?$
+          title: Preço
+        ativo:
+          type: boolean
+      required:
+      - duracao_minutos
+      - nome
+      - preco
+    Session:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/Usuario'
+        access:
+          type: string
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+      - user
+    StatusEnum:
+      enum:
+      - pendente
+      - confirmado
+      - concluido
+      - cancelado
+      type: string
+      description: |-
+        * `pendente` - Pendente
+        * `confirmado` - Confirmado
+        * `concluido` - Concluído
+        * `cancelado` - Cancelado
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    Usuario:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+        email:
+          title: Endereço de email
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          title: Primeiro nome
+          maxLength: 150
+        last_name:
+          type: string
+          title: Último nome
+          maxLength: 150
+        telefone:
+          type: string
+          nullable: true
+          maxLength: 20
+        perfil:
+          allOf:
+          - $ref: '#/components/schemas/PerfilEnum'
+          readOnly: true
+      required:
+      - id
+      - perfil
+      - username
+    UsuarioResumo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          readOnly: true
+          title: Usuário
+          description: Obrigatório. 150 caracteres ou menos. Letras, números e @/./+/-/_
+            apenas.
+        nome:
+          type: string
+          readOnly: true
+        first_name:
+          type: string
+          readOnly: true
+          title: Primeiro nome
+        last_name:
+          type: string
+          readOnly: true
+          title: Último nome
+        telefone:
+          type: string
+          readOnly: true
+          nullable: true
+      required:
+      - first_name
+      - id
+      - last_name
+      - nome
+      - telefone
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

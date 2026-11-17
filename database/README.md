@@ -2,7 +2,7 @@
 
 ## 1. Visão geral
 
-O banco de dados do sistema **Prumo** foi desenvolvido para armazenar e organizar as informações necessárias ao gerenciamento de barbearias e ao processo de agendamento de serviços.
+O banco de dados do sistema **Prumo** foi desenvolvido para armazenar e organizar as informações necessárias ao gerenciamento de uma única barbearia e ao processo de agendamento de serviços.
 
 O sistema utiliza o **MySQL 8.4** como Sistema Gerenciador de Banco de Dados (SGBD), integrado ao backend desenvolvido em **Django**.
 
@@ -13,7 +13,7 @@ O banco utilizado no ambiente de desenvolvimento é denominado `barbearia`.
 O banco de dados tem como objetivo armazenar informações relacionadas a:
 
 - usuários do sistema;
-- barbearias;
+- dados da única barbearia;
 - profissionais;
 - serviços oferecidos;
 - disponibilidade dos profissionais;
@@ -40,7 +40,7 @@ Principais campos:
 
 ### 3.2 `catalog_barbearia`
 
-Armazena as informações das barbearias cadastradas no sistema.
+Armazena as informações da única barbearia atendida pelo MVP. O modelo Django utiliza o registro de chave primária 1; essa regra é aplicada pela aplicação, não por uma restrição adicional neste SQL.
 
 Principais campos:
 
@@ -136,7 +136,7 @@ A estrutura utiliza:
 - tipos de dados adequados às informações armazenadas;
 - regras de integridade referencial definidas pelo banco de dados.
 
-As relações existentes no banco utilizam as regras `NO ACTION` para exclusão e atualização de registros relacionados.
+As chaves estrangeiras deste recorte SQL utilizam o comportamento restritivo padrão do MySQL (`NO ACTION`/`RESTRICT`). No Django, `on_delete` também define comportamento na camada ORM: por exemplo, `SET_NULL` para o proprietário, `CASCADE` para o usuário do profissional e `PROTECT` para os vínculos do agendamento. Essas opções do ORM não devem ser interpretadas como cláusulas `ON DELETE` idênticas no SQL.
 
 ## 6. Integração com o Django
 
@@ -169,3 +169,58 @@ As configurações de ambiente são mantidas em arquivo `.env`, que está config
 ## 9. Observação
 
 As migrations do Django são a referência utilizada pelo backend para criação e atualização da estrutura do banco de dados. A pasta `database` contém a documentação e os artefatos relacionados ao banco de dados do projeto.
+
+## 10. Escopo do schema documental
+
+**Não execute `schema.sql` para instalar, atualizar ou recuperar a aplicação.**
+O arquivo representa somente as seis tabelas principais do domínio. Não inclui
+tabelas internas de autenticação, grupos/permissões, sessões, administração, JWT
+ou histórico de migrations. Também não contém dados.
+
+Para criar ou atualizar a estrutura completa, configure o `.env` do backend e execute:
+
+```bash
+cd backend/BarbeariaAPP-codigo
+python manage.py migrate
+```
+
+Não combine a execução manual deste SQL com `migrate` no mesmo banco.
+
+## 11. Índices e restrições das migrations
+
+O recorte inclui as restrições explícitas de `scheduling/migrations/0001_initial.py`:
+
+- `disp_hora_fim_maior`: término da disponibilidade posterior ao início.
+- `disp_unica`: sem blocos exatamente duplicados para o mesmo profissional e dia.
+- `agend_duracao_positiva`: duração do agendamento maior que zero.
+- `agend_preco_nao_negativo`: preço do agendamento maior ou igual a zero.
+
+O SQL também inclui as verificações de não negatividade geradas pelo Django para os campos inteiros positivos de duração e dia da semana.
+
+Índices compostos e de consulta:
+
+- `disp_prof_dia_idx`: profissional e dia da semana.
+- `agend_prof_data_idx`: profissional e data/hora.
+- `agend_cliente_data_idx`: cliente e data/hora.
+- `agend_status_idx`: status.
+
+A unicidade de um bloco não impede sobreposição entre blocos diferentes.
+Conflitos de reservas, transições de status, cancelamento antes do atendimento e
+permissões por perfil são validados no backend. A prevenção de reservas simultâneas
+usa transação e bloqueio do profissional; não há uma restrição SQL de exclusão de intervalos.
+
+Um agendamento referencia exatamente um serviço. Pagamento on-line e atendimento
+a múltiplas barbearias permanecem fora do MVP.
+
+## 12. Atualização deste documento
+
+Quando os models ou as migrations mudarem, revisar este recorte e compará-lo com
+um banco temporário criado por `migrate`. Nomes de índices e chaves estrangeiras
+gerados automaticamente pelo Django podem diferir dos nomes documentais, sem
+alterar as colunas ou os relacionamentos representados.
+
+O ambiente-alvo documentado pelo grupo é MySQL 8.4. A validação local anterior do
+backend utilizou MySQL 8.0.46; isso não equivale a executar a mesma suíte no 8.4.
+
+
+Validação deste recorte: as seis tabelas foram comparadas no MySQL 8.0.46 com um banco temporário criado pelas migrations, conferindo colunas, tipos, nulabilidade, valores padrão, chaves estrangeiras, unicidade, índices nomeados e restrições CHECK. A comparação passou.

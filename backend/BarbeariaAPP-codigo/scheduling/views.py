@@ -241,7 +241,7 @@ class CancelarAgendamentoView(APIView):
             raise PermissionDenied(
                 "Você só pode cancelar os próprios agendamentos."
             )
-        agendamento = cancelar_agendamento(agendamento)
+        agendamento = cancelar_agendamento(agendamento, usuario=request.user)
         return Response(AgendamentoSerializer(agendamento).data)
 
 

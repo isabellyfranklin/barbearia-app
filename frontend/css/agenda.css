@@ -1,0 +1,92 @@
+.agenda {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+.agenda h1 {
+  margin-bottom: 8px;
+}
+
+.resumo {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.resumo div {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.resumo strong {
+  font-size: 1.6rem;
+  color: var(--dourado);
+}
+.resumo span {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.abas {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.abas .btn.ativo {
+  color: var(--dourado);
+  border-color: var(--dourado);
+}
+
+.dia {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  margin: 20px 0 8px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 10px;
+}
+.item .hora {
+  color: var(--dourado);
+  font-weight: 600;
+}
+.item .info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.item .servico {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+.item .acoes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.vazio {
+  color: var(--texto-suave);
+}
+
+@media (max-width: 600px) {
+  .item {
+    grid-template-columns: 1fr;
+  }
+  .item .acoes {
+    justify-content: flex-start;
+  }
+}

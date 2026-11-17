@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prumo | Agendamento</title>
+  <link rel="icon" type="image/svg+xml" href="../assets/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/agendamento.css" />
+</head>
+<body>
+  <header class="topo">
+    <span class="marca">PRUMO</span>
+    <a href="home.html" class="sair">← Voltar</a>
+  </header>
+
+  <main class="agendamento">
+    <h1>Agendar horário</h1>
+    <p class="subtitulo" id="nome-barbearia"></p>
+
+    <div class="conteudo-ag">
+      <div class="passos">
+        <section class="passo">
+          <h2><span class="numero">1</span> Escolha o serviço</h2>
+          <div class="opcoes" id="lista-servicos"></div>
+        </section>
+
+        <section class="passo">
+          <h2><span class="numero">2</span> Escolha o barbeiro</h2>
+          <div class="opcoes" id="lista-barbeiros"></div>
+        </section>
+
+        <section class="passo">
+          <h2><span class="numero">3</span> Escolha o dia</h2>
+          <div class="chips" id="lista-dias"></div>
+        </section>
+
+        <section class="passo">
+          <h2><span class="numero">4</span> Escolha o horário</h2>
+          <div class="chips" id="lista-horarios"></div>
+        </section>
+      </div>
+
+      <aside class="resumo-ag">
+        <h2>Resumo</h2>
+        <div class="linha-resumo"><span>Serviço</span><strong id="r-servico">—</strong></div>
+        <div class="linha-resumo"><span>Barbeiro</span><strong id="r-barbeiro">—</strong></div>
+        <div class="linha-resumo"><span>Data</span><strong id="r-data">—</strong></div>
+        <div class="linha-resumo"><span>Horário</span><strong id="r-hora">—</strong></div>
+        <div class="linha-resumo total-ag"><span>Total</span><strong id="r-total">R$ 0,00</strong></div>
+        <button type="button" class="btn primario" id="btn-continuar" disabled>Continuar</button>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../js/agendamento.js"></script>
+</body>
+</html>

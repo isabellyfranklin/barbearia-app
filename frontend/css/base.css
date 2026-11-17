@@ -1,0 +1,110 @@
+:root {
+  --fundo: #121212;
+  --superficie: #1e1e1e;
+  --borda: #333333;
+  --dourado: #c9a24d;
+  --texto: #ffffff;
+  --texto-suave: #b5b5b5;
+  --verde: #5bb98b;
+  --vermelho: #d9534f;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+body {
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+}
+
+h1,
+h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+}
+
+.topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--borda);
+}
+
+.marca {
+  color: var(--dourado);
+  font-family: "Playfair Display", serif;
+  letter-spacing: 2px;
+}
+.sair {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.subtitulo {
+  color: var(--texto-suave);
+  margin-bottom: 24px;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  border: 1px solid;
+}
+.badge.confirmado {
+  color: var(--dourado);
+  border-color: var(--dourado);
+}
+.badge.finalizado {
+  color: var(--verde);
+  border-color: var(--verde);
+}
+.badge.cancelado {
+  color: var(--vermelho);
+  border-color: var(--vermelho);
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+  background: var(--superficie);
+  color: var(--texto);
+  cursor: pointer;
+}
+.btn.primario {
+  background: var(--dourado);
+  color: #121212;
+  font-weight: 600;
+  border: none;
+}
+.btn.perigo {
+  color: var(--vermelho);
+}
+
+input,
+select {
+  padding: 10px;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+}
+input:focus,
+select:focus {
+  outline: none;
+  border-color: var(--dourado);
+}

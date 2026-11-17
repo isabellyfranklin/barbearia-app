@@ -1,0 +1,305 @@
+:root {
+  --fundo: #121212;
+  --superficie: #1e1e1e;
+  --borda: #333333;
+  --dourado: #c9a24d;
+  --texto: #ffffff;
+  --texto-suave: #b5b5b5;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+button,
+input {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+body {
+  background: var(--fundo);
+  color: var(--texto);
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  padding: 20px 24px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--dourado);
+  border: 1px solid var(--dourado);
+  border-radius: 8px;
+}
+
+.logo-texto {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-texto strong {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.logo-texto small {
+  color: var(--dourado);
+  font-size: 0.55rem;
+  letter-spacing: 1px;
+}
+
+.navbar-frase {
+  color: var(--texto-suave);
+  font-size: 0.8rem;
+}
+
+/* Celular: esconde a frase para não apertar */
+@media (max-width: 768px) {
+  .navbar-frase {
+    display: none;
+  }
+}
+
+/* Layout em duas colunas */
+.tela-login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px;
+  padding: 24px;
+  margin-top: 16px;
+}
+
+.destaque {
+  display: flex;
+  align-items: flex-end;
+  min-height: 480px;
+  padding: 32px;
+  border-radius: 12px;
+  background:
+    linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.1)),
+    url("../assets/img/barbearia.jpg") center / cover no-repeat;
+}
+
+.destaque-etiqueta {
+  color: var(--dourado);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+}
+
+.destaque h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  font-weight: 500;
+  margin: 8px 0;
+}
+
+.destaque p {
+  color: var(--texto-suave);
+  margin-bottom: 8px;
+}
+
+.destaque small {
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+}
+
+/* Login */
+.login {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+}
+
+h1 {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.cadastro h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.cadastro .subtitulo {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+
+.login > p {
+  color: var(--texto-suave);
+  margin-bottom: 24px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Seletor de perfil */
+.seletor {
+  display: flex;
+  background: var(--superficie);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.opcao {
+  flex: 1;
+  padding: 10px;
+  background: transparent;
+  color: var(--texto-suave);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.opcao.ativo {
+  background: #2a2a2a;
+  color: var(--dourado);
+}
+
+/* Campos */
+input {
+  padding: 12px;
+  background: var(--superficie);
+  color: var(--texto);
+  border-radius: 8px;
+  border: 1px solid var(--borda);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--dourado);
+}
+
+input[type="checkbox"] {
+  width: auto;
+  padding: 0;
+  accent-color: var(--dourado);
+}
+
+/* Botões */
+.btn-entrar {
+  padding: 14px;
+  background: var(--dourado);
+  color: #121212;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-criar {
+  padding: 14px;
+  text-align: center;
+  color: var(--texto);
+  text-decoration: none;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Criar sua conta de cliente */
+.cadastro {
+  width: 100%;
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 24px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+}
+
+.cadastro .etiqueta {
+  color: var(--dourado);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.cadastro h2 {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+}
+
+.grade {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.campo small {
+  color: var(--texto-suave);
+  font-size: 0.75rem;
+}
+
+.termos {
+  display: flex;
+  gap: 8px;
+  font-size: 0.75rem;
+  color: var(--texto-suave);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--texto);
+  -webkit-box-shadow: 0 0 0 1000px var(--superficie) inset;
+  caret-color: var(--texto);
+}
+
+/* Celular: tudo em uma coluna */
+@media (max-width: 768px) {
+  .tela-login {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .destaque {
+    min-height: 260px;
+  }
+
+  .grade {
+    grid-template-columns: 1fr;
+  }
+}

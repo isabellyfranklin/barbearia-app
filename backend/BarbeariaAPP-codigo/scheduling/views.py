@@ -40,7 +40,10 @@ def _intervalo_do_dia(data):
 def _data_ou_hoje(valor):
     if not valor:
         return timezone.localdate()
-    data = parse_date(valor)
+    try:
+        data = parse_date(valor)
+    except ValueError:
+        data = None
     if data is None:
         raise ValidationError(
             {"date": "Data inválida. Use o formato AAAA-MM-DD."}
@@ -58,7 +61,7 @@ def _profissional_do_usuario(usuario):
 def _id_valido(valor, campo):
     if valor in (None, ""):
         return None
-    if not str(valor).isdigit():
+    if not str(valor).isdigit() or int(valor) < 1:
         raise ValidationError({campo: "Informe um ID numérico válido."})
     return int(valor)
 
@@ -72,7 +75,7 @@ def _aplicar_filtros(qs, request):
 
     de = request.query_params.get("from")
     if de:
-        data = parse_date(de)
+        data = _data_ou_hoje(de)
         if data is None:
             raise ValidationError(
                 {"from": "Data inválida. Use o formato AAAA-MM-DD."}
@@ -81,13 +84,15 @@ def _aplicar_filtros(qs, request):
 
     ate = request.query_params.get("to")
     if ate:
-        data = parse_date(ate)
+        data = _data_ou_hoje(ate)
         if data is None:
             raise ValidationError(
                 {"to": "Data inválida. Use o formato AAAA-MM-DD."}
             )
         qs = qs.filter(data_hora__lt=_intervalo_do_dia(data)[1])
 
+    if de and ate and _data_ou_hoje(de) > _data_ou_hoje(ate):
+        raise ValidationError({"to": "A data final deve ser maior ou igual à inicial."})
     return qs
 
 
@@ -119,71 +124,44 @@ class ProfissionalDisponibilidadeView(APIView):
             pk=pk,
         )
 
-        if request.query_params.get("date"):
-            data = _data_ou_hoje(request.query_params.get("date"))
-            duracao = INTERVALO_SLOT_MINUTOS
-            servico_id = _id_valido(
-                request.query_params.get("service"),
-                "service",
-            )
-            if servico_id:
-                servico = Servico.objects.filter(
-                    pk=servico_id,
-                    ativo=True,
-                ).first()
-                if servico is None:
-                    raise ValidationError(
-                        {"service": "Serviço não encontrado."}
-                    )
-                duracao = servico.duracao_minutos
+        params = request.query_params
+        service_id = _id_valido(params.get("service"), "service")
+        if service_id is None and request.path.startswith("/api/v1/"):
+            raise ValidationError({"service": "Selecione um serviço."})
+        duracao = INTERVALO_SLOT_MINUTOS
+        if service_id is not None:
+            servico = get_object_or_404(Servico, pk=service_id, ativo=True)
+            duracao = servico.duracao_minutos
+        if params.get("date"):
+            if params.get("from") or params.get("to"):
+                raise ValidationError({"date": "Use date ou from/to, não ambos."})
+            data = _data_ou_hoje(params["date"])
             slots = horarios_disponiveis(profissional, data, duracao)
-            return Response(
-                {
-                    "date": data.isoformat(),
-                    "duration_minutes": duracao,
-                    "slots": [slot.isoformat() for slot in slots],
-                }
-            )
-
-        de = parse_date(request.query_params.get("from") or "")
-        ate = parse_date(request.query_params.get("to") or "")
-        if de is None or ate is None:
-            raise ValidationError(
-                {
-                    "from": (
-                        "Informe 'date' ou o período com 'from' e 'to' "
-                        "(AAAA-MM-DD)."
-                    )
-                }
-            )
-        if ate < de:
-            raise ValidationError(
-                {"to": "A data final deve ser maior ou igual à inicial."}
-            )
-        if (ate - de).days > 60:
-            raise ValidationError(
-                {"to": "O período máximo consultado é de 60 dias."}
-            )
-
+            return Response({
+                "date": data.isoformat(),
+                "duration_minutes": duracao,
+                "slots": [slot.isoformat() for slot in slots],
+            })
+        if not params.get("from") or not params.get("to"):
+            raise ValidationError({"from": "Informe date ou o período from/to."})
+        de, ate = _data_ou_hoje(params["from"]), _data_ou_hoje(params["to"])
+        if ate < de or (ate - de).days > 60:
+            raise ValidationError({"to": "Informe um período ordenado de até 60 dias."})
         dias = []
         atual = de
         while atual <= ate:
-            slots = horarios_disponiveis(profissional, atual)
+            slots = horarios_disponiveis(profissional, atual, duracao)
             if slots:
-                dias.append(
-                    {
-                        "date": atual.isoformat(),
-                        "slots": [slot.isoformat() for slot in slots],
-                    }
-                )
+                dias.append({"date": atual.isoformat(), "slots": [slot.isoformat() for slot in slots]})
             atual += timedelta(days=1)
-
-        return Response(
-            {"from": de.isoformat(), "to": ate.isoformat(), "days": dias}
-        )
+        return Response({
+            "from": de.isoformat(), "to": ate.isoformat(),
+            "duration_minutes": duracao, "days": dias,
+        })
 
 
 class MeusAgendamentosView(generics.ListCreateAPIView):
+    queryset = Agendamento.objects.none()
     permission_classes = [IsCliente]
 
     def get_queryset(self):
@@ -210,6 +188,7 @@ class MeusAgendamentosView(generics.ListCreateAPIView):
 
 
 class AgendamentoDetailView(generics.RetrieveAPIView):
+    queryset = Agendamento.objects.none()
     permission_classes = [IsAuthenticated]
     serializer_class = AgendamentoSerializer
 
@@ -308,6 +287,7 @@ class AtualizarStatusAgendamentoView(APIView):
 
 
 class HistoricoClienteView(generics.ListAPIView):
+    queryset = Agendamento.objects.none()
     permission_classes = [IsCliente]
     serializer_class = AgendamentoSerializer
 
@@ -321,6 +301,7 @@ class HistoricoClienteView(generics.ListAPIView):
 
 
 class HistoricoProfissionalView(generics.ListAPIView):
+    queryset = Agendamento.objects.none()
     permission_classes = [IsBarbeiro]
     serializer_class = AgendamentoSerializer
 
@@ -337,6 +318,7 @@ class HistoricoProfissionalView(generics.ListAPIView):
 
 
 class HistoricoAdminView(generics.ListAPIView):
+    queryset = Agendamento.objects.none()
     permission_classes = [IsAdministrador]
     serializer_class = AgendamentoSerializer
 
@@ -348,6 +330,7 @@ class HistoricoAdminView(generics.ListAPIView):
 
 
 class AdminAgendamentoListView(generics.ListAPIView):
+    queryset = Agendamento.objects.none()
     permission_classes = [IsAdministrador]
     serializer_class = AgendamentoSerializer
 

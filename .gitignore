@@ -23,3 +23,7 @@ __pycache__/
 # Sistema operacional
 .DS_Store
 Thumbs.db
+# Artefatos locais de testes e estáticos coletados
+.pytest_cache/
+.ruff_cache/
+staticfiles/

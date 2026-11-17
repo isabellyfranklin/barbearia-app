@@ -190,8 +190,21 @@ def criar_agendamento(*, cliente, profissional, servico, inicio, observacoes="")
         )
 
 
-def atualizar_status(agendamento, novo_status):
-    """Aplica uma transição de status válida."""
+@transaction.atomic
+def atualizar_status(agendamento, novo_status, *, usuario=None):
+    """Valida a transição sobre o estado atual, bloqueado até o commit."""
+    original = agendamento
+    agendamento = Agendamento.objects.select_for_update().get(pk=original.pk)
+    if (
+        novo_status == Agendamento.Status.CANCELADO
+        and usuario is not None
+        and usuario.is_cliente
+        and not usuario.is_administrador
+        and timezone.now() >= agendamento.data_hora
+    ):
+        raise ValidationError(
+            {"data_hora": "O cliente só pode cancelar antes do início do atendimento."}
+        )
     if novo_status == agendamento.status:
         return agendamento
 
@@ -209,9 +222,13 @@ def atualizar_status(agendamento, novo_status):
 
     agendamento.status = novo_status
     agendamento.save(update_fields=["status", "atualizado_em"])
+    original.status = agendamento.status
+    original.atualizado_em = agendamento.atualizado_em
     return agendamento
 
 
-def cancelar_agendamento(agendamento):
+def cancelar_agendamento(agendamento, *, usuario=None):
     """Cancela um agendamento pendente ou confirmado, liberando o horário."""
-    return atualizar_status(agendamento, Agendamento.Status.CANCELADO)
+    return atualizar_status(
+        agendamento, Agendamento.Status.CANCELADO, usuario=usuario
+    )

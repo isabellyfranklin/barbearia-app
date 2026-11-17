@@ -41,9 +41,12 @@ class AgendamentoAdmin(admin.ModelAdmin):
     )
     list_select_related = ("cliente", "profissional__usuario", "servico")
     date_hierarchy = "data_hora"
-    readonly_fields = (
-        "duracao_minutos",
-        "preco",
-        "criado_em",
-        "atualizado_em",
-    )
+    # Agendamentos devem ser alterados pelas operações validadas da API.
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def get_readonly_fields(self, request, obj=None):
+        return tuple(field.name for field in self.model._meta.fields)

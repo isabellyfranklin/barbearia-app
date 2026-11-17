@@ -155,8 +155,10 @@ tabelaServicos.addEventListener("click", async (e) => {
   carregarServicos();
 });
 
+const listaEquipe = document.getElementById("lista-equipe");
+const selectBarbeiro = document.getElementById("h-barbeiro");
+
 async function carregarEquipe() {
-  const caixa = document.getElementById("lista-equipe");
   const [profissionais, horarios] = await Promise.all([
     chamar("/admin/professionals"),
     chamar("/admin/availability"),
@@ -165,28 +167,144 @@ async function carregarEquipe() {
   const equipe = profissionais.ok ? profissionais.dados : [];
   const blocos = horarios.ok ? horarios.dados : [];
 
+  const ativos = equipe.filter((p) => p.ativo);
+  selectBarbeiro.innerHTML = ativos.length
+    ? ativos.map((p) => `<option value="${p.id}">${esc(p.nome)}</option>`).join("")
+    : '<option value="">Cadastre um barbeiro primeiro</option>';
+
   if (equipe.length === 0) {
-    caixa.innerHTML = '<p class="subtitulo">Nenhum barbeiro cadastrado.</p>';
+    listaEquipe.innerHTML = '<p class="subtitulo">Nenhum barbeiro cadastrado.</p>';
     return;
   }
 
-  caixa.innerHTML = equipe
+  listaEquipe.innerHTML = equipe
     .map((p) => {
       const meus = blocos
         .filter((b) => b.profissional === p.id && b.ativo)
         .sort((a, b) => a.dia_semana - b.dia_semana || a.hora_inicio.localeCompare(b.hora_inicio))
-        .map((b) => `${DIAS_SEMANA[b.dia_semana]} ${b.hora_inicio.slice(0, 5)}–${b.hora_fim.slice(0, 5)}`);
+        .map(
+          (b) => `
+          <span>
+            ${DIAS_SEMANA[b.dia_semana]} ${b.hora_inicio.slice(0, 5)}–${b.hora_fim.slice(0, 5)}
+            <button type="button" class="btn perigo" style="padding: 2px 8px" data-horario="${b.id}" title="Remover horário">✕</button>
+          </span>`
+        );
 
       return `
       <div class="card"${p.ativo ? "" : ' style="opacity: 0.5"'}>
         <strong>${esc(p.nome)}</strong>
         ${p.especialidades ? `<span>${esc(p.especialidades)}</span>` : ""}
-        <span>${meus.length ? meus.map(esc).join("<br />") : "Sem horários cadastrados"}</span>
-        ${p.ativo ? "" : "<span>Inativo</span>"}
+        ${meus.length ? meus.join("") : "<span>Sem horários cadastrados</span>"}
+        <button type="button" class="btn ${p.ativo ? "perigo" : ""}" data-barbeiro="${p.id}" data-ativo="${p.ativo}">
+          ${p.ativo ? "Desativar" : "Reativar"}
+        </button>
       </div>`;
     })
     .join("");
 }
+
+document.getElementById("form-barbeiro").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const botao = form.querySelector("button[type=submit]");
+  const [primeiro, ...resto] = document.getElementById("b-nome").value.trim().split(/\s+/);
+
+  botao.disabled = true;
+  try {
+    const { ok, dados } = await chamar("/admin/professionals", {
+      method: "POST",
+      body: {
+        username: document.getElementById("b-usuario").value.trim(),
+        password: document.getElementById("b-senha").value,
+        telefone: document.getElementById("b-telefone").value.replace(/\D/g, ""),
+        first_name: primeiro || "",
+        last_name: resto.join(" "),
+      },
+    });
+
+    if (!ok) {
+      alert(mensagemDeErro(dados));
+      return;
+    }
+    form.reset();
+    filtroBarbeiro.innerHTML = "";
+    carregarEquipe();
+  } catch (erro) {
+    console.error(erro);
+    alert("Não foi possível conectar ao servidor.");
+  } finally {
+    botao.disabled = false;
+  }
+});
+
+document.getElementById("form-horario").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const botao = e.target.querySelector("button[type=submit]");
+  const inicio = document.getElementById("h-inicio").value;
+  const fim = document.getElementById("h-fim").value;
+
+  if (!selectBarbeiro.value) {
+    alert("Cadastre um barbeiro primeiro.");
+    return;
+  }
+  if (fim <= inicio) {
+    alert("O horário de fim precisa ser depois do início.");
+    return;
+  }
+
+  botao.disabled = true;
+  try {
+    const { ok, dados } = await chamar("/admin/availability", {
+      method: "POST",
+      body: {
+        profissional: Number(selectBarbeiro.value),
+        dia_semana: Number(document.getElementById("h-dia").value),
+        hora_inicio: inicio,
+        hora_fim: fim,
+        ativo: true,
+      },
+    });
+
+    if (!ok) {
+      alert(mensagemDeErro(dados));
+      return;
+    }
+    carregarEquipe();
+  } catch (erro) {
+    console.error(erro);
+    alert("Não foi possível conectar ao servidor.");
+  } finally {
+    botao.disabled = false;
+  }
+});
+
+listaEquipe.addEventListener("click", async (e) => {
+  const removerHorario = e.target.closest("button[data-horario]");
+  const alterarBarbeiro = e.target.closest("button[data-barbeiro]");
+
+  if (removerHorario) {
+    if (!confirm("Remover este horário de trabalho?")) return;
+    removerHorario.disabled = true;
+    const { ok, dados } = await chamar(`/admin/availability/${removerHorario.dataset.horario}`, {
+      method: "DELETE",
+    });
+    if (!ok) alert(mensagemDeErro(dados));
+    carregarEquipe();
+  }
+
+  if (alterarBarbeiro) {
+    const ativo = alterarBarbeiro.dataset.ativo === "true";
+    if (ativo && !confirm("Desativar este barbeiro? Ele deixa de aparecer para os clientes.")) return;
+    alterarBarbeiro.disabled = true;
+    const { ok, dados } = await chamar(`/admin/professionals/${alterarBarbeiro.dataset.barbeiro}`, {
+      method: "PATCH",
+      body: { ativo: !ativo },
+    });
+    if (!ok) alert(mensagemDeErro(dados));
+    filtroBarbeiro.innerHTML = "";
+    carregarEquipe();
+  }
+});
 
 const filtroBarbeiro = document.getElementById("filtro-barbeiro");
 

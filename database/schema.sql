@@ -3,7 +3,10 @@
 -- Sistema de Gestão e Agendamento para Barbearias
 -- ============================================================
 --
--- Este arquivo documenta a estrutura principal do banco de dados.
+-- DOCUMENTAL: recorte das seis tabelas principais do domínio.
+-- Não execute este arquivo para instalar ou atualizar a aplicação.
+-- Use python manage.py migrate; tabelas internas e de permissões do Django
+-- não estão incluídas neste recorte.
 -- Não contém senhas, dados pessoais ou dados reais de usuários.
 --
 -- Banco utilizado: MySQL 8.4
@@ -38,7 +41,7 @@ CREATE TABLE accounts_usuario (
     PRIMARY KEY (id),
     UNIQUE KEY uk_usuario_username (username),
     UNIQUE KEY uk_usuario_telefone (telefone)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- ============================================================
@@ -62,7 +65,7 @@ CREATE TABLE catalog_barbearia (
     CONSTRAINT fk_barbearia_proprietario
         FOREIGN KEY (proprietario_id)
         REFERENCES accounts_usuario (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- ============================================================
@@ -84,7 +87,7 @@ CREATE TABLE catalog_profissional (
     CONSTRAINT fk_profissional_usuario
         FOREIGN KEY (usuario_id)
         REFERENCES accounts_usuario (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- ============================================================
@@ -96,13 +99,13 @@ CREATE TABLE catalog_servico (
     id BIGINT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(120) NOT NULL,
     descricao LONGTEXT NOT NULL,
-    duracao_minutos INT UNSIGNED NOT NULL,
+    duracao_minutos INT UNSIGNED NOT NULL CHECK (duracao_minutos >= 0),
     preco DECIMAL(8,2) NOT NULL,
     ativo TINYINT(1) NOT NULL,
     criado_em DATETIME(6) NOT NULL,
 
     PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- ============================================================
@@ -112,7 +115,7 @@ CREATE TABLE catalog_servico (
 
 CREATE TABLE scheduling_disponibilidade (
     id BIGINT NOT NULL AUTO_INCREMENT,
-    dia_semana SMALLINT UNSIGNED NOT NULL,
+    dia_semana SMALLINT UNSIGNED NOT NULL CHECK (dia_semana >= 0),
     hora_inicio TIME(6) NOT NULL,
     hora_fim TIME(6) NOT NULL,
     ativo TINYINT(1) NOT NULL,
@@ -121,10 +124,14 @@ CREATE TABLE scheduling_disponibilidade (
 
     PRIMARY KEY (id),
 
+    KEY disp_prof_dia_idx (profissional_id, dia_semana),
+    CONSTRAINT disp_hora_fim_maior CHECK (hora_fim > hora_inicio),
+    CONSTRAINT disp_unica UNIQUE (profissional_id, dia_semana, hora_inicio, hora_fim),
+
     CONSTRAINT fk_disponibilidade_profissional
         FOREIGN KEY (profissional_id)
         REFERENCES catalog_profissional (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- ============================================================
@@ -135,7 +142,7 @@ CREATE TABLE scheduling_disponibilidade (
 CREATE TABLE scheduling_agendamento (
     id BIGINT NOT NULL AUTO_INCREMENT,
     data_hora DATETIME(6) NOT NULL,
-    duracao_minutos INT UNSIGNED NOT NULL,
+    duracao_minutos INT UNSIGNED NOT NULL CHECK (duracao_minutos >= 0),
     preco DECIMAL(8,2) NOT NULL,
     status VARCHAR(20) NOT NULL,
     observacoes LONGTEXT NOT NULL,
@@ -146,6 +153,12 @@ CREATE TABLE scheduling_agendamento (
     servico_id BIGINT NOT NULL,
 
     PRIMARY KEY (id),
+
+    KEY agend_prof_data_idx (profissional_id, data_hora),
+    KEY agend_cliente_data_idx (cliente_id, data_hora),
+    KEY agend_status_idx (status),
+    CONSTRAINT agend_duracao_positiva CHECK (duracao_minutos > 0),
+    CONSTRAINT agend_preco_nao_negativo CHECK (preco >= 0),
 
     CONSTRAINT fk_agendamento_cliente
         FOREIGN KEY (cliente_id)
@@ -158,7 +171,7 @@ CREATE TABLE scheduling_agendamento (
     CONSTRAINT fk_agendamento_servico
         FOREIGN KEY (servico_id)
         REFERENCES catalog_servico (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- ============================================================

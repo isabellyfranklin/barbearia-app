@@ -1,7 +1,5 @@
-// Endereço da API (backend Django)
 const API_URL = "http://localhost:8000/api/v1";
 
-// ---------- Sessão (token e usuário salvos no navegador) ----------
 const Sessao = {
   salvar(dados) {
     localStorage.setItem("access", dados.access);
@@ -19,14 +17,12 @@ const Sessao = {
   },
 };
 
-// Para onde cada perfil vai depois de entrar (caminhos a partir do index.html)
 const ROTAS_POR_PERFIL = {
   cliente: "pages/home.html",
   barbeiro: "pages/agenda.html",
   administrador: "pages/admin.html",
 };
 
-// ---------- Renova o token quando ele expira (30 min) ----------
 async function renovarToken() {
   const refresh = localStorage.getItem("refresh");
   if (!refresh) return false;
@@ -40,13 +36,10 @@ async function renovarToken() {
 
   const dados = await resposta.json();
   localStorage.setItem("access", dados.access);
-  if (dados.refresh) localStorage.setItem("refresh", dados.refresh); // a API troca o refresh
+  if (dados.refresh) localStorage.setItem("refresh", dados.refresh);
   return true;
 }
 
-// ---------- Função principal para chamar a API ----------
-// Uso: const { ok, status, dados } = await api("/services");
-//      await api("/auth/login", { method: "POST", body: {...}, auth: false });
 async function api(caminho, { method = "GET", body, auth = true } = {}) {
   const montar = () => {
     const headers = { "Content-Type": "application/json" };
@@ -61,20 +54,16 @@ async function api(caminho, { method = "GET", body, auth = true } = {}) {
 
   let resposta = await fetch(API_URL + caminho, montar());
 
-  // Token venceu? Renova uma vez e tenta de novo
   if (resposta.status === 401 && auth && (await renovarToken())) {
     resposta = await fetch(API_URL + caminho, montar());
   }
 
-  // 204 não tem corpo
   const texto = await resposta.text();
   const dados = texto ? JSON.parse(texto) : null;
 
   return { ok: resposta.ok, status: resposta.status, dados };
 }
 
-// Transforma o erro da API em texto legível
-// Ex.: {"email":["Já existe..."]} -> "email: Já existe..."
 function mensagemDeErro(dados) {
   if (!dados) return "Erro inesperado. Tente novamente.";
   if (dados.detail) return dados.detail;

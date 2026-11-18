@@ -166,25 +166,52 @@ As configurações de ambiente são mantidas em arquivo `.env`, que está config
 **Charset:** UTF-8 (`utf8mb4`)  
 **Collation:** `utf8mb4_unicode_ci`
 
-## 9. Observação
+### Preparar o banco local
 
-As migrations do Django são a referência utilizada pelo backend para criação e atualização da estrutura do banco de dados. A pasta `database` contém a documentação e os artefatos relacionados ao banco de dados do projeto.
+Com o MySQL em execução, conecte-se com uma conta autorizada a criar bancos e
+usuários. Para uma instalação nova com o Django executado no mesmo computador,
+use o exemplo abaixo. Substitua `senha-local-aleatoria` por uma senha própria.
 
-## 10. Escopo do schema documental
+```sql
+CREATE DATABASE barbearia CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'barbearia'@'localhost' IDENTIFIED BY 'senha-local-aleatoria';
+GRANT ALL PRIVILEGES ON barbearia.* TO 'barbearia'@'localhost';
+```
 
-**Não execute `schema.sql` para instalar, atualizar ou recuperar a aplicação.**
-O arquivo representa somente as seis tabelas principais do domínio. Não inclui
-tabelas internas de autenticação, grupos/permissões, sessões, administração, JWT
-ou histórico de migrations. Também não contém dados.
+Preencha `MYSQL_DATABASE=barbearia`, `MYSQL_USER=barbearia` e
+`MYSQL_PASSWORD` no `.env` do back-end. Para o Django em Docker, ajuste o host
+da conexão e conceda acesso à conta MySQL a partir da origem efetiva da conexão.
 
-Para criar ou atualizar a estrutura completa, configure o `.env` do backend e execute:
+A suíte do Django usa por padrão o nome `test_barbearia` quando
+`MYSQL_DATABASE=barbearia`. Para executar os testes com a mesma conta local,
+conceda acesso também a esse banco. O Django cria e remove o banco durante a
+execução da suíte.
+
+```sql
+GRANT ALL PRIVILEGES ON `test\_barbearia`.* TO 'barbearia'@'localhost';
+```
+
+## 9. Criar ou atualizar o esquema
+
+Na raiz do repositório, com o ambiente virtual ativo e o `.env` configurado,
+execute:
 
 ```bash
 cd backend/BarbeariaAPP-codigo
 python manage.py migrate
+python manage.py showmigrations
 ```
 
-Não combine a execução manual deste SQL com `migrate` no mesmo banco.
+As migrações criam as tabelas de domínio e as tabelas internas de autenticação,
+grupos, permissões, sessões, administração, JWT e histórico de migrações.
+`showmigrations` lista as migrações aplicadas.
+
+## 10. Escopo do schema documental
+
+O [schema.sql](schema.sql) serve como referência para as seis tabelas de domínio
+descritas neste documento. Para instalação e atualização, aplique as migrações
+diretamente sobre o banco da aplicação. Para recuperação de dados, use o backup
+do banco correspondente. O recorte SQL contém apenas definições de tabelas.
 
 ## 11. Índices e restrições das migrations
 

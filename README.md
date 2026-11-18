@@ -13,12 +13,26 @@ As reservas começam como pendentes. A API impede sobreposições para o mesmo
 profissional e preserva o preço e a duração contratados. O faturamento do painel
 considera os atendimentos concluídos. O MVP atende uma barbearia.
 
+## Como as partes se conectam
+
+O navegador carrega as páginas estáticas e envia requisições JSON para a API
+em `/api/v1`. O Django autentica os usuários com JWT, aplica as permissões de
+cada perfil e consulta o MySQL. O front-end pode ser servido diretamente por um
+servidor HTTP, sem etapa de compilação.
+
 ## Executar localmente
 
 Você precisa de Python 3.12, MySQL com InnoDB e de um banco vazio com um usuário
 que possa executar as migrações. O projeto tem MySQL 8.4 como alvo.
 
-### 1. Preparar o back-end
+### 1. Preparar o banco MySQL
+
+Com o MySQL em execução, crie o banco e configure um usuário para a aplicação.
+O [guia do banco](database/README.md#preparar-o-banco-local) contém os comandos
+SQL para uma instalação local. Use os mesmos dados de conexão no `.env` do
+back-end.
+
+### 2. Preparar o back-end
 
 Na raiz do repositório, crie o ambiente virtual e copie a configuração de exemplo.
 
@@ -26,7 +40,7 @@ Na raiz do repositório, crie o ambiente virtual e copie a configuração de exe
 
 ```bash
 cd backend/BarbeariaAPP-codigo
-python3 -m venv .venv
+python3.12 -m venv .venv
 source .venv/bin/activate
 cp .env.example .env
 ```
@@ -35,18 +49,20 @@ cp .env.example .env
 
 ```powershell
 cd backend/BarbeariaAPP-codigo
-python -m venv .venv
+py -3.12 -m venv .venv
 .venv\Scripts\Activate.ps1
 Copy-Item .env.example .env
 ```
 
 No `.env`, configure `SECRET_KEY` e as variáveis `MYSQL_*` para o seu banco.
-Em seguida, na pasta do back-end, execute:
+O [guia do back-end](backend/BarbeariaAPP-codigo/README.md#variáveis-de-ambiente) descreve
+cada variável. Na pasta do back-end, instale as dependências, aplique as
+migrações e inicie a API.
 
 ```sh
 python -m pip install -r requirements.txt
 python manage.py migrate
-python manage.py seed_demo
+python manage.py seed_demo  # Opcional, para dados de demonstração
 python manage.py runserver
 ```
 
@@ -57,10 +73,10 @@ seguintes contas na tela de login.
 | Perfil | Usuário | Senha de demonstração |
 | --- | --- | --- |
 | Cliente | `cliente` | `cliente123` |
-| Barbeiro | `joao` | `barbeiro123` |
+| Barbeiro | `joao` ou `carlos` | `barbeiro123` |
 | Administrador | `admin` | `admin123` |
 
-### 2. Servir o front-end
+### 3. Servir o front-end
 
 Em outro terminal, a partir da raiz do repositório, execute:
 
@@ -77,6 +93,16 @@ e use uma das contas de demonstração ou cadastre um cliente.
 | [OpenAPI](http://localhost:8000/api/v1/schema) | Consultar o contrato da API |
 | [Prontidão](http://localhost:8000/api/v1/health) | Verificar a conexão da API ao banco |
 | [Django Admin](http://localhost:8000/admin/) | Acessar o administrativo do Django |
+
+## Experimentar o fluxo de agendamento
+
+1. Entre como `cliente` e escolha um serviço, um profissional e um horário futuro.
+   Os horários de demonstração vão de segunda a sábado.
+2. Saia e entre como o barbeiro que você escolheu. Abra a agenda na data da
+   reserva e clique em **Confirmar** no atendimento pendente.
+3. Com a mesma conta, clique em **Finalizar** no atendimento confirmado.
+4. Entre como `admin` no front-end e consulte o agendamento e o faturamento no
+   período que contém a data da reserva.
 
 ## Configurar a URL da API
 
@@ -99,9 +125,16 @@ python -m pytest
 
 A suíte precisa de um usuário MySQL com permissão para criar e remover o banco
 de testes. Ela verifica autenticação, catálogo, disponibilidade e concorrência
-entre reservas. Para conferir a integração pela interface, faça uma reserva
-como cliente, confirme e finalize o atendimento como barbeiro, e confira se o
-valor aparece no faturamento do painel administrativo.
+entre reservas.
+
+## Problemas comuns na instalação
+
+| Sintoma | O que conferir |
+| --- | --- |
+| Erro de conexão ao rodar `migrate` | Confira se o MySQL está em execução e se o host e a porta do `.env` correspondem ao servidor. |
+| `Access denied` do MySQL | Confira usuário, senha e permissões do banco. |
+| Erro de CORS no navegador | Abra o front-end em `http://localhost:3000` ou inclua a origem exata usada no navegador em `CORS_ALLOWED_ORIGINS`. `localhost` e `127.0.0.1` são origens diferentes. |
+| Sem horários para reservar | Confira se o serviço e o profissional estão ativos e se há um bloco que comporte o serviço na data escolhida. |
 
 ## Estrutura e documentação
 

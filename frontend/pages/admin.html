@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="pt-BR">
   <head>
+    <meta name="api-url" content="">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Prumo | Painel do administrador</title>
@@ -62,6 +63,7 @@
               id="s-preco"
               placeholder="Preço (R$)"
               min="0"
+              step="0.01"
               required
             />
             <input
@@ -91,6 +93,39 @@
         <section id="equipe" class="secao">
           <h1>Equipe</h1>
           <p class="subtitulo">Barbeiros e horários de funcionamento.</p>
+
+          <h2>Novo barbeiro</h2>
+          <form id="form-barbeiro" class="linha-form">
+            <input type="text" id="b-nome" placeholder="Nome completo" required />
+            <input type="text" id="b-usuario" placeholder="Usuário" required />
+            <input
+              type="password"
+              id="b-senha"
+              placeholder="Senha (mín. 8)"
+              minlength="8"
+              required
+            />
+            <input type="tel" id="b-telefone" placeholder="Telefone" required />
+            <button type="submit" class="btn primario">Cadastrar</button>
+          </form>
+
+          <h2>Horário de trabalho</h2>
+          <form id="form-horario" class="linha-form">
+            <select id="h-barbeiro" required></select>
+            <select id="h-dia" required>
+              <option value="0">Segunda</option>
+              <option value="1">Terça</option>
+              <option value="2">Quarta</option>
+              <option value="3">Quinta</option>
+              <option value="4">Sexta</option>
+              <option value="5">Sábado</option>
+              <option value="6">Domingo</option>
+            </select>
+            <input type="time" id="h-inicio" required />
+            <input type="time" id="h-fim" required />
+            <button type="submit" class="btn primario">Adicionar</button>
+          </form>
+
           <div class="cards" id="lista-equipe"></div>
         </section>
 
@@ -118,6 +153,7 @@
       </main>
     </div>
 
+    <script src="../js/api.js"></script>
     <script src="../js/admin.js"></script>
   </body>
 </html>

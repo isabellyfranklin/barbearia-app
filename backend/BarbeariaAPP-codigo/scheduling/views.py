@@ -24,6 +24,7 @@ from .services import (
     atualizar_status,
     cancelar_agendamento,
     horarios_disponiveis,
+    horarios_disponiveis_periodo,
 )
 
 SELECT_RELATED = ("cliente", "profissional__usuario", "servico")
@@ -147,13 +148,10 @@ class ProfissionalDisponibilidadeView(APIView):
         de, ate = _data_ou_hoje(params["from"]), _data_ou_hoje(params["to"])
         if ate < de or (ate - de).days > 60:
             raise ValidationError({"to": "Informe um período ordenado de até 60 dias."})
-        dias = []
-        atual = de
-        while atual <= ate:
-            slots = horarios_disponiveis(profissional, atual, duracao)
-            if slots:
-                dias.append({"date": atual.isoformat(), "slots": [slot.isoformat() for slot in slots]})
-            atual += timedelta(days=1)
+        dias = [
+            {"date": data.isoformat(), "slots": [slot.isoformat() for slot in slots]}
+            for data, slots in horarios_disponiveis_periodo(profissional, de, ate, duracao).items()
+        ]
         return Response({
             "from": de.isoformat(), "to": ate.isoformat(),
             "duration_minutes": duracao, "days": dias,

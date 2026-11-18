@@ -1,8 +1,8 @@
 # Contrato REST v1 — Prumo
 
 Base: /api/v1. JSON. Rotas sem barra final. [OpenAPI gerado](openapi.yaml).
-Swagger: /api/v1/docs. Esta especificação local define os contratos anteriormente
-indefinidos, sem editar o documento Google Docs nem integrar o front-end.
+Swagger: /api/v1/docs. O front-end usa estes contratos para autenticação,
+catálogo, agendamentos, agenda do barbeiro e painel administrativo.
 
 ## Convenções
 
@@ -43,6 +43,11 @@ Logout invalida o refresh informado; access já emitido pode continuar válido a
 expirar (30 minutos). Troca de senha revoga access anteriores e todos os refresh
 conhecidos do usuário; faça login novamente. Refresh expira em um dia.
 Senhas são validadas pelo Django e armazenadas com hash. Contas inativas não autenticam.
+
+O front-end compartilha uma renovação entre as requisições simultâneas da
+mesma página. Ao selecionar **Sair**, tenta revogar o refresh atual na API
+antes de limpar a sessão local. Se o access expirou, a interface renova os
+tokens e tenta revogar o novo refresh.
 
 ## Catálogo e administração
 

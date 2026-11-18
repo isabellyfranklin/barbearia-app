@@ -1,37 +1,25 @@
-// Dados fictícios. Depois vêm da API.
-const barbearias = [
-  { id: 1, nome: "Barba & Cia" },
-  { id: 2, nome: "Navalha de Ouro" },
-  { id: 3, nome: "Corte Nobre" },
-  { id: 4, nome: "Old School Barber" },
-  { id: 5, nome: "Alfaiate da Barba" },
-  { id: 6, nome: "Estilo Prumo" },
-];
+const usuario = Sessao.usuario();
+if (!usuario) {
+  alert("Faça login para agendar.");
+  window.location.href = "../index.html";
+}
 
-const servicos = [
-  { id: 1, nome: "Corte", preco: 45, duracao: 30 },
-  { id: 2, nome: "Barba", preco: 30, duracao: 20 },
-  { id: 3, nome: "Corte + barba", preco: 70, duracao: 50 },
-  { id: 4, nome: "Selagem", preco: 90, duracao: 60 },
-];
-
-const barbeiros = [
-  { id: 1, nome: "Carlos" },
-  { id: 2, nome: "André" },
-  { id: 3, nome: "Felipe" },
-];
-
-// Descobre qual barbearia foi escolhida pela URL (?id=1)
-const params = new URLSearchParams(location.search);
-const barbearia =
-  barbearias.find((b) => b.id === Number(params.get("id"))) || barbearias[0];
-document.getElementById("nome-barbearia").textContent = barbearia.nome;
+let servicos = [];
+let barbeiros = [];
+let horarios = [];
+let enviandoAgendamento = false;
 
 // O que a pessoa já escolheu
 const estado = { servico: null, barbeiro: null, data: null, hora: null };
 
-const moeda = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const moeda = (v) => Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 const doisDigitos = (n) => String(n).padStart(2, "0");
+const horaDoSlot = (slot) => slot.slice(11, 16);
+
+const esc = (t) =>
+  String(t ?? "").replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
 
 // ---------- Dias e horários ----------
 const hoje = new Date();
@@ -42,34 +30,67 @@ for (let i = 0; i < 7; i++) {
 
 const iso = (d) => `${d.getFullYear()}-${doisDigitos(d.getMonth() + 1)}-${doisDigitos(d.getDate())}`;
 
-const horarios = [];
-for (let h = 9; h < 18; h++) {
-  horarios.push(`${doisDigitos(h)}:00`, `${doisDigitos(h)}:30`);
+async function carregarDados() {
+  try {
+    const [barbearia, respServicos, respBarbeiros] = await Promise.all([
+      api("/barbershop", { auth: false }),
+      api("/services", { auth: false }),
+      api("/professionals", { auth: false }),
+    ]);
+
+    if (barbearia.ok && barbearia.dados) {
+      document.getElementById("nome-barbearia").textContent = barbearia.dados.nome;
+    }
+    servicos = respServicos.ok ? respServicos.dados : [];
+    barbeiros = respBarbeiros.ok ? respBarbeiros.dados : [];
+  } catch (erro) {
+    console.error(erro);
+    alert("Não foi possível conectar ao servidor. O backend está rodando?");
+  }
+  atualizarTudo();
 }
 
-// Simulação de horários ocupados. Depois vem da API.
-function estaOcupado(hora, indice) {
-  const indiceDia = dias.findIndex((d) => iso(d) === estado.data);
-  const indiceBarbeiro = barbeiros.findIndex((b) => b.id === estado.barbeiro.id);
+let buscaHorarios;
+async function carregarHorarios() {
+  buscaHorarios?.abort();
+  horarios = [];
+  if (!estado.servico || !estado.barbeiro || !estado.data) return;
 
-  // horários que já passaram hoje
-  const [h, m] = hora.split(":").map(Number);
-  const agora = new Date();
-  const jaPassou =
-    estado.data === iso(agora) && h * 60 + m <= agora.getHours() * 60 + agora.getMinutes();
+  buscaHorarios = new AbortController();
+  const { signal } = buscaHorarios;
+  document.getElementById("lista-horarios").innerHTML = '<p class="aviso">Carregando horários...</p>';
 
-  return jaPassou || (indice + indiceDia + indiceBarbeiro) % 4 === 0;
+  let resultado = [];
+  try {
+    const { ok, dados } = await api(
+      `/professionals/${estado.barbeiro.id}/availability?service=${estado.servico.id}&date=${estado.data}`,
+      { auth: false, signal }
+    );
+    resultado = ok ? dados.slots : [];
+  } catch (erro) {
+    if (signal.aborted) return;
+    console.error(erro);
+  }
+
+  if (signal.aborted) return;
+  horarios = resultado;
+  mostrarHorarios();
 }
 
 // ---------- Desenhar na tela ----------
 function mostrarServicos() {
-  document.getElementById("lista-servicos").innerHTML = servicos
+  const caixa = document.getElementById("lista-servicos");
+  if (servicos.length === 0) {
+    caixa.innerHTML = '<p class="aviso">Nenhum serviço disponível.</p>';
+    return;
+  }
+  caixa.innerHTML = servicos
     .map(
       (s) => `
       <button type="button" class="opcao-card ${estado.servico?.id === s.id ? "selecionado" : ""}"
               data-tipo="servico" data-valor="${s.id}">
-        <strong>${s.nome}</strong>
-        <small>${s.duracao} min</small>
+        <strong>${esc(s.nome)}</strong>
+        <small>${s.duracao_minutos} min</small>
         <span>${moeda(s.preco)}</span>
       </button>`
     )
@@ -77,12 +98,17 @@ function mostrarServicos() {
 }
 
 function mostrarBarbeiros() {
-  document.getElementById("lista-barbeiros").innerHTML = barbeiros
+  const caixa = document.getElementById("lista-barbeiros");
+  if (barbeiros.length === 0) {
+    caixa.innerHTML = '<p class="aviso">Nenhum barbeiro disponível.</p>';
+    return;
+  }
+  caixa.innerHTML = barbeiros
     .map(
       (b) => `
       <button type="button" class="opcao-card ${estado.barbeiro?.id === b.id ? "selecionado" : ""}"
               data-tipo="barbeiro" data-valor="${b.id}">
-        <strong>${b.nome}</strong>
+        <strong>${esc(b.nome)}</strong>
       </button>`
     )
     .join("");
@@ -105,17 +131,21 @@ function mostrarDias() {
 function mostrarHorarios() {
   const caixa = document.getElementById("lista-horarios");
 
-  if (!estado.barbeiro || !estado.data) {
-    caixa.innerHTML = '<p class="aviso">Escolha o barbeiro e o dia para ver os horários.</p>';
+  if (!estado.servico || !estado.barbeiro || !estado.data) {
+    caixa.innerHTML = '<p class="aviso">Escolha o serviço, o barbeiro e o dia para ver os horários.</p>';
+    return;
+  }
+  if (horarios.length === 0) {
+    caixa.innerHTML = '<p class="aviso">Nenhum horário livre neste dia.</p>';
     return;
   }
 
   caixa.innerHTML = horarios
     .map(
-      (h, i) => `
-      <button type="button" class="chip ${estado.hora === h ? "selecionado" : ""}"
-              data-tipo="hora" data-valor="${h}" ${estaOcupado(h, i) ? "disabled" : ""}>
-        ${h}
+      (slot) => `
+      <button type="button" class="chip ${estado.hora === slot ? "selecionado" : ""}"
+              data-tipo="hora" data-valor="${slot}">
+        ${horaDoSlot(slot)}
       </button>`
     )
     .join("");
@@ -124,7 +154,7 @@ function mostrarHorarios() {
 function mostrarResumo() {
   document.getElementById("r-servico").textContent = estado.servico ? estado.servico.nome : "—";
   document.getElementById("r-barbeiro").textContent = estado.barbeiro ? estado.barbeiro.nome : "—";
-  document.getElementById("r-hora").textContent = estado.hora || "—";
+  document.getElementById("r-hora").textContent = estado.hora ? horaDoSlot(estado.hora) : "—";
   document.getElementById("r-total").textContent = moeda(estado.servico ? estado.servico.preco : 0);
 
   if (estado.data) {
@@ -139,7 +169,7 @@ function mostrarResumo() {
 
   // O botão só libera quando tudo foi escolhido
   const completo = estado.servico && estado.barbeiro && estado.data && estado.hora;
-  document.getElementById("btn-continuar").disabled = !completo;
+  document.getElementById("btn-continuar").disabled = enviandoAgendamento || !completo;
 }
 
 function atualizarTudo() {
@@ -153,7 +183,7 @@ function atualizarTudo() {
 // ---------- Cliques ----------
 document.addEventListener("click", (e) => {
   const botao = e.target.closest("[data-tipo]");
-  if (!botao || botao.disabled) return;
+  if (!botao || botao.disabled || enviandoAgendamento) return;
 
   const { tipo, valor } = botao.dataset;
 
@@ -162,25 +192,59 @@ document.addEventListener("click", (e) => {
   if (tipo === "data") estado.data = valor;
   if (tipo === "hora") estado.hora = valor;
 
-  // Trocou o barbeiro ou o dia: o horário escolhido pode não valer mais
-  if (tipo === "barbeiro" || tipo === "data") estado.hora = null;
-
-  atualizarTudo();
+  if (tipo !== "hora") {
+    estado.hora = null;
+    atualizarTudo();
+    carregarHorarios();
+  } else {
+    atualizarTudo();
+  }
 });
 
-document.getElementById("btn-continuar").addEventListener("click", () => {
-  // Guarda a escolha para a próxima tela (checkout) ler
-  sessionStorage.setItem(
-    "agendamento",
-    JSON.stringify({
-      barbearia: barbearia.nome,
-      servico: estado.servico,
-      barbeiro: estado.barbeiro,
-      data: estado.data,
-      hora: estado.hora,
-    })
-  );
-  window.location.href = "checkout.html";
+document.getElementById("btn-continuar").addEventListener("click", async () => {
+  const botao = document.getElementById("btn-continuar");
+  if (botao.disabled || enviandoAgendamento) return;
+  enviandoAgendamento = true;
+  botao.disabled = true;
+  botao.textContent = "Agendando...";
+
+  try {
+    const { ok, status, dados } = await api("/appointments", {
+      method: "POST",
+      body: {
+        profissional: estado.barbeiro.id,
+        servico: estado.servico.id,
+        data_hora: estado.hora,
+      },
+    });
+
+    if (status === 401) {
+      alert("Sua sessão expirou. Entre novamente.");
+      Sessao.limpar();
+      window.location.href = "../index.html";
+      return;
+    }
+    if (status === 403) {
+      alert("Só clientes podem fazer agendamentos.");
+      return;
+    }
+    if (!ok) {
+      alert(mensagemDeErro(dados));
+      estado.hora = null;
+      await carregarHorarios();
+      return;
+    }
+
+    alert(`Agendamento feito! ${horaDoSlot(estado.hora)} com ${estado.barbeiro.nome}.`);
+    window.location.href = "home.html";
+  } catch (erro) {
+    console.error(erro);
+    alert("Não foi possível conectar ao servidor. O backend está rodando?");
+  } finally {
+    enviandoAgendamento = false;
+    botao.textContent = "Confirmar agendamento";
+    mostrarResumo();
+  }
 });
 
-atualizarTudo();
+if (usuario) carregarDados();

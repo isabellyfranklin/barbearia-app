@@ -1,40 +1,45 @@
-const botoes = document.querySelectorAll(".opcao");
 const form = document.getElementById("form-login");
 
-let perfil = "cliente"; // equivale ao useState("cliente")
-
-const rotas = {
-  cliente: "pages/home.html",
-  barbeiro: "pages/agenda.html",
-  admin: "pages/admin.html",
-};
-
-// Ao clicar em um botão do seletor
-botoes.forEach((botao) => {
-  botao.addEventListener("click", () => {
-    perfil = botao.dataset.perfil;
-
-    // tira o destaque de todos e coloca só no clicado
-    botoes.forEach((b) => b.classList.remove("ativo"));
-    botao.classList.add("ativo");
-  });
-});
-
 // Ao enviar o formulário
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const email = document.getElementById("email").value;
-  const senha = document.getElementById("senha").value;
+  const username = document.getElementById("usuario").value.trim();
+  const password = document.getElementById("senha").value;
+  const botao = form.querySelector("button[type=submit]");
 
-  // troca isso por um fetch para a API de login
-  window.location.href = rotas[perfil];
+  botao.disabled = true;
+  botao.textContent = "Entrando...";
+
+  try {
+    Sessao.limpar();
+
+    const { ok, status, dados } = await api("/auth/login", {
+      method: "POST",
+      body: { username, password },
+      auth: false,
+    });
+
+    if (!ok) {
+      alert(status === 401 ? "Usuário ou senha inválidos." : mensagemDeErro(dados));
+      return;
+    }
+
+    Sessao.salvar(dados);
+    window.location.href = ROTAS_POR_PERFIL[dados.user.perfil] || "pages/home.html";
+  } catch (erro) {
+    alert("Não foi possível conectar ao servidor. O backend está rodando?");
+    console.error(erro);
+  } finally {
+    botao.disabled = false;
+    botao.textContent = "Entrar";
+  }
 });
 
 // PARTE - Crie sua conta de cliente
 const formCadastro = document.getElementById("form-cadastro");
 
-formCadastro.addEventListener("submit", (e) => {
+formCadastro.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const senha = document.getElementById("senha-cad").value;
@@ -45,6 +50,41 @@ formCadastro.addEventListener("submit", (e) => {
     return;
   }
 
-  // TODO: enviar os dados para a API de cadastro do backend
-  console.log("Cadastro válido!");
+  const [primeiro, ...resto] = document.getElementById("nome").value.trim().split(/\s+/);
+
+  const corpo = {
+    username: document.getElementById("username-cad").value.trim(),
+    email: document.getElementById("email-cad").value.trim(),
+    telefone: document.getElementById("celular").value.replace(/\D/g, ""),
+    first_name: primeiro || "",
+    last_name: resto.join(" "),
+    password: senha,
+    password_confirm: confirmar,
+  };
+
+  const botao = formCadastro.querySelector("button[type=submit]");
+  botao.disabled = true;
+
+  try {
+    Sessao.limpar();
+
+    const { ok, dados } = await api("/auth/register", {
+      method: "POST",
+      body: corpo,
+      auth: false,
+    });
+
+    if (!ok) {
+      alert(mensagemDeErro(dados));
+      return;
+    }
+
+    Sessao.salvar(dados);
+    window.location.href = ROTAS_POR_PERFIL.cliente;
+  } catch (erro) {
+    alert("Não foi possível conectar ao servidor. O backend está rodando?");
+    console.error(erro);
+  } finally {
+    botao.disabled = false;
+  }
 });

@@ -1,54 +1,112 @@
-# Prumo — agendamento de uma barbearia
+# Prumo — agendamento para barbearia
 
-Projeto Integrador IV — Senac EAD, 2026.
+Projeto Integrador IV do Senac EAD, 2026. O Prumo reúne as reservas de uma
+barbearia em uma interface web integrada a uma API Django REST e a um banco MySQL.
 
-O back-end oficial é **Django REST Framework + MySQL**, em
-[backend/BarbeariaAPP-codigo](backend/BarbeariaAPP-codigo/README.md).
-O MVP atende uma única barbearia, com perfis cliente, barbeiro e administrador.
-O front-end em HTML/CSS/JavaScript permanece um protótipo independente.
-Esta etapa prepara o servidor; não conecta nem modifica a interface.
+| Perfil | O que pode fazer |
+| --- | --- |
+| Cliente | Criar uma conta, consultar serviços e horários livres e reservar um atendimento. |
+| Barbeiro | Consultar a agenda do dia ou da semana e atualizar o status dos seus atendimentos. |
+| Administrador | Acompanhar agendamentos e faturamento, gerenciar serviços e profissionais e configurar horários de trabalho. |
 
-## Executar
+As reservas começam como pendentes. A API impede sobreposições para o mesmo
+profissional e preserva o preço e a duração contratados. O faturamento do painel
+considera os atendimentos concluídos. O MVP atende uma barbearia.
 
-Requer Python 3.12 e MySQL com banco/usuário criados.
-MySQL 8.4 é o alvo do grupo; a validação local utiliza MySQL 8.0.46.
+## Executar localmente
 
-~~~powershell
+Você precisa de Python 3.12, MySQL com InnoDB e de um banco vazio com um usuário
+que possa executar as migrações. O projeto tem MySQL 8.4 como alvo.
+
+### 1. Preparar o back-end
+
+Na raiz do repositório, crie o ambiente virtual e copie a configuração de exemplo.
+
+**Linux e macOS**
+
+```bash
+cd backend/BarbeariaAPP-codigo
+python3 -m venv .venv
+source .venv/bin/activate
+cp .env.example .env
+```
+
+**Windows com PowerShell**
+
+```powershell
 cd backend/BarbeariaAPP-codigo
 python -m venv .venv
 .venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
 Copy-Item .env.example .env
-# Configure o .env antes de continuar.
+```
+
+No `.env`, configure `SECRET_KEY` e as variáveis `MYSQL_*` para o seu banco.
+Em seguida, na pasta do back-end, execute:
+
+```sh
+python -m pip install -r requirements.txt
 python manage.py migrate
-python manage.py createsuperuser
+python manage.py seed_demo
 python manage.py runserver
-~~~
+```
 
-- API: http://localhost:8000/api/v1/
-- Swagger: http://localhost:8000/api/v1/docs
-- OpenAPI: http://localhost:8000/api/v1/schema
-- Prontidão: http://localhost:8000/api/v1/health
-- Django Admin: http://localhost:8000/admin/
+O comando `seed_demo` é opcional e se destina a um banco de desenvolvimento. Ele
+cria usuários de demonstração, serviços e horários. Em um banco novo, use as
+seguintes contas na tela de login.
 
-## MVP
+| Perfil | Usuário | Senha de demonstração |
+| --- | --- | --- |
+| Cliente | `cliente` | `cliente123` |
+| Barbeiro | `joao` | `barbeiro123` |
+| Administrador | `admin` | `admin123` |
 
-Um serviço por reserva; situação inicial pendente; confirmação pelo administrador
-ou barbeiro responsável; cliente cancela somente antes do início; preço e duração
-preservados no histórico; bloqueio transacional no MySQL para impedir sobreposições.
-Serviços e profissionais são desativados, preservando o histórico.
+### 2. Servir o front-end
 
-Pagamentos, múltiplas barbearias e relatórios financeiros estão fora desta entrega.
-O FastAPI foi retirado; seu código permanece recuperável no histórico do Git.
-Não execute Uvicorn nem crie tabelas manualmente pelo SQL documental.
+Em outro terminal, a partir da raiz do repositório, execute:
 
-## Documentação
+```sh
+python3 -m http.server 3000 --directory frontend
+```
 
-- [Contrato REST e exemplos](docs/API.md)
-- [Migração e rastreabilidade](docs/MIGRACAO_BACKEND.md)
-- [OpenAPI gerado](docs/openapi.yaml)
-- [Banco de dados](database/README.md)
-- [Modelo da segunda entrega](https://docs.google.com/document/d/1LFH7a7eXbECiNHs7S6ayrPSsuixISlHhTu54f3ZxAEw/edit)
+No Windows, use `python` no lugar de `python3`. Abra [a aplicação](http://localhost:3000)
+e use uma das contas de demonstração ou cadastre um cliente.
 
-Esta consolidação ocorre em feature/backend; publicação e merge são etapas separadas.
-Não versione .env, credenciais ou dumps com dados pessoais.
+| Endereço local | Uso |
+| --- | --- |
+| [Swagger](http://localhost:8000/api/v1/docs) | Explorar e testar os endpoints |
+| [OpenAPI](http://localhost:8000/api/v1/schema) | Consultar o contrato da API |
+| [Prontidão](http://localhost:8000/api/v1/health) | Verificar a conexão da API ao banco |
+| [Django Admin](http://localhost:8000/admin/) | Acessar o administrativo do Django |
+
+## Configurar a URL da API
+
+Em desenvolvimento, o front-end usa `http://localhost:8000/api/v1`. Em outros
+hosts, o padrão é `/api/v1` na mesma origem do front-end. Para servir a API em outra
+origem, preencha o atributo `content` da meta tag `api-url` em
+`frontend/index.html` e nos HTMLs em `frontend/pages/` com a URL base da API,
+incluindo `/api/v1`. Adicione a origem do front-end a `CORS_ALLOWED_ORIGINS` no
+`.env` do Django. Mantenha o `.env` e as credenciais reais fora do Git.
+
+## Testar
+
+Na pasta do back-end, com o ambiente virtual ativo, execute:
+
+```sh
+python manage.py check
+python manage.py makemigrations --check --dry-run
+python -m pytest
+```
+
+A suíte precisa de um usuário MySQL com permissão para criar e remover o banco
+de testes. Ela verifica autenticação, catálogo, disponibilidade e concorrência
+entre reservas. Para conferir a integração pela interface, faça uma reserva
+como cliente, confirme e finalize o atendimento como barbeiro, e confira se o
+valor aparece no faturamento do painel administrativo.
+
+## Estrutura e documentação
+
+- [Front-end](frontend/) em HTML, CSS e JavaScript, com o acesso à API em `js/api.js`.
+- [Back-end](backend/BarbeariaAPP-codigo/README.md) em Django REST Framework, dividido em contas, catálogo e agendamento.
+- [Banco de dados](database/README.md) com o esquema de referência. As migrações do Django aplicam o esquema usado pela aplicação.
+- [Contrato REST](docs/API.md) e [especificação OpenAPI](docs/openapi.yaml).
+- [Modelo da segunda entrega](https://docs.google.com/document/d/1LFH7a7eXbECiNHs7S6ayrPSsuixISlHhTu54f3ZxAEw/edit).

@@ -66,6 +66,6 @@ busca.addEventListener("input", () => {
   );
 });
 
-document.querySelector(".sair").addEventListener("click", () => Sessao.limpar());
+document.querySelector(".sair").addEventListener("click", sair);
 
 carregar();

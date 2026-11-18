@@ -57,8 +57,9 @@ async function carregarDashboard() {
   const lista = ok ? dados : [];
 
   const validos = lista.filter((a) => a.status !== "cancelado");
+  const concluidos = lista.filter((a) => a.status === "concluido");
   document.getElementById("c-agend").textContent = validos.length;
-  document.getElementById("c-fat").textContent = moeda(validos.reduce((soma, a) => soma + Number(a.preco), 0));
+  document.getElementById("c-fat").textContent = moeda(concluidos.reduce((soma, a) => soma + Number(a.preco), 0));
   document.getElementById("c-canc").textContent = lista.length - validos.length;
 
   const porDia = [0, 0, 0, 0, 0, 0, 0];
@@ -352,6 +353,6 @@ async function carregarRelatorio() {
 
 filtroBarbeiro.addEventListener("change", carregarRelatorio);
 
-document.querySelector(".sair").addEventListener("click", () => Sessao.limpar());
+document.querySelector(".sair").addEventListener("click", sair);
 
 if (usuario) carregarDashboard().catch((erro) => console.error(erro));

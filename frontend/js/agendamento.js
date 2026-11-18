@@ -7,6 +7,7 @@ if (!usuario) {
 let servicos = [];
 let barbeiros = [];
 let horarios = [];
+let enviandoAgendamento = false;
 
 // O que a pessoa já escolheu
 const estado = { servico: null, barbeiro: null, data: null, hora: null };
@@ -49,26 +50,29 @@ async function carregarDados() {
   atualizarTudo();
 }
 
-let ultimaBusca = 0;
+let buscaHorarios;
 async function carregarHorarios() {
+  buscaHorarios?.abort();
   horarios = [];
   if (!estado.servico || !estado.barbeiro || !estado.data) return;
 
-  const minhaBusca = ++ultimaBusca;
+  buscaHorarios = new AbortController();
+  const { signal } = buscaHorarios;
   document.getElementById("lista-horarios").innerHTML = '<p class="aviso">Carregando horários...</p>';
 
   let resultado = [];
   try {
     const { ok, dados } = await api(
       `/professionals/${estado.barbeiro.id}/availability?service=${estado.servico.id}&date=${estado.data}`,
-      { auth: false }
+      { auth: false, signal }
     );
     resultado = ok ? dados.slots : [];
   } catch (erro) {
+    if (signal.aborted) return;
     console.error(erro);
   }
 
-  if (minhaBusca !== ultimaBusca) return;
+  if (signal.aborted) return;
   horarios = resultado;
   mostrarHorarios();
 }
@@ -165,7 +169,7 @@ function mostrarResumo() {
 
   // O botão só libera quando tudo foi escolhido
   const completo = estado.servico && estado.barbeiro && estado.data && estado.hora;
-  document.getElementById("btn-continuar").disabled = !completo;
+  document.getElementById("btn-continuar").disabled = enviandoAgendamento || !completo;
 }
 
 function atualizarTudo() {
@@ -179,7 +183,7 @@ function atualizarTudo() {
 // ---------- Cliques ----------
 document.addEventListener("click", (e) => {
   const botao = e.target.closest("[data-tipo]");
-  if (!botao || botao.disabled) return;
+  if (!botao || botao.disabled || enviandoAgendamento) return;
 
   const { tipo, valor } = botao.dataset;
 
@@ -199,6 +203,8 @@ document.addEventListener("click", (e) => {
 
 document.getElementById("btn-continuar").addEventListener("click", async () => {
   const botao = document.getElementById("btn-continuar");
+  if (botao.disabled || enviandoAgendamento) return;
+  enviandoAgendamento = true;
   botao.disabled = true;
   botao.textContent = "Agendando...";
 
@@ -235,6 +241,7 @@ document.getElementById("btn-continuar").addEventListener("click", async () => {
     console.error(erro);
     alert("Não foi possível conectar ao servidor. O backend está rodando?");
   } finally {
+    enviandoAgendamento = false;
     botao.textContent = "Confirmar agendamento";
     mostrarResumo();
   }

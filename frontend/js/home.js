@@ -1,15 +1,14 @@
-// Dados fictícios. Depois vêm da API: fetch(`${API_URL}/barbearias`)
-const barbearias = [
-  { id: 1, nome: "Barba & Cia", bairro: "Capão Redondo", nota: 4.8, preco: 45 },
-  { id: 2, nome: "Navalha de Ouro", bairro: "Campo Limpo", nota: 4.6, preco: 50 },
-  { id: 3, nome: "Corte Nobre", bairro: "Santo Amaro", nota: 4.9, preco: 60 },
-  { id: 4, nome: "Old School Barber", bairro: "Pinheiros", nota: 4.7, preco: 70 },
-  { id: 5, nome: "Alfaiate da Barba", bairro: "Butantã", nota: 4.5, preco: 40 },
-  { id: 6, nome: "Estilo Prumo", bairro: "Vila Mariana", nota: 4.8, preco: 55 },
-];
+let barbearias = [];
 
 const lista = document.getElementById("lista");
 const busca = document.getElementById("busca");
+
+const moeda = (v) => Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+const esc = (t) =>
+  String(t ?? "").replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
 
 function mostrar(itens) {
   if (itens.length === 0) {
@@ -23,25 +22,50 @@ function mostrar(itens) {
       <article class="card-barbearia">
         <div class="card-foto"></div>
         <div class="card-corpo">
-          <h2>${b.nome}</h2>
-          <span class="endereco">${b.bairro}</span>
-          <span class="nota">★ ${b.nota.toFixed(1)}</span>
-          <span class="preco">Cortes a partir de R$ ${b.preco}</span>
-          <a class="btn-agendar" href="agendamento.html?id=${b.id}">Agendar</a>
+          <h2>${esc(b.nome)}</h2>
+          <span class="endereco">${esc([b.endereco, b.cidade].filter(Boolean).join(" · "))}</span>
+          ${b.precoMinimo !== null ? `<span class="preco">Serviços a partir de ${moeda(b.precoMinimo)}</span>` : ""}
+          <a class="btn-agendar" href="agendamento.html">Agendar</a>
         </div>
       </article>`
     )
     .join("");
 }
 
+async function carregar() {
+  lista.innerHTML = '<p class="vazio">Carregando...</p>';
+
+  try {
+    const [barbearia, servicos] = await Promise.all([
+      api("/barbershop", { auth: false }),
+      api("/services", { auth: false }),
+    ]);
+
+    if (!barbearia.ok || !barbearia.dados) {
+      barbearias = [];
+    } else {
+      const precos = servicos.ok ? servicos.dados.map((s) => Number(s.preco)) : [];
+      barbearias = [
+        { ...barbearia.dados, precoMinimo: precos.length ? Math.min(...precos) : null },
+      ];
+    }
+    mostrar(barbearias);
+  } catch (erro) {
+    console.error(erro);
+    lista.innerHTML = '<p class="vazio">Não foi possível conectar ao servidor.</p>';
+  }
+}
+
 // Filtra enquanto a pessoa digita
 busca.addEventListener("input", () => {
   const termo = busca.value.toLowerCase();
   mostrar(
-    barbearias.filter(
-      (b) => b.nome.toLowerCase().includes(termo) || b.bairro.toLowerCase().includes(termo)
+    barbearias.filter((b) =>
+      [b.nome, b.endereco, b.cidade].some((campo) => (campo || "").toLowerCase().includes(termo))
     )
   );
 });
 
-mostrar(barbearias);
+document.querySelector(".sair").addEventListener("click", sair);
+
+carregar();

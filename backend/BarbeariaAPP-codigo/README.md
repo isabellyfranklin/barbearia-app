@@ -1,8 +1,7 @@
 # Prumo — back-end Django REST
 
-Único servidor do projeto. Implementa o MVP da segunda entrega sem integração
-com o front-end. Consulte o [contrato](../../docs/API.md) e a
-[rastreabilidade](../../docs/MIGRACAO_BACKEND.md).
+Servidor Django do Prumo. A API REST atende o front-end de cadastro, reservas,
+agenda do barbeiro e administração. Consulte o [contrato da API](../../docs/API.md).
 
 ## Instalação
 
@@ -19,7 +18,7 @@ Configure MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_HOST e MYSQL_PORT.
 Gere SECRET_KEY aleatória com django.core.management.utils.get_random_secret_key.
 DEBUG=True é somente para desenvolvimento. Antes de publicar, use DEBUG=False,
 SECRET_KEY própria, HTTPS e ALLOWED_HOSTS/CORS_ALLOWED_ORIGINS restritos.
-CORS_ALLOWED_ORIGINS recebe as origens da futura interface, sem caminhos.
+CORS_ALLOWED_ORIGINS recebe as origens do front-end, sem caminhos.
 
 ~~~powershell
 python manage.py migrate
@@ -32,7 +31,7 @@ Não execute seed_demo em produção: suas credenciais de demonstração são p�
 
 ## Endereços
 
-- API JSON: /api/v1/
+- Prefixo da API JSON: /api/v1
 - Swagger local: /api/v1/docs
 - OpenAPI: /api/v1/schema (Accept: application/json para JSON)
 - Prontidão: /api/v1/health (200 ou 503)
@@ -40,7 +39,7 @@ Não execute seed_demo em produção: suas credenciais de demonstração são p�
 
 Rotas REST sem barra final. O Admin segue a convenção Django com barra final.
 Os aliases preliminares /api/ permanecem temporariamente disponíveis;
-a futura integração deve usar /api/v1/. Não há compatibilidade com rotas FastAPI.
+o front-end usa /api/v1. Não há compatibilidade com rotas FastAPI.
 
 ## Testes e contrato
 

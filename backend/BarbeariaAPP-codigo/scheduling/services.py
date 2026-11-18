@@ -4,6 +4,7 @@ A prevenção de conflito usa transação + ``SELECT ... FOR UPDATE`` no registr
 profissional. O MySQL não possui exclusion constraint, então o bloqueio da linha
 serializa as reservas concorrentes do mesmo profissional.
 """
+from collections import defaultdict
 from datetime import datetime, time, timedelta
 
 from django.db import transaction
@@ -60,15 +61,19 @@ def _intervalo_do_dia(data):
 
 def _agendamentos_do_dia(profissional, data, excluir_pk=None):
     inicio, fim = _intervalo_do_dia(data)
-    qs = Agendamento.objects.filter(
+    qs = _agendamentos_ativos(profissional, inicio, fim)
+    if excluir_pk:
+        qs = qs.exclude(pk=excluir_pk)
+    return list(qs)
+
+
+def _agendamentos_ativos(profissional, inicio, fim):
+    return Agendamento.objects.filter(
         profissional=profissional,
         status__in=STATUS_ATIVOS,
         data_hora__gte=inicio,
         data_hora__lt=fim,
     )
-    if excluir_pk:
-        qs = qs.exclude(pk=excluir_pk)
-    return list(qs)
 
 
 def existe_conflito(profissional, inicio, fim, excluir_pk=None) -> bool:
@@ -106,42 +111,62 @@ def horarios_disponiveis(
     duracao_minutos: int = INTERVALO_SLOT_MINUTOS,
 ):
     """Retorna a lista de horários livres do profissional em uma data."""
-    duracao = timedelta(minutes=duracao_minutos)
+    return horarios_disponiveis_periodo(profissional, data, data, duracao_minutos).get(data, [])
+
+
+def horarios_disponiveis_periodo(profissional, de, ate, duracao_minutos):
+    """Calcula os dias com horários livres com leituras em lote."""
+    datas = [de + timedelta(days=i) for i in range((ate - de).days + 1)]
+    blocos_por_dia = defaultdict(list)
     blocos = Disponibilidade.objects.filter(
         profissional=profissional,
-        dia_semana=data.weekday(),
+        dia_semana__in={data.weekday() for data in datas},
         ativo=True,
-    ).order_by("hora_inicio")
+    ).values_list("dia_semana", "hora_inicio", "hora_fim")
+    for dia, hora_inicio, hora_fim in blocos:
+        blocos_por_dia[dia].append((hora_inicio, hora_fim))
+    if not blocos_por_dia:
+        return {}
 
-    if not blocos:
-        return []
+    ocupados_por_data = defaultdict(list)
+    inicio, _ = _intervalo_do_dia(de)
+    _, fim = _intervalo_do_dia(ate)
+    reservas = _agendamentos_ativos(profissional, inicio, fim).values_list(
+        "data_hora", "duracao_minutos"
+    )
+    for inicio_reserva, duracao_reserva in reservas:
+        data = timezone.localtime(inicio_reserva).date()
+        ocupados_por_data[data].append(
+            (inicio_reserva, inicio_reserva + timedelta(minutes=duracao_reserva))
+        )
 
     agora = timezone.now()
-    ocupados = [
-        (agendamento.data_hora, agendamento.fim)
-        for agendamento in _agendamentos_do_dia(profissional, data)
-    ]
+    duracao = timedelta(minutes=duracao_minutos)
+    resultado = {}
+    for data in datas:
+        slots = _slots_do_dia(
+            data, blocos_por_dia[data.weekday()], ocupados_por_data[data], duracao, agora
+        )
+        if slots:
+            resultado[data] = slots
+    return resultado
 
-    livres = []
-    for bloco in blocos:
-        candidato = _aware(data, bloco.hora_inicio)
-        fim_bloco = _aware(data, bloco.hora_fim)
+
+def _slots_do_dia(data, blocos, ocupados, duracao, agora):
+    livres = set()
+    passo = timedelta(minutes=INTERVALO_SLOT_MINUTOS)
+    for hora_inicio, hora_fim in blocos:
+        candidato = _aware(data, hora_inicio)
+        fim_bloco = _aware(data, hora_fim)
         while candidato + duracao <= fim_bloco:
             fim_candidato = candidato + duracao
-            ocupado = any(
+            if candidato > agora and not any(
                 _sobrepoe(candidato, fim_candidato, inicio, fim)
                 for inicio, fim in ocupados
-            )
-            if candidato > agora and not ocupado:
-                livres.append(candidato)
-            candidato += timedelta(minutes=INTERVALO_SLOT_MINUTOS)
-
-    livres.sort()
-    unicos = []
-    for slot in livres:
-        if not unicos or unicos[-1] != slot:
-            unicos.append(slot)
-    return unicos
+            ):
+                livres.add(candidato)
+            candidato += passo
+    return sorted(livres)
 
 
 def criar_agendamento(*, cliente, profissional, servico, inicio, observacoes=""):

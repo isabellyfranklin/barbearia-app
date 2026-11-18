@@ -47,11 +47,6 @@
   color: var(--texto-suave);
   font-size: 0.85rem;
 }
-.card-corpo .nota {
-  color: var(--dourado);
-  font-size: 0.85rem;
-}
-
 .btn-agendar {
   margin-top: 8px;
   padding: 12px;

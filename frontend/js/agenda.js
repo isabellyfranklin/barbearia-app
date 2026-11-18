@@ -166,6 +166,6 @@ lista.addEventListener("click", async (e) => {
   }
 });
 
-document.querySelector(".sair").addEventListener("click", () => Sessao.limpar());
+document.querySelector(".sair").addEventListener("click", sair);
 
 if (usuario) carregar();

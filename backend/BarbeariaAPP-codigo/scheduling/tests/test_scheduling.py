@@ -10,6 +10,7 @@ from scheduling.services import (
     cancelar_agendamento,
     criar_agendamento,
     horarios_disponiveis,
+    horarios_disponiveis_periodo,
 )
 
 pytestmark = pytest.mark.django_db
@@ -80,6 +81,29 @@ def test_horarios_disponiveis_consideram_duracao_do_servico(
     assert inicio_em(data, 10) not in slots
     assert inicio_em(data, 10, 30) in slots
     assert inicio_em(data, 11) in slots
+
+
+def test_disponibilidade_periodo_le_em_lote(
+    cliente, profissional, servico, disponibilidade, django_assert_num_queries
+):
+    de = proxima_data_util()
+    ate = de + timedelta(days=14)
+    horario_ocupado = inicio_em(de, 10)
+    criar_agendamento(
+        cliente=cliente, profissional=profissional, servico=servico, inicio=horario_ocupado
+    )
+
+    with django_assert_num_queries(2):
+        dias = horarios_disponiveis_periodo(profissional, de, ate, 30)
+
+    assert list(dias) == [
+        data
+        for i in range(15)
+        if (data := de + timedelta(days=i)).weekday() < 6
+    ]
+    assert horario_ocupado not in dias[de]
+    assert inicio_em(de, 10, 30) in dias[de]
+    assert inicio_em(ate, 10) in dias[ate]
 
 
 def test_criar_agendamento_copia_preco_e_duracao(

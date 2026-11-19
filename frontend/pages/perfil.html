@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta name="api-url" content="">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prumo | Meu perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/perfil.css" />
+</head>
+<body>
+  <header class="topo">
+    <span class="marca">PRUMO</span>
+    <nav class="nav-topo" id="nav-topo">
+      <a href="../index.html" class="sair">Sair</a>
+    </nav>
+  </header>
+
+  <main class="perfil">
+    <h1>Meu perfil</h1>
+    <p class="subtitulo" id="resumo-conta"></p>
+
+    <section class="painel">
+      <h2>Dados pessoais</h2>
+      <form id="form-dados" class="form-campos">
+        <div class="duas-colunas">
+          <label>Nome <input type="text" id="p-nome" maxlength="150" /></label>
+          <label>Sobrenome <input type="text" id="p-sobrenome" maxlength="150" /></label>
+        </div>
+        <div class="duas-colunas">
+          <label>E-mail <input type="email" id="p-email" maxlength="254" /></label>
+          <label>Telefone <input type="tel" id="p-telefone" maxlength="20" required /></label>
+        </div>
+        <div class="botoes">
+          <button type="submit" class="btn primario">Salvar dados</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="painel">
+      <h2>Trocar senha</h2>
+      <form id="form-senha" class="form-campos">
+        <label>Senha atual <input type="password" id="s-atual" autocomplete="current-password" required /></label>
+        <div class="duas-colunas">
+          <label>Nova senha <input type="password" id="s-nova" minlength="8" autocomplete="new-password" required /></label>
+          <label>Confirmar nova senha <input type="password" id="s-confirma" minlength="8" autocomplete="new-password" required /></label>
+        </div>
+        <p class="ajuda">Depois de trocar a senha, você precisará entrar novamente.</p>
+        <div class="botoes">
+          <button type="submit" class="btn primario">Trocar senha</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="../js/api.js"></script>
+  <script src="../js/perfil.js"></script>
+</body>
+</html>

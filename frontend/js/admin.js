@@ -48,7 +48,13 @@ document.querySelectorAll(".item-menu").forEach((item) => {
     if (item.dataset.secao === "servicos") carregarServicos();
     if (item.dataset.secao === "equipe") carregarEquipe();
     if (item.dataset.secao === "relatorios") carregarRelatorio();
+    if (item.dataset.secao === "barbearia") carregarBarbearia();
   });
+});
+
+// Janelas de edição: fecha pelo botão Cancelar
+document.querySelectorAll("dialog [data-fechar]").forEach((botao) => {
+  botao.addEventListener("click", () => botao.closest("dialog").close());
 });
 
 async function carregarDashboard() {
@@ -82,10 +88,11 @@ async function carregarDashboard() {
 }
 
 const tabelaServicos = document.getElementById("tabela-servicos");
+let servicos = [];
 
 async function carregarServicos() {
   const { ok, dados } = await chamar("/admin/services");
-  const servicos = ok ? dados : [];
+  servicos = ok ? dados : [];
 
   if (servicos.length === 0) {
     tabelaServicos.innerHTML = '<tr><td colspan="4">Nenhum serviço cadastrado.</td></tr>';
@@ -99,7 +106,8 @@ async function carregarServicos() {
         <td>${esc(s.nome)}</td>
         <td>${moeda(s.preco)}</td>
         <td>${s.duracao_minutos} min</td>
-        <td>
+        <td style="white-space: nowrap">
+          <button type="button" class="btn" data-editar-servico="${s.id}">Editar</button>
           <button type="button" class="btn ${s.ativo ? "perigo" : ""}" data-servico="${s.id}" data-ativo="${s.ativo}">
             ${s.ativo ? "Desativar" : "Reativar"}
           </button>
@@ -140,7 +148,56 @@ document.getElementById("form-servico").addEventListener("submit", async (e) => 
   }
 });
 
+const modalServico = document.getElementById("modal-servico");
+let servicoEmEdicao = null;
+
+function abrirEdicaoServico(id) {
+  const s = servicos.find((item) => item.id === id);
+  if (!s) return;
+  servicoEmEdicao = id;
+  document.getElementById("es-nome").value = s.nome;
+  document.getElementById("es-descricao").value = s.descricao || "";
+  document.getElementById("es-preco").value = Number(s.preco);
+  document.getElementById("es-duracao").value = s.duracao_minutos;
+  modalServico.showModal();
+}
+
+document.getElementById("form-editar-servico").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const botao = e.target.querySelector("button[type=submit]");
+  botao.disabled = true;
+
+  try {
+    const { ok, dados } = await chamar(`/admin/services/${servicoEmEdicao}`, {
+      method: "PATCH",
+      body: {
+        nome: document.getElementById("es-nome").value.trim(),
+        descricao: document.getElementById("es-descricao").value.trim(),
+        preco: Number(document.getElementById("es-preco").value).toFixed(2),
+        duracao_minutos: Number(document.getElementById("es-duracao").value),
+      },
+    });
+    if (!ok) {
+      alert(mensagemDeErro(dados));
+      return;
+    }
+    modalServico.close();
+    carregarServicos();
+  } catch (erro) {
+    console.error(erro);
+    alert("Não foi possível conectar ao servidor.");
+  } finally {
+    botao.disabled = false;
+  }
+});
+
 tabelaServicos.addEventListener("click", async (e) => {
+  const editar = e.target.closest("button[data-editar-servico]");
+  if (editar) {
+    abrirEdicaoServico(Number(editar.dataset.editarServico));
+    return;
+  }
+
   const botao = e.target.closest("button[data-servico]");
   if (!botao) return;
 
@@ -158,6 +215,7 @@ tabelaServicos.addEventListener("click", async (e) => {
 
 const listaEquipe = document.getElementById("lista-equipe");
 const selectBarbeiro = document.getElementById("h-barbeiro");
+let equipe = [];
 
 async function carregarEquipe() {
   const [profissionais, horarios] = await Promise.all([
@@ -165,7 +223,7 @@ async function carregarEquipe() {
     chamar("/admin/availability"),
   ]);
 
-  const equipe = profissionais.ok ? profissionais.dados : [];
+  equipe = profissionais.ok ? profissionais.dados : [];
   const blocos = horarios.ok ? horarios.dados : [];
 
   const ativos = equipe.filter((p) => p.ativo);
@@ -196,9 +254,12 @@ async function carregarEquipe() {
         <strong>${esc(p.nome)}</strong>
         ${p.especialidades ? `<span>${esc(p.especialidades)}</span>` : ""}
         ${meus.length ? meus.join("") : "<span>Sem horários cadastrados</span>"}
-        <button type="button" class="btn ${p.ativo ? "perigo" : ""}" data-barbeiro="${p.id}" data-ativo="${p.ativo}">
-          ${p.ativo ? "Desativar" : "Reativar"}
-        </button>
+        <div class="acoes-card">
+          <button type="button" class="btn" data-editar-barbeiro="${p.id}">Editar</button>
+          <button type="button" class="btn ${p.ativo ? "perigo" : ""}" data-barbeiro="${p.id}" data-ativo="${p.ativo}">
+            ${p.ativo ? "Desativar" : "Reativar"}
+          </button>
+        </div>
       </div>`;
     })
     .join("");
@@ -279,9 +340,64 @@ document.getElementById("form-horario").addEventListener("submit", async (e) => 
   }
 });
 
+const modalBarbeiro = document.getElementById("modal-barbeiro");
+let barbeiroEmEdicao = null;
+
+function abrirEdicaoBarbeiro(id) {
+  const p = equipe.find((item) => item.id === id);
+  if (!p) return;
+  barbeiroEmEdicao = id;
+  document.getElementById("eb-usuario").textContent = `Usuário de acesso: ${p.username}`;
+  document.getElementById("eb-nome").value = p.first_name || "";
+  document.getElementById("eb-sobrenome").value = p.last_name || "";
+  document.getElementById("eb-telefone").value = p.telefone || "";
+  document.getElementById("eb-email").value = p.email || "";
+  document.getElementById("eb-especialidades").value = p.especialidades || "";
+  document.getElementById("eb-bio").value = p.bio || "";
+  modalBarbeiro.showModal();
+}
+
+document.getElementById("form-editar-barbeiro").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const botao = e.target.querySelector("button[type=submit]");
+  botao.disabled = true;
+
+  try {
+    const { ok, dados } = await chamar(`/admin/professionals/${barbeiroEmEdicao}`, {
+      method: "PATCH",
+      body: {
+        first_name: document.getElementById("eb-nome").value.trim(),
+        last_name: document.getElementById("eb-sobrenome").value.trim(),
+        telefone: document.getElementById("eb-telefone").value.replace(/\D/g, ""),
+        email: document.getElementById("eb-email").value.trim(),
+        especialidades: document.getElementById("eb-especialidades").value.trim(),
+        bio: document.getElementById("eb-bio").value.trim(),
+      },
+    });
+    if (!ok) {
+      alert(mensagemDeErro(dados));
+      return;
+    }
+    modalBarbeiro.close();
+    filtroBarbeiro.innerHTML = "";
+    carregarEquipe();
+  } catch (erro) {
+    console.error(erro);
+    alert("Não foi possível conectar ao servidor.");
+  } finally {
+    botao.disabled = false;
+  }
+});
+
 listaEquipe.addEventListener("click", async (e) => {
   const removerHorario = e.target.closest("button[data-horario]");
   const alterarBarbeiro = e.target.closest("button[data-barbeiro]");
+  const editarBarbeiro = e.target.closest("button[data-editar-barbeiro]");
+
+  if (editarBarbeiro) {
+    abrirEdicaoBarbeiro(Number(editarBarbeiro.dataset.editarBarbeiro));
+    return;
+  }
 
   if (removerHorario) {
     if (!confirm("Remover este horário de trabalho?")) return;
@@ -321,9 +437,24 @@ async function carregarRelatorio() {
   if (filtroBarbeiro.options.length === 0) await carregarFiltroBarbeiros();
 
   const corpo = document.getElementById("tabela-relatorio");
-  const filtro = filtroBarbeiro.value ? `?professional=${filtroBarbeiro.value}` : "";
-  const { ok, dados } = await chamar(`/admin/appointments${filtro}`);
-  const lista = ok ? dados : [];
+  const params = new URLSearchParams();
+  const filtros = {
+    professional: filtroBarbeiro.value,
+    status: document.getElementById("filtro-status").value,
+    from: document.getElementById("filtro-de").value,
+    to: document.getElementById("filtro-ate").value,
+  };
+  Object.entries(filtros).forEach(([chave, valor]) => {
+    if (valor) params.set(chave, valor);
+  });
+
+  const { ok, dados } = await chamar(`/admin/appointments${params.toString() ? `?${params}` : ""}`);
+  if (!ok) {
+    corpo.innerHTML = `<tr><td colspan="6">${esc(mensagemDeErro(dados))}</td></tr>`;
+    document.getElementById("total-relatorio").textContent = "";
+    return;
+  }
+  const lista = dados;
 
   if (lista.length === 0) {
     corpo.innerHTML = '<tr><td colspan="6">Nenhum atendimento encontrado.</td></tr>';
@@ -351,8 +482,70 @@ async function carregarRelatorio() {
     `Total finalizado: ${moeda(concluidos.reduce((soma, a) => soma + Number(a.preco), 0))} (${concluidos.length} atendimentos)`;
 }
 
-filtroBarbeiro.addEventListener("change", carregarRelatorio);
+document.getElementById("form-relatorio").addEventListener("submit", (e) => {
+  e.preventDefault();
+  carregarRelatorio();
+});
 
-document.querySelector(".sair").addEventListener("click", sair);
+document.getElementById("limpar-relatorio").addEventListener("click", () => {
+  document.getElementById("form-relatorio").reset();
+  carregarRelatorio();
+});
+
+const campoBarbearia = (id) => document.getElementById(`bb-${id}`);
+
+function preencherBarbearia(b) {
+  campoBarbearia("nome").value = b.nome || "";
+  campoBarbearia("descricao").value = b.descricao || "";
+  campoBarbearia("endereco").value = b.endereco || "";
+  campoBarbearia("cidade").value = b.cidade || "";
+  campoBarbearia("telefone").value = b.telefone || "";
+  campoBarbearia("email").value = b.email || "";
+  campoBarbearia("atualizado").textContent = b.atualizado_em
+    ? `Última atualização: ${new Date(b.atualizado_em).toLocaleString("pt-BR")}`
+    : "";
+}
+
+async function carregarBarbearia() {
+  const { ok, dados } = await chamar("/barbershop");
+  if (!ok) {
+    alert(mensagemDeErro(dados));
+    return;
+  }
+  preencherBarbearia(dados);
+}
+
+document.getElementById("form-barbearia").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const botao = e.target.querySelector("button[type=submit]");
+  botao.disabled = true;
+
+  try {
+    const { ok, dados } = await chamar("/admin/barbershop", {
+      method: "PATCH",
+      body: {
+        nome: campoBarbearia("nome").value.trim(),
+        descricao: campoBarbearia("descricao").value.trim(),
+        endereco: campoBarbearia("endereco").value.trim(),
+        cidade: campoBarbearia("cidade").value.trim(),
+        telefone: campoBarbearia("telefone").value.trim(),
+        email: campoBarbearia("email").value.trim(),
+      },
+    });
+    if (!ok) {
+      alert(mensagemDeErro(dados));
+      return;
+    }
+    preencherBarbearia(dados);
+    alert("Dados da barbearia atualizados.");
+  } catch (erro) {
+    console.error(erro);
+    alert("Não foi possível conectar ao servidor.");
+  } finally {
+    botao.disabled = false;
+  }
+});
+
+document.getElementById("btn-sair").addEventListener("click", sair);
 
 if (usuario) carregarDashboard().catch((erro) => console.error(erro));

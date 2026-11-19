@@ -15,6 +15,11 @@
   padding: 0;
 }
 
+/* Garante que o atributo hidden esconda mesmo elementos com display definido */
+[hidden] {
+  display: none !important;
+}
+
 button,
 input,
 select {
@@ -53,6 +58,22 @@ h2 {
   font-size: 0.85rem;
   text-decoration: none;
 }
+.nav-topo {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.nav-topo a {
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+.nav-topo a:hover,
+.nav-topo a.atual {
+  color: var(--dourado);
+}
 .subtitulo {
   color: var(--texto-suave);
   margin-bottom: 24px;
@@ -63,6 +84,10 @@ h2 {
   border-radius: 999px;
   font-size: 0.75rem;
   border: 1px solid;
+}
+.badge.pendente {
+  color: var(--texto-suave);
+  border-color: var(--texto-suave);
 }
 .badge.confirmado {
   color: var(--dourado);
@@ -104,7 +129,94 @@ select {
   border-radius: 8px;
 }
 input:focus,
-select:focus {
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--dourado);
+}
+textarea {
+  padding: 10px;
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: inherit;
+  resize: vertical;
+}
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Filtros em linha (histórico, relatórios) */
+.filtros {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+.filtros label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+}
+
+/* Formulários empilhados (perfil, barbearia, modais) */
+.form-campos {
+  display: grid;
+  gap: 14px;
+}
+.form-campos label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+.form-campos .duas-colunas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.form-campos .botoes {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.form-campos .ajuda {
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+}
+
+/* Janela de edição */
+dialog.modal {
+  margin: auto;
+  width: min(480px, calc(100% - 32px));
+  background: var(--superficie);
+  color: var(--texto);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 24px;
+}
+dialog.modal::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+dialog.modal h2 {
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .topo {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 14px 16px;
+  }
+  .form-campos .duas-colunas {
+    grid-template-columns: 1fr;
+  }
 }

@@ -14,7 +14,11 @@
 <body>
   <header class="topo">
     <span class="marca">PRUMO</span>
-    <a href="../index.html" class="sair">Sair</a>
+    <nav class="nav-topo">
+      <a href="agenda.html" class="atual">Minha agenda</a>
+      <a href="perfil.html">Meu perfil</a>
+      <a href="../index.html" class="sair">Sair</a>
+    </nav>
   </header>
 
   <main class="agenda">
@@ -30,7 +34,23 @@
     <div class="abas">
       <button class="btn ativo" data-visao="hoje">Hoje</button>
       <button class="btn" data-visao="semana">Semana</button>
+      <button class="btn" data-visao="historico">Histórico</button>
     </div>
+
+    <form id="filtros" class="filtros" hidden>
+      <label>Status
+        <select id="f-status">
+          <option value="">Todos</option>
+          <option value="pendente">Pendente</option>
+          <option value="confirmado">Confirmado</option>
+          <option value="concluido">Finalizado</option>
+          <option value="cancelado">Cancelado</option>
+        </select>
+      </label>
+      <label>De <input type="date" id="f-de" /></label>
+      <label>Até <input type="date" id="f-ate" /></label>
+      <button type="submit" class="btn">Filtrar</button>
+    </form>
 
     <section id="lista"></section>
   </main>

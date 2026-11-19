@@ -236,7 +236,7 @@ document.getElementById("btn-continuar").addEventListener("click", async () => {
     }
 
     alert(`Agendamento feito! ${horaDoSlot(estado.hora)} com ${estado.barbeiro.nome}.`);
-    window.location.href = "home.html";
+    window.location.href = "meus-agendamentos.html";
   } catch (erro) {
     console.error(erro);
     alert("Não foi possível conectar ao servidor. O backend está rodando?");

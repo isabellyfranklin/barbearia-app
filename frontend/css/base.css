@@ -15,7 +15,6 @@
   padding: 0;
 }
 
-/* Garante que o atributo hidden esconda mesmo elementos com display definido */
 [hidden] {
   display: none !important;
 }
@@ -149,7 +148,6 @@ textarea {
   cursor: default;
 }
 
-/* Filtros em linha (histórico, relatórios) */
 .filtros {
   display: flex;
   gap: 8px;
@@ -165,7 +163,6 @@ textarea {
   color: var(--texto-suave);
 }
 
-/* Formulários empilhados (perfil, barbearia, modais) */
 .form-campos {
   display: grid;
   gap: 14px;
@@ -193,7 +190,6 @@ textarea {
   color: var(--texto-suave);
 }
 
-/* Janela de edição */
 dialog.modal {
   margin: auto;
   width: min(480px, calc(100% - 32px));

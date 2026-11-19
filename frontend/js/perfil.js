@@ -10,7 +10,6 @@ const NOME_PERFIL = {
   administrador: "Administrador",
 };
 
-// Links do topo de acordo com o perfil de quem está logado
 const LINKS_POR_PERFIL = {
   cliente: [
     ["home.html", "Início"],
@@ -80,7 +79,6 @@ campo("form-dados").addEventListener("submit", async (e) => {
       alert(mensagemDeErro(dados));
       return;
     }
-    // Mantém o nome atualizado no restante do site
     localStorage.setItem("usuario", JSON.stringify({ ...usuario, ...dados }));
     preencher(dados);
     alert("Dados atualizados.");
@@ -116,7 +114,6 @@ campo("form-senha").addEventListener("submit", async (e) => {
       alert(mensagemDeErro(dados));
       return;
     }
-    // A API revoga os tokens antigos ao trocar a senha
     alert("Senha alterada. Entre novamente com a nova senha.");
     Sessao.limpar();
     window.location.href = "../index.html";

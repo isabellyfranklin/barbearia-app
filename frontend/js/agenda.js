@@ -95,7 +95,6 @@ function mostrar() {
     (porDia[diaDe(ag.data_hora)] ||= []).push(ag);
   });
 
-  // Semana em ordem cronológica; histórico do mais recente para o mais antigo
   const dias = Object.keys(porDia).sort();
   if (visao === "historico") dias.reverse();
 

@@ -25,8 +25,10 @@
           <button class="item-menu" data-secao="servicos">Serviços</button>
           <button class="item-menu" data-secao="equipe">Equipe</button>
           <button class="item-menu" data-secao="relatorios">Relatórios</button>
+          <button class="item-menu" data-secao="barbearia">Barbearia</button>
         </nav>
-        <a href="../index.html" class="sair">Sair</a>
+        <a href="perfil.html" class="sair">Meu perfil</a>
+        <a href="../index.html" class="sair" id="btn-sair">Sair</a>
       </aside>
 
       <main class="conteudo">
@@ -131,8 +133,23 @@
 
         <section id="relatorios" class="secao">
           <h1>Relatórios</h1>
-          <p class="subtitulo">Atendimentos por profissional.</p>
-          <select id="filtro-barbeiro"></select>
+          <p class="subtitulo">Atendimentos por profissional, período e status.</p>
+          <form id="form-relatorio" class="filtros">
+            <label>Barbeiro <select id="filtro-barbeiro"></select></label>
+            <label>Status
+              <select id="filtro-status">
+                <option value="">Todos</option>
+                <option value="pendente">Pendente</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="concluido">Finalizado</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+            </label>
+            <label>De <input type="date" id="filtro-de" /></label>
+            <label>Até <input type="date" id="filtro-ate" /></label>
+            <button type="submit" class="btn primario">Filtrar</button>
+            <button type="button" class="btn" id="limpar-relatorio">Limpar</button>
+          </form>
           <div class="tabela-rolagem">
             <table>
               <thead>
@@ -150,8 +167,66 @@
           </div>
           <p class="total" id="total-relatorio"></p>
         </section>
+
+        <section id="barbearia" class="secao">
+          <h1>Barbearia</h1>
+          <p class="subtitulo">Dados exibidos para os clientes.</p>
+          <form id="form-barbearia" class="form-campos painel-form">
+            <label>Nome <input type="text" id="bb-nome" maxlength="120" required /></label>
+            <label>Descrição <textarea id="bb-descricao" rows="3"></textarea></label>
+            <div class="duas-colunas">
+              <label>Endereço <input type="text" id="bb-endereco" maxlength="255" /></label>
+              <label>Cidade <input type="text" id="bb-cidade" maxlength="100" /></label>
+            </div>
+            <div class="duas-colunas">
+              <label>Telefone <input type="tel" id="bb-telefone" maxlength="20" /></label>
+              <label>E-mail <input type="email" id="bb-email" maxlength="254" /></label>
+            </div>
+            <p class="ajuda" id="bb-atualizado"></p>
+            <div class="botoes">
+              <button type="submit" class="btn primario">Salvar dados</button>
+            </div>
+          </form>
+        </section>
       </main>
     </div>
+
+    <dialog id="modal-servico" class="modal">
+      <h2>Editar serviço</h2>
+      <form id="form-editar-servico" class="form-campos">
+        <label>Nome <input type="text" id="es-nome" maxlength="120" required /></label>
+        <label>Descrição <textarea id="es-descricao" rows="2"></textarea></label>
+        <div class="duas-colunas">
+          <label>Preço (R$) <input type="number" id="es-preco" min="0" step="0.01" required /></label>
+          <label>Duração (min) <input type="number" id="es-duracao" min="5" required /></label>
+        </div>
+        <div class="botoes">
+          <button type="button" class="btn" data-fechar>Cancelar</button>
+          <button type="submit" class="btn primario">Salvar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="modal-barbeiro" class="modal">
+      <h2>Editar barbeiro</h2>
+      <form id="form-editar-barbeiro" class="form-campos">
+        <p class="ajuda" id="eb-usuario"></p>
+        <div class="duas-colunas">
+          <label>Nome <input type="text" id="eb-nome" maxlength="150" /></label>
+          <label>Sobrenome <input type="text" id="eb-sobrenome" maxlength="150" /></label>
+        </div>
+        <div class="duas-colunas">
+          <label>Telefone <input type="tel" id="eb-telefone" maxlength="20" required /></label>
+          <label>E-mail <input type="email" id="eb-email" maxlength="254" /></label>
+        </div>
+        <label>Especialidades <input type="text" id="eb-especialidades" maxlength="255" placeholder="Ex.: degradê, barba" /></label>
+        <label>Bio <textarea id="eb-bio" rows="3"></textarea></label>
+        <div class="botoes">
+          <button type="button" class="btn" data-fechar>Cancelar</button>
+          <button type="submit" class="btn primario">Salvar</button>
+        </div>
+      </form>
+    </dialog>
 
     <script src="../js/api.js"></script>
     <script src="../js/admin.js"></script>

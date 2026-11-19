@@ -131,6 +131,25 @@ th {
   color: var(--texto-suave);
   font-weight: 500;
 }
+.acoes-card {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.painel-form {
+  max-width: 640px;
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 20px;
+}
+.painel-form input,
+.painel-form textarea,
+dialog.modal input,
+dialog.modal textarea {
+  background: var(--fundo);
+}
 .total {
   margin-top: 16px;
   color: var(--dourado);

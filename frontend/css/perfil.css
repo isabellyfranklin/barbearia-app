@@ -1,0 +1,28 @@
+.perfil {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+.perfil h1 {
+  margin-bottom: 8px;
+}
+.painel {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.painel h2 {
+  font-size: 1.1rem;
+  margin-bottom: 16px;
+}
+.painel input {
+  background: var(--fundo);
+}
+
+@media (max-width: 600px) {
+  .perfil {
+    padding: 24px 16px;
+  }
+}

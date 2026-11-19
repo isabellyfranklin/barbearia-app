@@ -19,7 +19,7 @@ const horaDe = (dataHora) => dataHora.slice(11, 16);
 const diaDe = (dataHora) => dataHora.slice(0, 10);
 
 const BADGE = {
-  pendente: { classe: "", texto: "Pendente" },
+  pendente: { classe: "pendente", texto: "Pendente" },
   confirmado: { classe: "confirmado", texto: "Confirmado" },
   concluido: { classe: "finalizado", texto: "Finalizado" },
   cancelado: { classe: "cancelado", texto: "Cancelado" },
@@ -80,7 +80,8 @@ function mostrar() {
     agendamentos.filter((a) => a.status === "cancelado").length;
 
   if (agendamentos.length === 0) {
-    lista.innerHTML = `<p class="vazio">Nenhum atendimento ${visao === "hoje" ? "hoje" : "nesta semana"}.</p>`;
+    const quando = { hoje: "hoje", semana: "nesta semana", historico: "no período" }[visao];
+    lista.innerHTML = `<p class="vazio">Nenhum atendimento ${quando}.</p>`;
     return;
   }
 
@@ -94,17 +95,37 @@ function mostrar() {
     (porDia[diaDe(ag.data_hora)] ||= []).push(ag);
   });
 
-  lista.innerHTML = Object.keys(porDia)
-    .sort()
+  const dias = Object.keys(porDia).sort();
+  if (visao === "historico") dias.reverse();
+
+  lista.innerHTML = dias
     .map((dia) => `<p class="dia">${nomeDoDia(dia)}</p>${porDia[dia].map(itemHTML).join("")}`)
     .join("");
+}
+
+function caminhoHistorico() {
+  const params = new URLSearchParams();
+  const status = document.getElementById("f-status").value;
+  const de = document.getElementById("f-de").value;
+  const ate = document.getElementById("f-ate").value;
+  if (status) params.set("status", status);
+  if (de) params.set("from", de);
+  if (ate) params.set("to", ate);
+  const base = usuario.perfil === "administrador" ? "/admin/history" : "/me/history/professional";
+  return params.toString() ? `${base}?${params}` : base;
 }
 
 async function carregar() {
   lista.innerHTML = '<p class="vazio">Carregando...</p>';
 
+  const caminhos = {
+    hoje: "/me/agenda",
+    semana: "/me/agenda/week",
+    historico: caminhoHistorico(),
+  };
+
   try {
-    const { ok, status, dados } = await api(visao === "hoje" ? "/me/agenda" : "/me/agenda/week");
+    const { ok, status, dados } = await api(caminhos[visao]);
 
     if (status === 401) {
       alert("Sua sessão expirou. Entre novamente.");
@@ -117,7 +138,7 @@ async function carregar() {
       return;
     }
 
-    agendamentos = (visao === "hoje" ? dados : dados.appointments).sort((a, b) =>
+    agendamentos = (visao === "semana" ? dados.appointments : dados).sort((a, b) =>
       a.data_hora.localeCompare(b.data_hora)
     );
     mostrar();
@@ -132,8 +153,14 @@ abas.forEach((aba) => {
     abas.forEach((a) => a.classList.remove("ativo"));
     aba.classList.add("ativo");
     visao = aba.dataset.visao;
+    document.getElementById("filtros").hidden = visao !== "historico";
     carregar();
   });
+});
+
+document.getElementById("filtros").addEventListener("submit", (e) => {
+  e.preventDefault();
+  carregar();
 });
 
 lista.addEventListener("click", async (e) => {

@@ -1,7 +1,7 @@
 const usuario = Sessao.usuario();
 if (!usuario || usuario.perfil !== "cliente") {
   alert("Acesso restrito a clientes.");
-  window.location.href = "../index.html";
+  window.location.href = "../../index.html";
 }
 
 const lista = document.getElementById("lista");
@@ -74,7 +74,7 @@ function mostrar() {
 function sessaoExpirada() {
   alert("Sua sessão expirou. Entre novamente.");
   Sessao.limpar();
-  window.location.href = "../index.html";
+  window.location.href = "../../index.html";
 }
 
 async function carregar() {

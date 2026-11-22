@@ -27,9 +27,9 @@ const Sessao = {
 };
 
 const ROTAS_POR_PERFIL = {
-  cliente: "pages/home.html",
-  barbeiro: "pages/agenda.html",
-  administrador: "pages/admin.html",
+  cliente: "frontend/pages/agendamento.html",
+  barbeiro: "frontend/pages/agenda.html",
+  administrador: "frontend/pages/admin.html",
 };
 
 function renovarToken() {

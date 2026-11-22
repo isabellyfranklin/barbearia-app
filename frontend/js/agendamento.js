@@ -1,7 +1,7 @@
 const usuario = Sessao.usuario();
 if (!usuario) {
   alert("Faça login para agendar.");
-  window.location.href = "../index.html";
+  window.location.href = "../../index.html";
 }
 
 let servicos = [];
@@ -221,7 +221,7 @@ document.getElementById("btn-continuar").addEventListener("click", async () => {
     if (status === 401) {
       alert("Sua sessão expirou. Entre novamente.");
       Sessao.limpar();
-      window.location.href = "../index.html";
+      window.location.href = "../../index.html";
       return;
     }
     if (status === 403) {
@@ -248,3 +248,5 @@ document.getElementById("btn-continuar").addEventListener("click", async () => {
 });
 
 if (usuario) carregarDados();
+
+document.querySelector(".sair").addEventListener("click", sair);

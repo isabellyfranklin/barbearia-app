@@ -1,7 +1,7 @@
 const usuario = Sessao.usuario();
 if (!usuario || !["barbeiro", "administrador"].includes(usuario.perfil)) {
   alert("Acesso restrito a barbeiros.");
-  window.location.href = "../index.html";
+  window.location.href = "../../index.html";
 }
 
 const lista = document.getElementById("lista");
@@ -130,7 +130,7 @@ async function carregar() {
     if (status === 401) {
       alert("Sua sessão expirou. Entre novamente.");
       Sessao.limpar();
-      window.location.href = "../index.html";
+      window.location.href = "../../index.html";
       return;
     }
     if (!ok) {

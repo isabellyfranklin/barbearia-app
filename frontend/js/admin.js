@@ -1,7 +1,7 @@
 const usuario = Sessao.usuario();
 if (!usuario || usuario.perfil !== "administrador") {
   alert("Acesso restrito ao administrador.");
-  window.location.href = "../index.html";
+  window.location.href = "../../index.html";
 }
 
 const moeda = (v) => Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -25,7 +25,7 @@ async function chamar(caminho, opcoes) {
   if (resposta.status === 401) {
     alert("Sua sessão expirou. Entre novamente.");
     Sessao.limpar();
-    window.location.href = "../index.html";
+    window.location.href = "../../index.html";
   }
   return resposta;
 }

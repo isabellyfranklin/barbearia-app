@@ -134,7 +134,10 @@ SIMPLE_JWT = {
     "CHECK_REVOKE_TOKEN": True,
 }
 
-CORS_ALLOWED_ORIGINS = env_list("CORS_ALLOWED_ORIGINS", "http://localhost:3000")
+CORS_ALLOWED_ORIGINS = [
+    origin.rstrip("/")
+    for origin in env_list("CORS_ALLOWED_ORIGINS", "http://localhost:3000")
+]
 CORS_ALLOW_ALL_ORIGINS = env_bool("CORS_ALLOW_ALL_ORIGINS", False)
 
 CSRF_TRUSTED_ORIGINS = env_list("CSRF_TRUSTED_ORIGINS", "")

@@ -1,7 +1,7 @@
 const usuario = Sessao.usuario();
 if (!usuario) {
   alert("Entre na sua conta para ver o perfil.");
-  window.location.href = "../index.html";
+  window.location.href = "../../index.html";
 }
 
 const NOME_PERFIL = {
@@ -12,7 +12,7 @@ const NOME_PERFIL = {
 
 const LINKS_POR_PERFIL = {
   cliente: [
-    ["home.html", "Início"],
+    ["agendamento.html", "Agendar"],
     ["meus-agendamentos.html", "Meus agendamentos"],
   ],
   barbeiro: [["agenda.html", "Minha agenda"]],
@@ -32,7 +32,7 @@ const campo = (id) => document.getElementById(id);
 function sessaoExpirada() {
   alert("Sua sessão expirou. Entre novamente.");
   Sessao.limpar();
-  window.location.href = "../index.html";
+  window.location.href = "../../index.html";
 }
 
 function preencher(dados) {
@@ -116,7 +116,7 @@ campo("form-senha").addEventListener("submit", async (e) => {
     }
     alert("Senha alterada. Entre novamente com a nova senha.");
     Sessao.limpar();
-    window.location.href = "../index.html";
+    window.location.href = "../../index.html";
   } catch (erro) {
     console.error(erro);
     alert("Não foi possível conectar ao servidor.");

@@ -26,7 +26,7 @@ form.addEventListener("submit", async (e) => {
     }
 
     Sessao.salvar(dados);
-    window.location.href = ROTAS_POR_PERFIL[dados.user.perfil] || "pages/home.html";
+    window.location.href = ROTAS_POR_PERFIL[dados.user.perfil] || ROTAS_POR_PERFIL.cliente;
   } catch (erro) {
     alert("Não foi possível conectar ao servidor. O backend está rodando?");
     console.error(erro);

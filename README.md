@@ -81,7 +81,7 @@ seguintes contas na tela de login.
 Em outro terminal, a partir da raiz do repositório, execute:
 
 ```sh
-python3 -m http.server 3000 --directory frontend
+python3 -m http.server 3000
 ```
 
 No Windows, use `python` no lugar de `python3`. Abra [a aplicação](http://localhost:3000)
@@ -109,7 +109,7 @@ e use uma das contas de demonstração ou cadastre um cliente.
 Em desenvolvimento, o front-end usa `http://localhost:8000/api/v1`. Em outros
 hosts, o padrão é `/api/v1` na mesma origem do front-end. Para servir a API em outra
 origem, preencha o atributo `content` da meta tag `api-url` em
-`frontend/index.html` e nos HTMLs em `frontend/pages/` com a URL base da API,
+`index.html` (na raiz) e nos HTMLs em `frontend/pages/` com a URL base da API,
 incluindo `/api/v1`. Adicione a origem do front-end a `CORS_ALLOWED_ORIGINS` no
 `.env` do Django. Mantenha o `.env` e as credenciais reais fora do Git.
 

@@ -19,7 +19,7 @@ O vídeo da segunda entrega (2 min 18 s) mostra o fluxo de reserva do cliente,
 a agenda do barbeiro e a consulta no painel administrativo.
 
 - [Assistir à demonstração no YouTube](https://youtu.be/BhizxM86HcI)
-- [Consultar o relatório revisado da segunda entrega (PDF)](https://drive.google.com/file/d/15WlE3Lg6GRsZNU949bXXKXKWg6LY65oQ/view)
+- [Consultar o relatório final da segunda entrega (PDF)](https://drive.google.com/file/d/1_0cYqxTDlOh7DNq7runcqwhsx618mZxw/view)
 
 ## Como as partes se conectam
 

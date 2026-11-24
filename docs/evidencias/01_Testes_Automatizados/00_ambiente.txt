@@ -1,0 +1,5 @@
+Data: 2026-11-23 14:57:33 -03:00
+Repositorio: C:\Users\ruan.rodrigues\OneDrive - Elfa Medicamentos Ltda\Área de Trabalho\barbearia-app
+Commit: 2a8a2a4
+Branch: master
+Git status:

@@ -107,9 +107,19 @@
   flex-wrap: wrap;
   margin-bottom: 16px;
 }
-.linha-form input {
-  flex: 1;
-  min-width: 140px;
+.linha-form .campo {
+  display: flex;
+  flex: 1 1 140px;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.linha-form label {
+  font-size: 0.85rem;
+  color: var(--texto-suave);
+}
+.linha-form button {
+  align-self: flex-end;
 }
 
 .tabela-rolagem {

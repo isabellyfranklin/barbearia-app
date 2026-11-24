@@ -1,0 +1,20 @@
+PRUMO - REVALIDAÇÃO LOCAL - 23/11/2026
+
+Revalidação local em 23/11/2026, horário de Brasília, com Chrome, Django 5.2.19, Python 3.15.2 e MySQL 8.4.13 isolado.
+Commit base: 2a8a2a4. Rótulos corrigidos na cópia local.
+24 de 26 casos aprovados (92,31%), 1 em verificação e 1 bloqueado. A suíte do backend teve 70 de 70 testes aprovados.
+
+Suíte do backend: python -m pytest -q, 70 testes coletados e aprovados, código de saída 0. Foram emitidos 52 avisos sobre staticfiles.
+Para testar a expiração real no Django, o access token durou cinco segundos somente na configuração temporária.
+
+Antes de iniciar o Chrome, o endpoint GET /api/v1/health respondeu HTTP 200.
+
+Saída da execução no Chrome (Playwright), código de saída 0
+TC-03: formulário retornou 201, iniciou sessão de cliente e abriu agendamento.
+TC-25 renovação (1 requisições): GET /me 401, POST /auth/refresh 200, GET /me 200
+TC-25 renovação (3 requisições): GET /me 401, GET /me 401, GET /me 401, POST /auth/refresh 200, GET /me 200, GET /me 200, GET /me 200
+TC-25 logout: POST /auth/logout 401, POST /auth/refresh 200, POST /auth/logout 204, token revogado rejeitado com 401.
+TC-24: 31 campos com rótulo no DOM e 11 nomes acessíveis confirmados no Chrome.
+TC-07: gravação via painel retornou 200 e dados persistiram após recarga e na API pública.
+
+Pendências de aceitação: auditoria completa de acessibilidade (TC-24) e execução com Docker (TC-26).

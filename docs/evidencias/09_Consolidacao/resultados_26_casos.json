@@ -1,0 +1,253 @@
+[
+  {
+    "caso": "TC-01",
+    "titulo": "Infraestrutura / MySQL",
+    "status": "APROVADO",
+    "observado": "HTTP 200; status=ok e database=ok.",
+    "evidencias": [
+      "09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt"
+    ]
+  },
+  {
+    "caso": "TC-02",
+    "titulo": "Migrações / seis entidades",
+    "status": "APROVADO",
+    "observado": "Seis tabelas InnoDB; migrações aplicadas; check sem pendências.",
+    "evidencias": []
+  },
+  {
+    "caso": "TC-03",
+    "titulo": "Cadastro de cliente",
+    "status": "APROVADO",
+    "observado": "O formulário de cadastro retornou HTTP 201, iniciou a sessão de cliente e abriu a página de agendamento.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json",
+      "09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt"
+    ]
+  },
+  {
+    "caso": "TC-04",
+    "titulo": "Validação do cadastro e perfil",
+    "status": "APROVADO",
+    "observado": "API rejeitou senha fraca/divergente (400); perfil administrador enviado no cadastro não elevou privilégios.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-05",
+    "titulo": "Login dos perfis e logout",
+    "status": "APROVADO",
+    "observado": "Três perfis acessados na interface; senha incorreta 401; logout revogou refresh em teste API.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-06",
+    "titulo": "Perfil e troca de senha",
+    "status": "APROVADO",
+    "observado": "API: telefone alterado; senha trocada (204); senha antiga e access anterior rejeitados (401). Tela Meu perfil não percorrida.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-07",
+    "titulo": "Cadastro da barbearia",
+    "status": "APROVADO",
+    "observado": "O painel salvou nome e cidade com HTTP 200. Os valores persistiram após recarregar e foram confirmados na API pública.",
+    "evidencias": [
+      "05_Administrador/TC-07_barbearia.png",
+      "06_Integracao_Negativos/api_resultados.json",
+      "09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt"
+    ]
+  },
+  {
+    "caso": "TC-08",
+    "titulo": "Profissionais",
+    "status": "APROVADO",
+    "observado": "API: criou profissional, desativou, verificou ausência pública e reativou; desativado ao final.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-09",
+    "titulo": "Serviços",
+    "status": "APROVADO",
+    "observado": "API: criou serviço, editou preço/duração e desativou; ausência pública verificada. Catálogo capturado na interface.",
+    "evidencias": [
+      "05_Administrador/TC-09_servicos.png",
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-10",
+    "titulo": "Disponibilidade",
+    "status": "APROVADO",
+    "observado": "API: dois blocos criados, um removido e redução de slots comprovada; bloco restante removido ao final.",
+    "evidencias": [
+      "05_Administrador/TC-10_disponibilidade.png",
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-11",
+    "titulo": "Duração e horários livres",
+    "status": "APROVADO",
+    "observado": "API consultada com serviços de 30 e 60 minutos; interface apresentou horários. Regra de duração também coberta pelo pytest.",
+    "evidencias": [
+      "03_Cliente/TC-11_horarios.png",
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-12",
+    "titulo": "Horário inválido",
+    "status": "APROVADO",
+    "observado": "Data passada e horário fora do expediente rejeitados com 400.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-13",
+    "titulo": "Reserva pela interface",
+    "status": "APROVADO",
+    "observado": "Reserva 24 criada pela interface: 24/11/2026 10:00, João, corte, R$ 50 e 30 min; SQL pendente e confirmado.",
+    "evidencias": [
+      "03_Cliente/TC-13_reserva_final_confirmada.png",
+      "03_Cliente/TC-13_reserva_pendente.png"
+    ]
+  },
+  {
+    "caso": "TC-14",
+    "titulo": "Conflito entre clientes",
+    "status": "APROVADO",
+    "observado": "Outro cliente tentou o horário da reserva 24 e recebeu 400. SQL final sem sobreposições ativas.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-15",
+    "titulo": "Concorrência MySQL",
+    "status": "APROVADO",
+    "observado": "Três testes concorrentes aprovados em MySQL real, incluídos nos 70 testes. JUnit identifica cada caso.",
+    "evidencias": [
+      "01_Testes_Automatizados/09_concorrencia_mysql.txt"
+    ]
+  },
+  {
+    "caso": "TC-16",
+    "titulo": "Histórico e isolamento",
+    "status": "APROVADO",
+    "observado": "Dois clientes consultados; reserva 24 ausente para o outro cliente; filtros e histórico registrados.",
+    "evidencias": [
+      "03_Cliente/TC-16_historico_cliente.png",
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-17",
+    "titulo": "Cancelamento e liberação",
+    "status": "APROVADO",
+    "observado": "Reserva 25 cancelada pela API e 27 pela interface; horário liberado. Reserva já iniciada 23: cancelamento 400.",
+    "evidencias": [
+      "03_Cliente/TC-17_cancelamento.png",
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-18",
+    "titulo": "Agenda do barbeiro",
+    "status": "APROVADO",
+    "observado": "Hoje, semana e histórico consultados; confirmação de João registrada; filtros de período/status consultados na API.",
+    "evidencias": [
+      "04_Barbeiro/TC-18_agenda_semana.png",
+      "04_Barbeiro/TC-18_historico_barbeiro.png",
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-19",
+    "titulo": "Transições de status",
+    "status": "APROVADO",
+    "observado": "24: pendente para confirmado na interface de João. 26: confirmado para concluído via API admin (simulação). Reabertura de cancelado e concluído: 400.",
+    "evidencias": [
+      "04_Barbeiro/TC-19_agendamento_confirmado.png",
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-20",
+    "titulo": "Autorização",
+    "status": "APROVADO",
+    "observado": "Cliente sem permissão: 403; outro barbeiro consultando: 404 e alterando: 403. Reserva 24 permaneceu confirmada.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-21",
+    "titulo": "Relatórios administrativos",
+    "status": "APROVADO",
+    "observado": "Relatório por João, datas e confirmado mostrou a reserva 24. SQL distingue R$ 47 concluídos simulados de R$ 50 confirmados.",
+    "evidencias": [
+      "05_Administrador/TC-21_dashboard.png",
+      "05_Administrador/TC-21_relatorio_confirmados.png",
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-22",
+    "titulo": "Preço e duração históricos",
+    "status": "APROVADO",
+    "observado": "Reserva 25 manteve R$ 35 e 30 min após serviço passar a R$ 47 e 45 min.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json"
+    ]
+  },
+  {
+    "caso": "TC-23",
+    "titulo": "Responsividade",
+    "status": "APROVADO",
+    "observado": "Reservas criadas em 375, 768 e 1366 px; scrollWidth igual à largura. Reservas auxiliares canceladas.",
+    "evidencias": [
+      "07_Responsividade/mobile_375.png",
+      "07_Responsividade/tablet_768.png",
+      "07_Responsividade/desktop_1366.png"
+    ]
+  },
+  {
+    "caso": "TC-24",
+    "titulo": "Acessibilidade",
+    "status": "EM VERIFICAÇÃO",
+    "observado": "Os 31 campos do painel têm rótulo. O Chrome confirmou o nome acessível dos 11 campos corrigidos. A auditoria completa segue pendente. A execução anterior também registrou foco visível e confirmação de reserva por teclado.",
+    "evidencias": [
+      "07_Responsividade/TC-24_confirmacao_teclado.png",
+      "07_Responsividade/TC-24_teclado_foco.png",
+      "09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt"
+    ]
+  },
+  {
+    "caso": "TC-25",
+    "titulo": "Renovação e revogação JWT",
+    "status": "APROVADO",
+    "observado": "A API real confirmou renovação após 401, uma única renovação para três requisições simultâneas e revogação do token no logout.",
+    "evidencias": [
+      "06_Integracao_Negativos/api_resultados.json",
+      "09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt"
+    ]
+  },
+  {
+    "caso": "TC-26",
+    "titulo": "Docker / nuvem",
+    "status": "BLOQUEADO",
+    "observado": "Docker indisponível no ambiente. Build, verificação de saúde em contêiner e implantação em nuvem seguem pendentes.",
+    "evidencias": [
+      "09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt"
+    ]
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "reserva_principal": 24,
+  "reserva_cancelada": 25,
+  "reserva_concluida_simulada": 26,
+  "profissional_desativado": 36,
+  "servico_desativado": 36
+}

@@ -1,0 +1,28 @@
+PRUMO - EVIDÊNCIAS DE EXECUÇÃO - 23/11/2026
+
+Abra LEIA_ME.html para navegar nas evidências ou Relatorio_Execucao.pdf para o resumo.
+24 de 26 casos aprovados (92,31%), 1 em verificação e 1 bloqueado. A suíte do backend teve 70 de 70 testes aprovados.
+Execução anterior da suíte: 70 passed, 0 failed, 0 skipped, 52 warnings em 84,16 s. Os 3 testes de concorrência estão incluídos nos 70.
+
+Revalidação local em 23/11/2026, horário de Brasília, com Chrome, Django 5.2.19, Python 3.15.2 e MySQL 8.4.13 isolado.
+Registro local: 09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt
+
+RESERVAS E DADOS DA EXECUÇÃO ANTERIOR
+24: jornada principal, confirmada, João, 24/11/2026 10h, R$ 50, 30 min.
+25: cancelamento/preço histórico, cancelada.
+26: conclusão SIMULADA, R$ 47; permanece no histórico e afeta o faturamento demonstrativo.
+27, 28, 29: responsividade; canceladas, horários liberados.
+Serviço 36 e profissional 36 foram criados para testes e desativados; blocos auxiliares removidos.
+Clientes fictícios 81-84 permanecem registrados; senhas aleatórias não incluídas nos entregáveis.
+As reservas e contas anteriores foram preservadas.
+
+LIMITES
+Pendências de aceitação: auditoria completa de acessibilidade (TC-24) e execução com Docker (TC-26). Vídeo funcional narrado e publicação no YouTube não realizados. A pasta 02_Banco_Dados contém as capturas disponíveis do banco.
+A revalidação local corrigiu os rótulos dos formulários administrativos. Na execução anterior, não houve alteração no código ou nova migração. migrate --check substituiu migrate, pois não havia migração pendente.
+O Python da Microsoft Store não iniciou sob as restrições da sessão; os testes usaram Python 3.12.14 com dependências em work/test-packages. Os servidores existentes foram reutilizados.
+HEAD legível; git status indisponível por restrição de acesso/worktree. Integridade das fontes registrada por SHA-256; não se afirma checkout limpo.
+Avisos pytest: ausência da pasta staticfiles, 52 repetições; nenhum teste falhou.
+Duas tentativas iniciais do roteiro API foram corrigidas: sucesso 204 de troca de senha e telefone fictício já usado. São problemas da preparação do roteiro, não defeitos atribuídos ao produto. A execução final com telefone único passou.
+
+Rastreabilidade: logs com códigos de saída, respostas da API, capturas do banco e manifesto SHA-256.
+Fonte do roteiro: chat Desenvolvimento Barbearia App e matriz https://docs.google.com/document/d/1r-l9uKmfwnSDNI9DHn1za3FfwX7b5SkENzQiFXoVL4Y/edit

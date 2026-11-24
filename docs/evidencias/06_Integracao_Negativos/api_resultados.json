@@ -1,0 +1,2509 @@
+[
+  {
+    "caso": "TC-05",
+    "hora": "2026-11-23T14:15:54.705746-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "admin",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 77,
+        "username": "admin",
+        "email": "[OCULTO]",
+        "first_name": "Ana",
+        "last_name": "Proprietária",
+        "telefone": "[OCULTO]",
+        "perfil": "administrador"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-05",
+    "hora": "2026-11-23T14:15:56.089813-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "cliente",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 80,
+        "username": "cliente",
+        "email": "[OCULTO]",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]",
+        "perfil": "cliente"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-05",
+    "hora": "2026-11-23T14:15:57.355485-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "joao",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 78,
+        "username": "joao",
+        "email": "[OCULTO]",
+        "first_name": "João",
+        "last_name": "Silva",
+        "telefone": "[OCULTO]",
+        "perfil": "barbeiro"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-05",
+    "hora": "2026-11-23T14:15:58.642452-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "carlos",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 79,
+        "username": "carlos",
+        "email": "[OCULTO]",
+        "first_name": "Carlos",
+        "last_name": "Souza",
+        "telefone": "[OCULTO]",
+        "perfil": "barbeiro"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-05",
+    "hora": "2026-11-23T14:15:59.885580-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "cliente",
+      "password": "[oculto]"
+    },
+    "http": 401,
+    "esperado_http": [
+      401
+    ],
+    "resultado": {
+      "detail": "No active account found with the given credentials"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-09",
+    "hora": "2026-11-23T14:16:00.133661-03:00",
+    "metodo": "GET",
+    "rota": "/services",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 33,
+        "nome": "Barba",
+        "descricao": "Aparo e modelagem da barba.",
+        "duracao_minutos": 30,
+        "preco": "40.00",
+        "ativo": true
+      },
+      {
+        "id": 34,
+        "nome": "Corte + barba",
+        "descricao": "Combo completo de corte e barba.",
+        "duracao_minutos": 60,
+        "preco": "80.00",
+        "ativo": true
+      },
+      {
+        "id": 32,
+        "nome": "Corte masculino",
+        "descricao": "Corte com máquina e tesoura.",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "ativo": true
+      },
+      {
+        "id": 35,
+        "nome": "Sobrancelha",
+        "descricao": "Design de sobrancelha masculina.",
+        "duracao_minutos": 15,
+        "preco": "20.00",
+        "ativo": true
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-08",
+    "hora": "2026-11-23T14:16:00.401785-03:00",
+    "metodo": "GET",
+    "rota": "/professionals",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 35,
+        "nome": "Carlos Souza",
+        "especialidades": "Corte, barba e sobrancelha",
+        "bio": "Atendimento clássico e social.",
+        "ativo": true
+      },
+      {
+        "id": 34,
+        "nome": "João Silva",
+        "especialidades": "Corte masculino, barba",
+        "bio": "Barbeiro há 10 anos, especialista em degradê.",
+        "ativo": true
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-13",
+    "hora": "2026-11-23T14:16:00.590070-03:00",
+    "metodo": "GET",
+    "rota": "/appointments/24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 24,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 34,
+      "profissional_nome": "João Silva",
+      "servico": 32,
+      "servico_nome": "Corte masculino",
+      "data_hora": "2026-11-24T10:00:00-03:00",
+      "fim": "2026-11-24T10:30:00-03:00",
+      "duracao_minutos": 30,
+      "preco": "50.00",
+      "status": "confirmado",
+      "status_display": "Confirmado",
+      "observacoes": "",
+      "criado_em": "2026-11-23T14:10:13.418309-03:00",
+      "atualizado_em": "2026-11-23T14:11:47.885264-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-14",
+    "hora": "2026-11-23T14:16:00.905927-03:00",
+    "metodo": "POST",
+    "rota": "/appointments",
+    "entrada": {
+      "profissional": 34,
+      "servico": 32,
+      "data_hora": "2026-11-24T10:00:00-03:00"
+    },
+    "http": 400,
+    "esperado_http": [
+      400
+    ],
+    "resultado": {
+      "data_hora": "Horário já está ocupado."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-20",
+    "hora": "2026-11-23T14:16:01.120186-03:00",
+    "metodo": "PATCH",
+    "rota": "/me/agenda/24/status",
+    "entrada": {
+      "status": "concluido"
+    },
+    "http": 403,
+    "esperado_http": [
+      403
+    ],
+    "resultado": {
+      "detail": "Acesso restrito a barbeiros e administradores."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-20",
+    "hora": "2026-11-23T14:16:01.366660-03:00",
+    "metodo": "GET",
+    "rota": "/appointments/24",
+    "entrada": null,
+    "http": 404,
+    "esperado_http": [
+      403,
+      404
+    ],
+    "resultado": {
+      "detail": "No Agendamento matches the given query."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-20",
+    "hora": "2026-11-23T14:16:01.657686-03:00",
+    "metodo": "GET",
+    "rota": "/admin/appointments",
+    "entrada": null,
+    "http": 403,
+    "esperado_http": [
+      403
+    ],
+    "resultado": {
+      "detail": "Acesso permitido apenas para o administrador/proprietário."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-12",
+    "hora": "2026-11-23T14:16:01.931202-03:00",
+    "metodo": "POST",
+    "rota": "/appointments",
+    "entrada": {
+      "profissional": 34,
+      "servico": 32,
+      "data_hora": "2026-11-22T10:00:00-03:00"
+    },
+    "http": 400,
+    "esperado_http": [
+      400
+    ],
+    "resultado": {
+      "data_hora": "Não é possível agendar em data/hora passada."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-12",
+    "hora": "2026-11-23T14:16:02.122531-03:00",
+    "metodo": "POST",
+    "rota": "/appointments",
+    "entrada": {
+      "profissional": 34,
+      "servico": 32,
+      "data_hora": "2026-11-24T03:00:00-03:00"
+    },
+    "http": 400,
+    "esperado_http": [
+      400
+    ],
+    "resultado": {
+      "data_hora": "Horário fora da disponibilidade do profissional."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-11",
+    "hora": "2026-11-23T14:16:02.350328-03:00",
+    "metodo": "GET",
+    "rota": "/professionals/34/availability?service=32&date=2026-11-24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "date": "2026-11-24",
+      "duration_minutes": 30,
+      "slots": [
+        "2026-11-24T09:00:00-03:00",
+        "2026-11-24T09:30:00-03:00",
+        "2026-11-24T10:30:00-03:00",
+        "2026-11-24T11:00:00-03:00",
+        "2026-11-24T11:30:00-03:00",
+        "2026-11-24T13:00:00-03:00",
+        "2026-11-24T13:30:00-03:00",
+        "2026-11-24T14:00:00-03:00",
+        "2026-11-24T14:30:00-03:00",
+        "2026-11-24T15:00:00-03:00",
+        "2026-11-24T15:30:00-03:00",
+        "2026-11-24T16:00:00-03:00",
+        "2026-11-24T16:30:00-03:00",
+        "2026-11-24T17:00:00-03:00",
+        "2026-11-24T17:30:00-03:00",
+        "2026-11-24T18:00:00-03:00",
+        "2026-11-24T18:30:00-03:00"
+      ]
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-11",
+    "hora": "2026-11-23T14:16:02.609898-03:00",
+    "metodo": "GET",
+    "rota": "/professionals/34/availability?service=34&date=2026-11-24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "date": "2026-11-24",
+      "duration_minutes": 60,
+      "slots": [
+        "2026-11-24T09:00:00-03:00",
+        "2026-11-24T10:30:00-03:00",
+        "2026-11-24T11:00:00-03:00",
+        "2026-11-24T13:00:00-03:00",
+        "2026-11-24T13:30:00-03:00",
+        "2026-11-24T14:00:00-03:00",
+        "2026-11-24T14:30:00-03:00",
+        "2026-11-24T15:00:00-03:00",
+        "2026-11-24T15:30:00-03:00",
+        "2026-11-24T16:00:00-03:00",
+        "2026-11-24T16:30:00-03:00",
+        "2026-11-24T17:00:00-03:00",
+        "2026-11-24T17:30:00-03:00",
+        "2026-11-24T18:00:00-03:00"
+      ]
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-04",
+    "hora": "2026-11-23T14:16:02.793729-03:00",
+    "metodo": "POST",
+    "rota": "/auth/register",
+    "entrada": {
+      "username": "evidencia_141602",
+      "telefone": "[OCULTO]",
+      "password": "[oculto]",
+      "password_confirm": "[oculto]"
+    },
+    "http": 400,
+    "esperado_http": [
+      400
+    ],
+    "resultado": {
+      "telefone": "[OCULTO]",
+      "password": "[oculto]"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-04",
+    "hora": "2026-11-23T14:16:03.051408-03:00",
+    "metodo": "POST",
+    "rota": "/auth/register",
+    "entrada": {
+      "username": "evidencia_141602",
+      "telefone": "[OCULTO]",
+      "password": "[oculto]",
+      "password_confirm": "[oculto]"
+    },
+    "http": 400,
+    "esperado_http": [
+      400
+    ],
+    "resultado": {
+      "telefone": "[OCULTO]"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-03/04",
+    "hora": "2026-11-23T14:16:04.439418-03:00",
+    "metodo": "POST",
+    "rota": "/auth/register",
+    "entrada": {
+      "username": "evidencia_141602",
+      "nome": "Teste Evidencias Validação",
+      "telefone": "[OCULTO]",
+      "password": "[oculto]",
+      "password_confirm": "[oculto]",
+      "perfil": "administrador"
+    },
+    "http": 201,
+    "esperado_http": [
+      201
+    ],
+    "resultado": {
+      "user": {
+        "id": 83,
+        "username": "evidencia_141602",
+        "email": "[OCULTO]",
+        "first_name": "",
+        "last_name": "",
+        "telefone": "[OCULTO]",
+        "perfil": "cliente"
+      },
+      "access": "[oculto]",
+      "refresh": "[oculto]"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-06",
+    "hora": "2026-11-23T14:16:04.671684-03:00",
+    "metodo": "PATCH",
+    "rota": "/me",
+    "entrada": {
+      "telefone": "[OCULTO]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 83,
+      "username": "evidencia_141602",
+      "email": "[OCULTO]",
+      "first_name": "",
+      "last_name": "",
+      "telefone": "[OCULTO]",
+      "perfil": "cliente"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-06",
+    "hora": "2026-11-23T14:16:07.114963-03:00",
+    "metodo": "POST",
+    "rota": "/me/password",
+    "entrada": {
+      "current_password": "[oculto]",
+      "new_password": "[oculto]",
+      "new_password_confirm": "[OCULTO]"
+    },
+    "http": 204,
+    "esperado_http": [
+      204
+    ],
+    "resultado": null,
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-06",
+    "hora": "2026-11-23T14:16:08.731633-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "evidencia_141602",
+      "password": "[oculto]"
+    },
+    "http": 401,
+    "esperado_http": [
+      401
+    ],
+    "resultado": {
+      "detail": "No active account found with the given credentials"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-06",
+    "hora": "2026-11-23T14:16:08.951105-03:00",
+    "metodo": "GET",
+    "rota": "/me",
+    "entrada": null,
+    "http": 401,
+    "esperado_http": [
+      401
+    ],
+    "resultado": {
+      "detail": "The user's password has been changed.",
+      "code": "password_changed"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-25",
+    "hora": "2026-11-23T14:16:10.004580-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "evidencia_141602",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 83,
+        "username": "evidencia_141602",
+        "email": "[OCULTO]",
+        "first_name": "",
+        "last_name": "",
+        "telefone": "[OCULTO]",
+        "perfil": "cliente"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-25",
+    "hora": "2026-11-23T14:16:10.222727-03:00",
+    "metodo": "POST",
+    "rota": "/auth/refresh",
+    "entrada": {
+      "refresh": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "access": "[oculto]",
+      "refresh": "[oculto]"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-25",
+    "hora": "2026-11-23T14:16:10.476617-03:00",
+    "metodo": "POST",
+    "rota": "/auth/refresh",
+    "entrada": {
+      "refresh": "[oculto]"
+    },
+    "http": 401,
+    "esperado_http": [
+      401
+    ],
+    "resultado": {
+      "detail": "Token is blacklisted",
+      "code": "token_not_valid"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-25",
+    "hora": "2026-11-23T14:16:10.758622-03:00",
+    "metodo": "POST",
+    "rota": "/auth/logout",
+    "entrada": {
+      "refresh": "[oculto]"
+    },
+    "http": 204,
+    "esperado_http": [
+      200,
+      204
+    ],
+    "resultado": null,
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-25",
+    "hora": "2026-11-23T14:16:10.994389-03:00",
+    "metodo": "POST",
+    "rota": "/auth/refresh",
+    "entrada": {
+      "refresh": "[oculto]"
+    },
+    "http": 401,
+    "esperado_http": [
+      401
+    ],
+    "resultado": {
+      "detail": "Token is blacklisted",
+      "code": "token_not_valid"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-07",
+    "hora": "2026-11-23T14:16:11.189382-03:00",
+    "metodo": "GET",
+    "rota": "/barbershop",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 1,
+      "nome": "Barbearia Estilo",
+      "descricao": "Cortes, barba e cuidados masculinos.",
+      "endereco": "Rua das Tesouras, 123",
+      "cidade": "São Paulo",
+      "telefone": "[OCULTO]",
+      "email": "[OCULTO]",
+      "atualizado_em": "2026-11-23T14:15:20.615973-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-07",
+    "hora": "2026-11-23T14:16:11.364719-03:00",
+    "metodo": "PATCH",
+    "rota": "/admin/barbershop",
+    "entrada": {
+      "nome": "Barbearia Estilo"
+    },
+    "http": 403,
+    "esperado_http": [
+      403
+    ],
+    "resultado": {
+      "detail": "Acesso permitido apenas para o administrador/proprietário."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "setup",
+    "hora": "2026-11-23T14:17:13.089432-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "admin",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 77,
+        "username": "admin",
+        "email": "[OCULTO]",
+        "first_name": "Ana",
+        "last_name": "Proprietária",
+        "telefone": "[OCULTO]",
+        "perfil": "administrador"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "setup",
+    "hora": "2026-11-23T14:17:14.237748-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "cliente",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 80,
+        "username": "cliente",
+        "email": "[OCULTO]",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]",
+        "perfil": "cliente"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "setup",
+    "hora": "2026-11-23T14:17:15.233705-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "joao",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 78,
+        "username": "joao",
+        "email": "[OCULTO]",
+        "first_name": "João",
+        "last_name": "Silva",
+        "telefone": "[OCULTO]",
+        "perfil": "barbeiro"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "setup",
+    "hora": "2026-11-23T14:17:16.440796-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "carlos",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 79,
+        "username": "carlos",
+        "email": "[OCULTO]",
+        "first_name": "Carlos",
+        "last_name": "Souza",
+        "telefone": "[OCULTO]",
+        "perfil": "barbeiro"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-16",
+    "hora": "2026-11-23T14:17:17.565428-03:00",
+    "metodo": "POST",
+    "rota": "/auth/register",
+    "entrada": {
+      "username": "isolamento_141716",
+      "telefone": "[OCULTO]",
+      "password": "[oculto]",
+      "password_confirm": "[oculto]"
+    },
+    "http": 201,
+    "esperado_http": [
+      201
+    ],
+    "resultado": {
+      "user": {
+        "id": 84,
+        "username": "isolamento_141716",
+        "email": "[OCULTO]",
+        "first_name": "",
+        "last_name": "",
+        "telefone": "[OCULTO]",
+        "perfil": "cliente"
+      },
+      "access": "[oculto]",
+      "refresh": "[oculto]"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-13",
+    "hora": "2026-11-23T14:17:17.750507-03:00",
+    "metodo": "GET",
+    "rota": "/appointments/24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 24,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 34,
+      "profissional_nome": "João Silva",
+      "servico": 32,
+      "servico_nome": "Corte masculino",
+      "data_hora": "2026-11-24T10:00:00-03:00",
+      "fim": "2026-11-24T10:30:00-03:00",
+      "duracao_minutos": 30,
+      "preco": "50.00",
+      "status": "confirmado",
+      "status_display": "Confirmado",
+      "observacoes": "",
+      "criado_em": "2026-11-23T14:10:13.418309-03:00",
+      "atualizado_em": "2026-11-23T14:11:47.885264-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-14",
+    "hora": "2026-11-23T14:17:17.942867-03:00",
+    "metodo": "POST",
+    "rota": "/appointments",
+    "entrada": {
+      "profissional": 34,
+      "servico": 32,
+      "data_hora": "2026-11-24T10:00:00-03:00"
+    },
+    "http": 400,
+    "esperado_http": [
+      400
+    ],
+    "resultado": {
+      "data_hora": "Horário já está ocupado."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-16",
+    "hora": "2026-11-23T14:17:18.129797-03:00",
+    "metodo": "GET",
+    "rota": "/appointments",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 23,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-23T14:00:00-03:00",
+        "fim": "2026-11-23T14:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "pendente",
+        "status_display": "Pendente",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:59:41.588202-03:00",
+        "atualizado_em": "2026-11-23T13:59:41.588236-03:00"
+      },
+      {
+        "id": 20,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 35,
+        "profissional_nome": "Carlos Souza",
+        "servico": 33,
+        "servico_nome": "Barba",
+        "data_hora": "2026-11-23T14:00:00-03:00",
+        "fim": "2026-11-23T14:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "40.00",
+        "status": "confirmado",
+        "status_display": "Confirmado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:51:41.628922-03:00",
+        "atualizado_em": "2026-11-23T13:54:32.403570-03:00"
+      },
+      {
+        "id": 21,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 35,
+        "profissional_nome": "Carlos Souza",
+        "servico": 33,
+        "servico_nome": "Barba",
+        "data_hora": "2026-11-23T14:30:00-03:00",
+        "fim": "2026-11-23T15:00:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "40.00",
+        "status": "pendente",
+        "status_display": "Pendente",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:59:05.833879-03:00",
+        "atualizado_em": "2026-11-23T13:59:05.833914-03:00"
+      },
+      {
+        "id": 22,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 35,
+        "profissional_nome": "Carlos Souza",
+        "servico": 33,
+        "servico_nome": "Barba",
+        "data_hora": "2026-11-23T15:00:00-03:00",
+        "fim": "2026-11-23T15:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "40.00",
+        "status": "pendente",
+        "status_display": "Pendente",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:59:23.309782-03:00",
+        "atualizado_em": "2026-11-23T13:59:23.309808-03:00"
+      },
+      {
+        "id": 19,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 35,
+        "profissional_nome": "Carlos Souza",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-23T15:00:00-03:00",
+        "fim": "2026-11-23T15:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "cancelado",
+        "status_display": "Cancelado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:51:21.738117-03:00",
+        "atualizado_em": "2026-11-23T13:54:47.801404-03:00"
+      },
+      {
+        "id": 24,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-24T10:00:00-03:00",
+        "fim": "2026-11-24T10:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "confirmado",
+        "status_display": "Confirmado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T14:10:13.418309-03:00",
+        "atualizado_em": "2026-11-23T14:11:47.885264-03:00"
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-16",
+    "hora": "2026-11-23T14:17:18.284561-03:00",
+    "metodo": "GET",
+    "rota": "/appointments",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-16",
+    "verificacao": "Isolamento entre clientes",
+    "aprovado": true,
+    "detalhes": {
+      "principal_presente": true,
+      "outro_total": 0
+    }
+  },
+  {
+    "caso": "TC-16",
+    "hora": "2026-11-23T14:17:18.518246-03:00",
+    "metodo": "GET",
+    "rota": "/me/history?from=2026-11-23&to=2026-11-29&status=confirmado",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 20,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 35,
+        "profissional_nome": "Carlos Souza",
+        "servico": 33,
+        "servico_nome": "Barba",
+        "data_hora": "2026-11-23T14:00:00-03:00",
+        "fim": "2026-11-23T14:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "40.00",
+        "status": "confirmado",
+        "status_display": "Confirmado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:51:41.628922-03:00",
+        "atualizado_em": "2026-11-23T13:54:32.403570-03:00"
+      },
+      {
+        "id": 24,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-24T10:00:00-03:00",
+        "fim": "2026-11-24T10:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "confirmado",
+        "status_display": "Confirmado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T14:10:13.418309-03:00",
+        "atualizado_em": "2026-11-23T14:11:47.885264-03:00"
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-16",
+    "hora": "2026-11-23T14:17:18.700757-03:00",
+    "metodo": "GET",
+    "rota": "/me/history?from=2026-11-23&to=2026-11-29&status=confirmado",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-16",
+    "verificacao": "Isolamento entre clientes",
+    "aprovado": true,
+    "detalhes": {
+      "principal_presente": true,
+      "outro_total": 0
+    }
+  },
+  {
+    "caso": "TC-20",
+    "hora": "2026-11-23T14:17:18.908733-03:00",
+    "metodo": "PATCH",
+    "rota": "/me/agenda/24/status",
+    "entrada": {
+      "status": "concluido"
+    },
+    "http": 403,
+    "esperado_http": [
+      403,
+      404
+    ],
+    "resultado": {
+      "detail": "Você só pode alterar os próprios atendimentos."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-18",
+    "hora": "2026-11-23T14:17:19.106513-03:00",
+    "metodo": "GET",
+    "rota": "/me/agenda?date=2026-11-24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 24,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-24T10:00:00-03:00",
+        "fim": "2026-11-24T10:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "confirmado",
+        "status_display": "Confirmado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T14:10:13.418309-03:00",
+        "atualizado_em": "2026-11-23T14:11:47.885264-03:00"
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-18",
+    "hora": "2026-11-23T14:17:19.320348-03:00",
+    "metodo": "GET",
+    "rota": "/me/agenda/week?date=2026-11-24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "from": "2026-11-23",
+      "to": "2026-11-29",
+      "appointments": [
+        {
+          "id": 23,
+          "cliente": {
+            "id": 80,
+            "username": "cliente",
+            "nome": "Maria Oliveira",
+            "first_name": "Maria",
+            "last_name": "Oliveira",
+            "telefone": "[OCULTO]"
+          },
+          "profissional": 34,
+          "profissional_nome": "João Silva",
+          "servico": 32,
+          "servico_nome": "Corte masculino",
+          "data_hora": "2026-11-23T14:00:00-03:00",
+          "fim": "2026-11-23T14:30:00-03:00",
+          "duracao_minutos": 30,
+          "preco": "50.00",
+          "status": "pendente",
+          "status_display": "Pendente",
+          "observacoes": "",
+          "criado_em": "2026-11-23T13:59:41.588202-03:00",
+          "atualizado_em": "2026-11-23T13:59:41.588236-03:00"
+        },
+        {
+          "id": 24,
+          "cliente": {
+            "id": 80,
+            "username": "cliente",
+            "nome": "Maria Oliveira",
+            "first_name": "Maria",
+            "last_name": "Oliveira",
+            "telefone": "[OCULTO]"
+          },
+          "profissional": 34,
+          "profissional_nome": "João Silva",
+          "servico": 32,
+          "servico_nome": "Corte masculino",
+          "data_hora": "2026-11-24T10:00:00-03:00",
+          "fim": "2026-11-24T10:30:00-03:00",
+          "duracao_minutos": 30,
+          "preco": "50.00",
+          "status": "confirmado",
+          "status_display": "Confirmado",
+          "observacoes": "",
+          "criado_em": "2026-11-23T14:10:13.418309-03:00",
+          "atualizado_em": "2026-11-23T14:11:47.885264-03:00"
+        }
+      ]
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-18",
+    "hora": "2026-11-23T14:17:19.590912-03:00",
+    "metodo": "GET",
+    "rota": "/me/history/professional?from=2026-11-23&to=2026-11-29&status=confirmado",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 24,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-24T10:00:00-03:00",
+        "fim": "2026-11-24T10:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "confirmado",
+        "status_display": "Confirmado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T14:10:13.418309-03:00",
+        "atualizado_em": "2026-11-23T14:11:47.885264-03:00"
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-09",
+    "hora": "2026-11-23T14:17:19.800740-03:00",
+    "metodo": "POST",
+    "rota": "/admin/services",
+    "entrada": {
+      "nome": "Evidencia Validação 141716",
+      "duracao_minutos": 30,
+      "preco": "35.00"
+    },
+    "http": 201,
+    "esperado_http": [
+      201
+    ],
+    "resultado": {
+      "id": 36,
+      "nome": "Evidencia Validação 141716",
+      "descricao": "",
+      "duracao_minutos": 30,
+      "preco": "35.00",
+      "ativo": true
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-08",
+    "hora": "2026-11-23T14:17:21.157584-03:00",
+    "metodo": "POST",
+    "rota": "/admin/professionals",
+    "entrada": {
+      "username": "barbeiro_teste_141716",
+      "password": "[oculto]",
+      "telefone": "[OCULTO]",
+      "first_name": "Teste",
+      "last_name": "Evidencias"
+    },
+    "http": 201,
+    "esperado_http": [
+      201
+    ],
+    "resultado": {
+      "id": 36,
+      "username": "barbeiro_teste_141716",
+      "nome": "Teste Evidencias",
+      "email": "[OCULTO]",
+      "first_name": "Teste",
+      "last_name": "Evidencias",
+      "telefone": "[OCULTO]",
+      "especialidades": "",
+      "bio": "",
+      "ativo": true
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-08",
+    "hora": "2026-11-23T14:17:21.363556-03:00",
+    "metodo": "DELETE",
+    "rota": "/admin/professionals/36",
+    "entrada": null,
+    "http": 204,
+    "esperado_http": [
+      204
+    ],
+    "resultado": null,
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-08",
+    "hora": "2026-11-23T14:17:21.557615-03:00",
+    "metodo": "GET",
+    "rota": "/professionals",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 35,
+        "nome": "Carlos Souza",
+        "especialidades": "Corte, barba e sobrancelha",
+        "bio": "Atendimento clássico e social.",
+        "ativo": true
+      },
+      {
+        "id": 34,
+        "nome": "João Silva",
+        "especialidades": "Corte masculino, barba",
+        "bio": "Barbeiro há 10 anos, especialista em degradê.",
+        "ativo": true
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-08",
+    "verificacao": "Desativado fora do catalogo",
+    "aprovado": true,
+    "detalhes": {
+      "id": 36
+    }
+  },
+  {
+    "caso": "TC-08",
+    "hora": "2026-11-23T14:17:21.768117-03:00",
+    "metodo": "PATCH",
+    "rota": "/admin/professionals/36",
+    "entrada": {
+      "ativo": true
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 36,
+      "username": "barbeiro_teste_141716",
+      "nome": "Teste Evidencias",
+      "email": "[OCULTO]",
+      "first_name": "Teste",
+      "last_name": "Evidencias",
+      "telefone": "[OCULTO]",
+      "especialidades": "",
+      "bio": "",
+      "ativo": true
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-10",
+    "hora": "2026-11-23T14:17:21.966506-03:00",
+    "metodo": "POST",
+    "rota": "/admin/availability",
+    "entrada": {
+      "profissional": 36,
+      "dia_semana": 1,
+      "hora_inicio": "09:00",
+      "hora_fim": "12:00"
+    },
+    "http": 201,
+    "esperado_http": [
+      201
+    ],
+    "resultado": {
+      "id": 149,
+      "profissional": 36,
+      "profissional_nome": "Teste Evidencias",
+      "dia_semana": 1,
+      "dia_semana_display": "Terça-feira",
+      "hora_inicio": "09:00:00",
+      "hora_fim": "12:00:00",
+      "ativo": true
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-10",
+    "hora": "2026-11-23T14:17:22.291055-03:00",
+    "metodo": "POST",
+    "rota": "/admin/availability",
+    "entrada": {
+      "profissional": 36,
+      "dia_semana": 1,
+      "hora_inicio": "13:00",
+      "hora_fim": "17:00"
+    },
+    "http": 201,
+    "esperado_http": [
+      201
+    ],
+    "resultado": {
+      "id": 150,
+      "profissional": 36,
+      "profissional_nome": "Teste Evidencias",
+      "dia_semana": 1,
+      "dia_semana_display": "Terça-feira",
+      "hora_inicio": "13:00:00",
+      "hora_fim": "17:00:00",
+      "ativo": true
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-10",
+    "hora": "2026-11-23T14:17:22.510395-03:00",
+    "metodo": "GET",
+    "rota": "/professionals/36/availability?service=36&date=2026-11-24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "date": "2026-11-24",
+      "duration_minutes": 30,
+      "slots": [
+        "2026-11-24T09:00:00-03:00",
+        "2026-11-24T09:30:00-03:00",
+        "2026-11-24T10:00:00-03:00",
+        "2026-11-24T10:30:00-03:00",
+        "2026-11-24T11:00:00-03:00",
+        "2026-11-24T11:30:00-03:00",
+        "2026-11-24T13:00:00-03:00",
+        "2026-11-24T13:30:00-03:00",
+        "2026-11-24T14:00:00-03:00",
+        "2026-11-24T14:30:00-03:00",
+        "2026-11-24T15:00:00-03:00",
+        "2026-11-24T15:30:00-03:00",
+        "2026-11-24T16:00:00-03:00",
+        "2026-11-24T16:30:00-03:00"
+      ]
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-10",
+    "hora": "2026-11-23T14:17:22.692123-03:00",
+    "metodo": "DELETE",
+    "rota": "/admin/availability/150",
+    "entrada": null,
+    "http": 204,
+    "esperado_http": [
+      204
+    ],
+    "resultado": null,
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-10",
+    "hora": "2026-11-23T14:17:22.910234-03:00",
+    "metodo": "GET",
+    "rota": "/professionals/36/availability?service=36&date=2026-11-24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "date": "2026-11-24",
+      "duration_minutes": 30,
+      "slots": [
+        "2026-11-24T09:00:00-03:00",
+        "2026-11-24T09:30:00-03:00",
+        "2026-11-24T10:00:00-03:00",
+        "2026-11-24T10:30:00-03:00",
+        "2026-11-24T11:00:00-03:00",
+        "2026-11-24T11:30:00-03:00"
+      ]
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-10",
+    "verificacao": "Remocao do bloco reduz slots",
+    "aprovado": true,
+    "detalhes": {
+      "antes": 14,
+      "depois": 6
+    }
+  },
+  {
+    "caso": "TC-17/22",
+    "hora": "2026-11-23T14:17:23.162358-03:00",
+    "metodo": "POST",
+    "rota": "/appointments",
+    "entrada": {
+      "profissional": 36,
+      "servico": 36,
+      "data_hora": "2026-11-24T09:00:00-03:00",
+      "observacoes": "Simulacao Validação: cancelamento e preco historico"
+    },
+    "http": 201,
+    "esperado_http": [
+      201
+    ],
+    "resultado": {
+      "id": 25,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 36,
+      "profissional_nome": "Teste Evidencias",
+      "servico": 36,
+      "servico_nome": "Evidencia Validação 141716",
+      "data_hora": "2026-11-24T09:00:00-03:00",
+      "fim": "2026-11-24T09:30:00-03:00",
+      "duracao_minutos": 30,
+      "preco": "35.00",
+      "status": "pendente",
+      "status_display": "Pendente",
+      "observacoes": "Simulacao Validação: cancelamento e preco historico",
+      "criado_em": "2026-11-23T14:17:23.148810-03:00",
+      "atualizado_em": "2026-11-23T14:17:23.148825-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-09/22",
+    "hora": "2026-11-23T14:17:23.416366-03:00",
+    "metodo": "PATCH",
+    "rota": "/admin/services/36",
+    "entrada": {
+      "preco": "47.00",
+      "duracao_minutos": 45
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 36,
+      "nome": "Evidencia Validação 141716",
+      "descricao": "",
+      "duracao_minutos": 45,
+      "preco": "47.00",
+      "ativo": true
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-22",
+    "hora": "2026-11-23T14:17:23.642847-03:00",
+    "metodo": "GET",
+    "rota": "/appointments/25",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 25,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 36,
+      "profissional_nome": "Teste Evidencias",
+      "servico": 36,
+      "servico_nome": "Evidencia Validação 141716",
+      "data_hora": "2026-11-24T09:00:00-03:00",
+      "fim": "2026-11-24T09:30:00-03:00",
+      "duracao_minutos": 30,
+      "preco": "35.00",
+      "status": "pendente",
+      "status_display": "Pendente",
+      "observacoes": "Simulacao Validação: cancelamento e preco historico",
+      "criado_em": "2026-11-23T14:17:23.148810-03:00",
+      "atualizado_em": "2026-11-23T14:17:23.148825-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-22",
+    "verificacao": "Preco e duracao preservados",
+    "aprovado": true,
+    "detalhes": {
+      "reserva": 25,
+      "preco": "35.00",
+      "duracao": 30
+    }
+  },
+  {
+    "caso": "TC-17",
+    "hora": "2026-11-23T14:17:23.892598-03:00",
+    "metodo": "PATCH",
+    "rota": "/appointments/25/cancel",
+    "entrada": {},
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 25,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 36,
+      "profissional_nome": "Teste Evidencias",
+      "servico": 36,
+      "servico_nome": "Evidencia Validação 141716",
+      "data_hora": "2026-11-24T09:00:00-03:00",
+      "fim": "2026-11-24T09:30:00-03:00",
+      "duracao_minutos": 30,
+      "preco": "35.00",
+      "status": "cancelado",
+      "status_display": "Cancelado",
+      "observacoes": "Simulacao Validação: cancelamento e preco historico",
+      "criado_em": "2026-11-23T14:17:23.148810-03:00",
+      "atualizado_em": "2026-11-23T14:17:23.865734-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-17",
+    "hora": "2026-11-23T14:17:24.134604-03:00",
+    "metodo": "GET",
+    "rota": "/professionals/36/availability?service=36&date=2026-11-24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "date": "2026-11-24",
+      "duration_minutes": 45,
+      "slots": [
+        "2026-11-24T09:00:00-03:00",
+        "2026-11-24T09:30:00-03:00",
+        "2026-11-24T10:00:00-03:00",
+        "2026-11-24T10:30:00-03:00",
+        "2026-11-24T11:00:00-03:00"
+      ]
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-17",
+    "verificacao": "Slot liberado",
+    "aprovado": true,
+    "detalhes": {
+      "slots": [
+        "2026-11-24T09:00:00-03:00",
+        "2026-11-24T09:30:00-03:00",
+        "2026-11-24T10:00:00-03:00",
+        "2026-11-24T10:30:00-03:00",
+        "2026-11-24T11:00:00-03:00"
+      ]
+    }
+  },
+  {
+    "caso": "TC-19",
+    "hora": "2026-11-23T14:17:24.351731-03:00",
+    "metodo": "PATCH",
+    "rota": "/me/agenda/25/status",
+    "entrada": {
+      "status": "confirmado"
+    },
+    "http": 400,
+    "esperado_http": [
+      400
+    ],
+    "resultado": {
+      "status": "Transição de 'Cancelado' para 'Confirmado' não permitida."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-19",
+    "hora": "2026-11-23T14:17:24.591826-03:00",
+    "metodo": "POST",
+    "rota": "/appointments",
+    "entrada": {
+      "profissional": 36,
+      "servico": 36,
+      "data_hora": "2026-11-24T10:30:00-03:00",
+      "observacoes": "Simulacao Validação: finalizacao e faturamento"
+    },
+    "http": 201,
+    "esperado_http": [
+      201
+    ],
+    "resultado": {
+      "id": 26,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 36,
+      "profissional_nome": "Teste Evidencias",
+      "servico": 36,
+      "servico_nome": "Evidencia Validação 141716",
+      "data_hora": "2026-11-24T10:30:00-03:00",
+      "fim": "2026-11-24T11:15:00-03:00",
+      "duracao_minutos": 45,
+      "preco": "47.00",
+      "status": "pendente",
+      "status_display": "Pendente",
+      "observacoes": "Simulacao Validação: finalizacao e faturamento",
+      "criado_em": "2026-11-23T14:17:24.576905-03:00",
+      "atualizado_em": "2026-11-23T14:17:24.576919-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-19",
+    "hora": "2026-11-23T14:17:24.843077-03:00",
+    "metodo": "PATCH",
+    "rota": "/me/agenda/26/status",
+    "entrada": {
+      "status": "confirmado"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 26,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 36,
+      "profissional_nome": "Teste Evidencias",
+      "servico": 36,
+      "servico_nome": "Evidencia Validação 141716",
+      "data_hora": "2026-11-24T10:30:00-03:00",
+      "fim": "2026-11-24T11:15:00-03:00",
+      "duracao_minutos": 45,
+      "preco": "47.00",
+      "status": "confirmado",
+      "status_display": "Confirmado",
+      "observacoes": "Simulacao Validação: finalizacao e faturamento",
+      "criado_em": "2026-11-23T14:17:24.576905-03:00",
+      "atualizado_em": "2026-11-23T14:17:24.810288-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-19",
+    "hora": "2026-11-23T14:17:25.066519-03:00",
+    "metodo": "PATCH",
+    "rota": "/me/agenda/26/status",
+    "entrada": {
+      "status": "concluido"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 26,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 36,
+      "profissional_nome": "Teste Evidencias",
+      "servico": 36,
+      "servico_nome": "Evidencia Validação 141716",
+      "data_hora": "2026-11-24T10:30:00-03:00",
+      "fim": "2026-11-24T11:15:00-03:00",
+      "duracao_minutos": 45,
+      "preco": "47.00",
+      "status": "concluido",
+      "status_display": "Concluído",
+      "observacoes": "Simulacao Validação: finalizacao e faturamento",
+      "criado_em": "2026-11-23T14:17:24.576905-03:00",
+      "atualizado_em": "2026-11-23T14:17:25.036657-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-19",
+    "hora": "2026-11-23T14:17:25.278529-03:00",
+    "metodo": "PATCH",
+    "rota": "/me/agenda/26/status",
+    "entrada": {
+      "status": "pendente"
+    },
+    "http": 400,
+    "esperado_http": [
+      400
+    ],
+    "resultado": {
+      "status": "Transição de 'Concluído' para 'Pendente' não permitida."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-21",
+    "hora": "2026-11-23T14:17:25.465359-03:00",
+    "metodo": "GET",
+    "rota": "/admin/appointments?professional=36&from=2026-11-23&to=2026-11-29&status=concluido",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 26,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 36,
+        "profissional_nome": "Teste Evidencias",
+        "servico": 36,
+        "servico_nome": "Evidencia Validação 141716",
+        "data_hora": "2026-11-24T10:30:00-03:00",
+        "fim": "2026-11-24T11:15:00-03:00",
+        "duracao_minutos": 45,
+        "preco": "47.00",
+        "status": "concluido",
+        "status_display": "Concluído",
+        "observacoes": "Simulacao Validação: finalizacao e faturamento",
+        "criado_em": "2026-11-23T14:17:24.576905-03:00",
+        "atualizado_em": "2026-11-23T14:17:25.036657-03:00"
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-09",
+    "hora": "2026-11-23T14:17:25.674580-03:00",
+    "metodo": "DELETE",
+    "rota": "/admin/services/36",
+    "entrada": null,
+    "http": 204,
+    "esperado_http": [
+      204
+    ],
+    "resultado": null,
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-09",
+    "hora": "2026-11-23T14:17:25.915932-03:00",
+    "metodo": "GET",
+    "rota": "/services",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 33,
+        "nome": "Barba",
+        "descricao": "Aparo e modelagem da barba.",
+        "duracao_minutos": 30,
+        "preco": "40.00",
+        "ativo": true
+      },
+      {
+        "id": 34,
+        "nome": "Corte + barba",
+        "descricao": "Combo completo de corte e barba.",
+        "duracao_minutos": 60,
+        "preco": "80.00",
+        "ativo": true
+      },
+      {
+        "id": 32,
+        "nome": "Corte masculino",
+        "descricao": "Corte com máquina e tesoura.",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "ativo": true
+      },
+      {
+        "id": 35,
+        "nome": "Sobrancelha",
+        "descricao": "Design de sobrancelha masculina.",
+        "duracao_minutos": 15,
+        "preco": "20.00",
+        "ativo": true
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-09",
+    "verificacao": "Servico desativado oculto",
+    "aprovado": true,
+    "detalhes": {
+      "id": 36
+    }
+  },
+  {
+    "caso": "cleanup",
+    "hora": "2026-11-23T14:17:26.227725-03:00",
+    "metodo": "DELETE",
+    "rota": "/admin/professionals/36",
+    "entrada": null,
+    "http": 204,
+    "esperado_http": [
+      204
+    ],
+    "resultado": null,
+    "aprovado_http": true
+  },
+  {
+    "caso": "cleanup",
+    "hora": "2026-11-23T14:17:26.512794-03:00",
+    "metodo": "DELETE",
+    "rota": "/admin/availability/149",
+    "entrada": null,
+    "http": 204,
+    "esperado_http": [
+      204
+    ],
+    "resultado": null,
+    "aprovado_http": true
+  },
+  {
+    "caso": "setup",
+    "hora": "2026-11-23T14:22:34.294889-03:00",
+    "metodo": "POST",
+    "rota": "/auth/login",
+    "entrada": {
+      "username": "cliente",
+      "password": "[oculto]"
+    },
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "refresh": "[oculto]",
+      "access": "[oculto]",
+      "user": {
+        "id": 80,
+        "username": "cliente",
+        "email": "[OCULTO]",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]",
+        "perfil": "cliente"
+      }
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-23",
+    "hora": "2026-11-23T14:22:34.529370-03:00",
+    "metodo": "GET",
+    "rota": "/appointments",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": [
+      {
+        "id": 23,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-23T14:00:00-03:00",
+        "fim": "2026-11-23T14:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "pendente",
+        "status_display": "Pendente",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:59:41.588202-03:00",
+        "atualizado_em": "2026-11-23T13:59:41.588236-03:00"
+      },
+      {
+        "id": 20,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 35,
+        "profissional_nome": "Carlos Souza",
+        "servico": 33,
+        "servico_nome": "Barba",
+        "data_hora": "2026-11-23T14:00:00-03:00",
+        "fim": "2026-11-23T14:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "40.00",
+        "status": "confirmado",
+        "status_display": "Confirmado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:51:41.628922-03:00",
+        "atualizado_em": "2026-11-23T13:54:32.403570-03:00"
+      },
+      {
+        "id": 21,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 35,
+        "profissional_nome": "Carlos Souza",
+        "servico": 33,
+        "servico_nome": "Barba",
+        "data_hora": "2026-11-23T14:30:00-03:00",
+        "fim": "2026-11-23T15:00:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "40.00",
+        "status": "pendente",
+        "status_display": "Pendente",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:59:05.833879-03:00",
+        "atualizado_em": "2026-11-23T13:59:05.833914-03:00"
+      },
+      {
+        "id": 19,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 35,
+        "profissional_nome": "Carlos Souza",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-23T15:00:00-03:00",
+        "fim": "2026-11-23T15:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "cancelado",
+        "status_display": "Cancelado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:51:21.738117-03:00",
+        "atualizado_em": "2026-11-23T13:54:47.801404-03:00"
+      },
+      {
+        "id": 22,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 35,
+        "profissional_nome": "Carlos Souza",
+        "servico": 33,
+        "servico_nome": "Barba",
+        "data_hora": "2026-11-23T15:00:00-03:00",
+        "fim": "2026-11-23T15:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "40.00",
+        "status": "pendente",
+        "status_display": "Pendente",
+        "observacoes": "",
+        "criado_em": "2026-11-23T13:59:23.309782-03:00",
+        "atualizado_em": "2026-11-23T13:59:23.309808-03:00"
+      },
+      {
+        "id": 27,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-24T09:00:00-03:00",
+        "fim": "2026-11-24T09:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "cancelado",
+        "status_display": "Cancelado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T14:18:06.881726-03:00",
+        "atualizado_em": "2026-11-23T14:19:11.028242-03:00"
+      },
+      {
+        "id": 25,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 36,
+        "profissional_nome": "Teste Evidencias",
+        "servico": 36,
+        "servico_nome": "Evidencia Validação 141716",
+        "data_hora": "2026-11-24T09:00:00-03:00",
+        "fim": "2026-11-24T09:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "35.00",
+        "status": "cancelado",
+        "status_display": "Cancelado",
+        "observacoes": "Simulacao Validação: cancelamento e preco historico",
+        "criado_em": "2026-11-23T14:17:23.148810-03:00",
+        "atualizado_em": "2026-11-23T14:17:23.865734-03:00"
+      },
+      {
+        "id": 28,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-24T09:30:00-03:00",
+        "fim": "2026-11-24T10:00:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "pendente",
+        "status_display": "Pendente",
+        "observacoes": "",
+        "criado_em": "2026-11-23T14:20:12.468672-03:00",
+        "atualizado_em": "2026-11-23T14:20:12.468717-03:00"
+      },
+      {
+        "id": 24,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-24T10:00:00-03:00",
+        "fim": "2026-11-24T10:30:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "confirmado",
+        "status_display": "Confirmado",
+        "observacoes": "",
+        "criado_em": "2026-11-23T14:10:13.418309-03:00",
+        "atualizado_em": "2026-11-23T14:11:47.885264-03:00"
+      },
+      {
+        "id": 29,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 34,
+        "profissional_nome": "João Silva",
+        "servico": 32,
+        "servico_nome": "Corte masculino",
+        "data_hora": "2026-11-24T10:30:00-03:00",
+        "fim": "2026-11-24T11:00:00-03:00",
+        "duracao_minutos": 30,
+        "preco": "50.00",
+        "status": "pendente",
+        "status_display": "Pendente",
+        "observacoes": "",
+        "criado_em": "2026-11-23T14:21:14.249472-03:00",
+        "atualizado_em": "2026-11-23T14:21:14.249509-03:00"
+      },
+      {
+        "id": 26,
+        "cliente": {
+          "id": 80,
+          "username": "cliente",
+          "nome": "Maria Oliveira",
+          "first_name": "Maria",
+          "last_name": "Oliveira",
+          "telefone": "[OCULTO]"
+        },
+        "profissional": 36,
+        "profissional_nome": "Teste Evidencias",
+        "servico": 36,
+        "servico_nome": "Evidencia Validação 141716",
+        "data_hora": "2026-11-24T10:30:00-03:00",
+        "fim": "2026-11-24T11:15:00-03:00",
+        "duracao_minutos": 45,
+        "preco": "47.00",
+        "status": "concluido",
+        "status_display": "Concluído",
+        "observacoes": "Simulacao Validação: finalizacao e faturamento",
+        "criado_em": "2026-11-23T14:17:24.576905-03:00",
+        "atualizado_em": "2026-11-23T14:17:25.036657-03:00"
+      }
+    ],
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-23/cleanup",
+    "hora": "2026-11-23T14:22:34.731529-03:00",
+    "metodo": "PATCH",
+    "rota": "/appointments/28/cancel",
+    "entrada": {},
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 28,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 34,
+      "profissional_nome": "João Silva",
+      "servico": 32,
+      "servico_nome": "Corte masculino",
+      "data_hora": "2026-11-24T09:30:00-03:00",
+      "fim": "2026-11-24T10:00:00-03:00",
+      "duracao_minutos": 30,
+      "preco": "50.00",
+      "status": "cancelado",
+      "status_display": "Cancelado",
+      "observacoes": "",
+      "criado_em": "2026-11-23T14:20:12.468672-03:00",
+      "atualizado_em": "2026-11-23T14:22:34.703810-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-23/cleanup",
+    "hora": "2026-11-23T14:22:34.961121-03:00",
+    "metodo": "PATCH",
+    "rota": "/appointments/29/cancel",
+    "entrada": {},
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 29,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 34,
+      "profissional_nome": "João Silva",
+      "servico": 32,
+      "servico_nome": "Corte masculino",
+      "data_hora": "2026-11-24T10:30:00-03:00",
+      "fim": "2026-11-24T11:00:00-03:00",
+      "duracao_minutos": 30,
+      "preco": "50.00",
+      "status": "cancelado",
+      "status_display": "Cancelado",
+      "observacoes": "",
+      "criado_em": "2026-11-23T14:21:14.249472-03:00",
+      "atualizado_em": "2026-11-23T14:22:34.934720-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-17",
+    "hora": "2026-11-23T14:22:35.169253-03:00",
+    "metodo": "PATCH",
+    "rota": "/appointments/23/cancel",
+    "entrada": {},
+    "http": 400,
+    "esperado_http": [
+      400
+    ],
+    "resultado": {
+      "data_hora": "O cliente só pode cancelar antes do início do atendimento."
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-13",
+    "hora": "2026-11-23T14:22:35.338246-03:00",
+    "metodo": "GET",
+    "rota": "/appointments/24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "id": 24,
+      "cliente": {
+        "id": 80,
+        "username": "cliente",
+        "nome": "Maria Oliveira",
+        "first_name": "Maria",
+        "last_name": "Oliveira",
+        "telefone": "[OCULTO]"
+      },
+      "profissional": 34,
+      "profissional_nome": "João Silva",
+      "servico": 32,
+      "servico_nome": "Corte masculino",
+      "data_hora": "2026-11-24T10:00:00-03:00",
+      "fim": "2026-11-24T10:30:00-03:00",
+      "duracao_minutos": 30,
+      "preco": "50.00",
+      "status": "confirmado",
+      "status_display": "Confirmado",
+      "observacoes": "",
+      "criado_em": "2026-11-23T14:10:13.418309-03:00",
+      "atualizado_em": "2026-11-23T14:11:47.885264-03:00"
+    },
+    "aprovado_http": true
+  },
+  {
+    "caso": "TC-17",
+    "hora": "2026-11-23T14:22:35.520270-03:00",
+    "metodo": "GET",
+    "rota": "/professionals/34/availability?service=32&date=2026-11-24",
+    "entrada": null,
+    "http": 200,
+    "esperado_http": [
+      200
+    ],
+    "resultado": {
+      "date": "2026-11-24",
+      "duration_minutes": 30,
+      "slots": [
+        "2026-11-24T09:00:00-03:00",
+        "2026-11-24T09:30:00-03:00",
+        "2026-11-24T10:30:00-03:00",
+        "2026-11-24T11:00:00-03:00",
+        "2026-11-24T11:30:00-03:00",
+        "2026-11-24T13:00:00-03:00",
+        "2026-11-24T13:30:00-03:00",
+        "2026-11-24T14:00:00-03:00",
+        "2026-11-24T14:30:00-03:00",
+        "2026-11-24T15:00:00-03:00",
+        "2026-11-24T15:30:00-03:00",
+        "2026-11-24T16:00:00-03:00",
+        "2026-11-24T16:30:00-03:00",
+        "2026-11-24T17:00:00-03:00",
+        "2026-11-24T17:30:00-03:00",
+        "2026-11-24T18:00:00-03:00",
+        "2026-11-24T18:30:00-03:00"
+      ]
+    },
+    "aprovado_http": true
+  }
+]

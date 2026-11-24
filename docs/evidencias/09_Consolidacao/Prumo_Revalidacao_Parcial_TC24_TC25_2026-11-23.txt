@@ -1,0 +1,28 @@
+REGISTRO HISTÓRICO DA VERIFICAÇÃO PARCIAL
+Os resultados abaixo antecedem a revalidação local. Consulte Prumo_Revalidacao_Local_2026-11-23.txt para o estado atualizado.
+
+PRUMO — REVALIDAÇÃO TÉCNICA COMPLEMENTAR — 23/11/2026
+Fonte: GitHub, branch master, arquivos frontend/js/api.js e frontend/pages/admin.html.
+
+TC-24 — auditoria estática complementar (não substitui auditoria de navegador).
+Blob admin.html: 56847b567db11d141bf8ded3645a7cef404a16f7.
+31 controles input/select/textarea; 20 com label associado, aninhado ou atributo ARIA;
+11 sem essas formas explícitas de rotulagem: s-nome, s-preco, s-duracao,
+b-nome, b-usuario, b-senha, b-telefone, h-barbeiro, h-dia, h-inicio, h-fim.
+Os placeholders dos sete primeiros campos não substituem rótulos persistentes.
+Recomendação: adicionar labels associados e testar teclado, contraste, mensagens e leitor de tela.
+Status: EM VERIFICAÇÃO (não aprovar o caso integralmente).
+
+TC-25 — teste isolado do JavaScript original (blob dc3b6ca0e55015aa34cdac05bc91572682d89373,
+confirmado com git hash-object). Node.js v22.16.0; fetch e localStorage simulados.
+PASS TC-25A: HTTP 401 simulado -> refresh -> repetição com access novo e rotação do refresh.
+PASS TC-25B: requisições concorrentes compartilham uma renovação.
+PASS TC-25C: logout após 401 renova e solicita revogação do refresh novo, limpando sessão local.
+3 verificações isoladas aprovadas; respostas HTTP e localStorage simulados. Não valida servidor JWT real nem aprova TC-25 integralmente.
+Status TC-25: EM VERIFICAÇÃO, pois expiração, assinatura e revogação no servidor Django real ainda precisam de validação integrada.
+
+TC-03 e TC-07: não reexecutados (Django/MySQL indisponíveis no ambiente de revisão).
+TC-26: permanece BLOQUEADO (Docker indisponível).
+A tentativa de clonar via terminal falhou por indisponibilidade de resolução DNS do GitHub;
+a leitura de código foi realizada pelo conector. Nenhum código de aplicação ou dado real foi alterado.
+Resultado consolidado mantido: 70 testes automatizados anteriormente aprovados e 21/26 casos de aceitação aprovados; 4 em verificação; 1 bloqueado. Os 3 testes isolados não são somados à suíte oficial.

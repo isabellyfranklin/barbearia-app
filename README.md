@@ -7,11 +7,19 @@ barbearia em uma interface web integrada a uma API Django REST e a um banco MySQ
 | --- | --- |
 | Cliente | Criar uma conta, consultar serviços e horários livres e reservar um atendimento. |
 | Barbeiro | Consultar a agenda do dia ou da semana e atualizar o status dos seus atendimentos. |
-| Administrador | Acompanhar agendamentos e faturamento, gerenciar serviços e profissionais e configurar horários de trabalho. |
+| Administrador | Acompanhar agendamentos e faturamento, atualizar os dados da barbearia e gerenciar serviços, profissionais e horários de trabalho. |
 
 As reservas começam como pendentes. A API impede sobreposições para o mesmo
 profissional e preserva o preço e a duração contratados. O faturamento do painel
 considera os atendimentos concluídos. O MVP atende uma barbearia.
+
+## Demonstração do Projeto Integrador IV
+
+O vídeo da segunda entrega (2 min 18 s) mostra o fluxo de reserva do cliente,
+a agenda do barbeiro e a consulta no painel administrativo.
+
+- [Assistir à demonstração no YouTube](https://youtu.be/BhizxM86HcI)
+- [Consultar o relatório revisado da segunda entrega (PDF)](https://drive.google.com/file/d/15WlE3Lg6GRsZNU949bXXKXKWg6LY65oQ/view)
 
 ## Como as partes se conectam
 
@@ -81,7 +89,7 @@ seguintes contas na tela de login.
 Em outro terminal, a partir da raiz do repositório, execute:
 
 ```sh
-python3 -m http.server 3000
+python3 -m http.server 3000 --bind 127.0.0.1
 ```
 
 No Windows, use `python` no lugar de `python3`. Abra [a aplicação](http://localhost:3000)
@@ -106,7 +114,7 @@ e use uma das contas de demonstração ou cadastre um cliente.
 
 ## Configurar a URL da API
 
-Em desenvolvimento, o front-end usa `http://localhost:8000/api/v1`. Em outros
+Quando a página é aberta em `localhost`, `127.0.0.1` ou `[::1]`, o front-end usa `http://localhost:8000/api/v1`. Em outros
 hosts, o padrão é `/api/v1` na mesma origem do front-end. Para servir a API em outra
 origem, preencha o atributo `content` da meta tag `api-url` em
 `index.html` (na raiz) e nos HTMLs em `frontend/pages/` com a URL base da API,
@@ -127,6 +135,13 @@ A suíte precisa de um usuário MySQL com permissão para criar e remover o banc
 de testes. Ela verifica autenticação, catálogo, disponibilidade e concorrência
 entre reservas.
 
+Na revalidação de 23/11/2026, a suíte passou com **70 de 70 testes** no MySQL
+8.4.13. A matriz de aceitação registrou **24 de 26 casos aprovados (92,31%)**.
+A auditoria completa de acessibilidade (TC-24) segue em verificação, e o teste
+com Docker (TC-26) está bloqueado no ambiente de revalidação.
+Consulte o [índice de evidências](docs/evidencias/LEIA_ME.html) e o
+[registro da execução local](docs/evidencias/09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt).
+
 ## Problemas comuns na instalação
 
 | Sintoma | O que conferir |
@@ -142,4 +157,4 @@ entre reservas.
 - [Back-end](backend/BarbeariaAPP-codigo/README.md) em Django REST Framework, dividido em contas, catálogo e agendamento.
 - [Banco de dados](database/README.md) com o esquema de referência. As migrações do Django aplicam o esquema usado pela aplicação.
 - [Contrato REST](docs/API.md) e [especificação OpenAPI](docs/openapi.yaml).
-- [Modelo da segunda entrega](https://docs.google.com/document/d/1LFH7a7eXbECiNHs7S6ayrPSsuixISlHhTu54f3ZxAEw/edit).
+- [Diagrama da arquitetura](docs/arquitetura_barbearia.png).

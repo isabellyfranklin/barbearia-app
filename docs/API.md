@@ -38,7 +38,8 @@ A API usa JWT, sem cookies de sessão ou CSRF token para requisições REST.
 | POST | /me/password | current_password, new_password, new_password_confirm |
 
 Cadastro/login retornam user, access, refresh. Cadastro sempre cria cliente.
-Refresh tem rotação: guarde o novo refresh e descarte o antigo.
+Cada renovação bem-sucedida retorna novos tokens `access` e `refresh`.
+Substitua os dois tokens armazenados. O servidor invalida o `refresh` anterior.
 Logout invalida o refresh informado; access já emitido pode continuar válido até
 expirar (30 minutos). Troca de senha revoga access anteriores e todos os refresh
 conhecidos do usuário; faça login novamente. Refresh expira em um dia.
@@ -48,6 +49,11 @@ O front-end compartilha uma renovação entre as requisições simultâneas da
 mesma página. Ao selecionar **Sair**, tenta revogar o refresh atual na API
 antes de limpar a sessão local. Se o access expirou, a interface renova os
 tokens e tenta revogar o novo refresh.
+
+A [revalidação local](evidencias/09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt)
+registrou no Chrome a repetição da requisição após HTTP 401, a renovação
+compartilhada entre três chamadas simultâneas e a rejeição, com HTTP 401,
+de uma tentativa de renovação com o token revogado após o logout.
 
 ## Catálogo e administração
 

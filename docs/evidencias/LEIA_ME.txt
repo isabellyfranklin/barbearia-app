@@ -7,6 +7,10 @@ Execução anterior da suíte: 70 passed, 0 failed, 0 skipped, 52 warnings em 84
 Revalidação local em 23/11/2026, horário de Brasília, com Chrome, Django 5.2.19, Python 3.15.2 e MySQL 8.4.13 isolado.
 Registro local: 09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt
 
+Vídeo da segunda entrega do PI IV (2 min 18 s): https://youtu.be/BhizxM86HcI
+Relatório acadêmico revisado: https://drive.google.com/file/d/15WlE3Lg6GRsZNU949bXXKXKWg6LY65oQ/view
+O PDF de execução registra as evidências coletadas durante a rodada de testes.
+
 RESERVAS E DADOS DA EXECUÇÃO ANTERIOR
 24: jornada principal, confirmada, João, 24/11/2026 10h, R$ 50, 30 min.
 25: cancelamento/preço histórico, cancelada.
@@ -17,7 +21,7 @@ Clientes fictícios 81-84 permanecem registrados; senhas aleatórias não inclu�
 As reservas e contas anteriores foram preservadas.
 
 LIMITES
-Pendências de aceitação: auditoria completa de acessibilidade (TC-24) e execução com Docker (TC-26). Vídeo funcional narrado e publicação no YouTube não realizados. A pasta 02_Banco_Dados contém as capturas disponíveis do banco.
+Pendências de aceitação: auditoria completa de acessibilidade (TC-24) e execução com Docker (TC-26). A pasta 02_Banco_Dados contém as capturas disponíveis do banco.
 A revalidação local corrigiu os rótulos dos formulários administrativos. Na execução anterior, não houve alteração no código ou nova migração. migrate --check substituiu migrate, pois não havia migração pendente.
 O Python da Microsoft Store não iniciou sob as restrições da sessão; os testes usaram Python 3.12.14 com dependências em work/test-packages. Os servidores existentes foram reutilizados.
 HEAD legível; git status indisponível por restrição de acesso/worktree. Integridade das fontes registrada por SHA-256; não se afirma checkout limpo.

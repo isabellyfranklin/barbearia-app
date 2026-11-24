@@ -246,8 +246,14 @@ um banco temporário criado por `migrate`. Nomes de índices e chaves estrangeir
 gerados automaticamente pelo Django podem diferir dos nomes documentais, sem
 alterar as colunas ou os relacionamentos representados.
 
-O ambiente-alvo documentado pelo grupo é MySQL 8.4. A validação local anterior do
-backend utilizou MySQL 8.0.46; isso não equivale a executar a mesma suíte no 8.4.
+As seis tabelas deste recorte foram comparadas no MySQL 8.0.46 com um banco
+temporário criado pelas migrações. A comparação conferiu colunas, tipos,
+nulabilidade, valores padrão, chaves estrangeiras, unicidade, índices nomeados
+e restrições `CHECK`.
 
+Na revalidação de 23/11/2026, as migrações foram aplicadas em um banco isolado
+no MySQL 8.4.13, e os 70 testes do back-end passaram. O painel também salvou
+os dados da barbearia, que foram conferidos após recarregar a página e consultar
+a API pública. [Registro da execução local](../docs/evidencias/09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt).
 
-Validação deste recorte: as seis tabelas foram comparadas no MySQL 8.0.46 com um banco temporário criado pelas migrations, conferindo colunas, tipos, nulabilidade, valores padrão, chaves estrangeiras, unicidade, índices nomeados e restrições CHECK. A comparação passou.
+A jornada de agendamento está no [vídeo da segunda entrega do PI IV](https://youtu.be/BhizxM86HcI).

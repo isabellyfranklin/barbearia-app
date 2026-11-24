@@ -3,6 +3,7 @@
 O back-end gerencia contas, catálogo, disponibilidade, agendamentos e agendas.
 A API usa Django 5.2, Django REST Framework, JWT e MySQL 8.4 como alvo.
 Para iniciar também a interface web, siga o [guia da raiz](../../README.md).
+A gravação dos fluxos está no [vídeo da segunda entrega do PI IV](https://youtu.be/BhizxM86HcI).
 
 ## Instalação local
 
@@ -97,6 +98,12 @@ para verificar o bloqueio em reservas simultâneas e em confirmação concorrent
 com cancelamento. Execute esses cenários no MySQL para exercitar
 `SELECT FOR UPDATE`.
 
+Em 23/11/2026, os 70 testes da suíte passaram no MySQL 8.4.13, incluindo os
+três cenários de concorrência. A revalidação no Chrome também confirmou a
+renovação automática após expiração do token, uma renovação compartilhada
+entre requisições simultâneas e a revogação da sessão no logout.
+Veja o [registro da execução](../../docs/evidencias/09_Consolidacao/Prumo_Revalidacao_Local_2026-11-23.txt).
+
 Ao alterar o contrato da API, gere e valide a especificação versionada.
 
 ```sh
@@ -108,7 +115,8 @@ python manage.py spectacular --file ../../docs/openapi.yaml --validate --fail-on
 O Compose sobe a API na porta 8000. Prepare o banco MySQL externo antes de
 subir o contêiner e configure um `MYSQL_HOST` acessível a partir dele.
 No Docker Desktop, use `host.docker.internal` se o MySQL estiver no host.
-Sirva o front-end em outro processo, conforme o guia da raiz.
+Na pasta do back-end, confirme que o `.env` foi configurado e sirva o
+front-end em outro processo, conforme o guia da raiz.
 
 ```sh
 docker compose up --build
@@ -117,8 +125,8 @@ docker compose up --build
 O entrypoint aplica migrações e coleta arquivos estáticos. O Gunicorn atende
 as requisições, e o WhiteNoise serve os arquivos do Admin e do Swagger.
 Se a API falhar na inicialização, consulte `docker compose logs api` e confira
-se o contêiner consegue alcançar o MySQL. O build ainda requer validação no
-ambiente Docker da equipe.
+se o contêiner consegue alcançar o MySQL. O caso TC-26 segue bloqueado porque
+o Docker estava indisponível no ambiente de revalidação.
 
 Para publicar a API, use HTTPS, `DEBUG=False`, uma chave própria e listas
 restritas de hosts e origens.
